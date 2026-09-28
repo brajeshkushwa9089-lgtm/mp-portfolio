@@ -1,0 +1,1868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- =========================
+         BASIC META INFORMATION
+    ========================== -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+        content="Brajesh Kushwaha — B.Tech Computer Science (AI) Scholar, AI Systems Developer & Full-Stack Web Engineer">
+
+    <meta name="keywords"
+        content="Brajesh Kushwaha, Computer Science, Artificial Intelligence, Machine Learning, Python, Web Developer, Full Stack, REPL, Portfolio">
+
+    <meta name="author" content="Brajesh Kushwaha">
+
+    <!-- Website title -->
+    <title>Brajesh Kushwaha | Portfolio</title>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+
+    <!-- =========================
+         GOOGLE FONTS
+    ========================== -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- =========================
+         ICON LIBRARY
+    ========================== -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- =================================
+         PAGE LOADER
+    ================================== -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <p>Loading Portfolio...</p>
+        </div>
+    </div>
+
+
+    <!-- =================================
+         CUSTOM CURSOR
+    ================================== -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+
+    <!-- =================================
+         BACKGROUND EFFECTS
+    ================================== -->
+    <div class="background-effects">
+        <canvas id="neural-canvas" class="neural-canvas"></canvas>
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+        <div class="cyber-grid"></div>
+    </div>
+
+
+    <!-- =================================
+         NAVIGATION BAR
+    ================================== -->
+    <header class="header" id="header">
+
+        <nav class="navbar container">
+
+            <!-- Logo -->
+            <a href="#home" class="logo" aria-label="Brajesh Kushwaha Home">
+                <span class="logo-bracket">&lt;</span><span class="logo-name">Brajesh</span><span class="logo-accent">.AI</span><span class="logo-bracket">/&gt;</span>
+            </a>
+
+            <!-- Status Pill (Desktop) -->
+            <div class="nav-status-pill" title="Status: Available for creative and dev work">
+                <span class="pulse-dot"></span>
+                <span class="status-text">Available for Projects</span>
+            </div>
+
+            <!-- Navigation Links -->
+            <ul class="nav-menu" id="nav-menu">
+
+                <li class="nav-item">
+                    <a href="#home" class="nav-link active">Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#about" class="nav-link">About</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#skills" class="nav-link">Skills</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#pipeline" class="nav-link">Pipeline</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#projects" class="nav-link">Projects</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="ai-lab.html" class="nav-link">AI Studio Lab</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="terminal.html" class="nav-link">Coding REPL</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#education" class="nav-link">Education</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#contact" class="nav-link">Contact</a>
+                </li>
+
+            </ul>
+
+
+            <!-- Navbar Actions -->
+            <div class="nav-actions">
+
+                <!-- Command Terminal Trigger -->
+                <button
+                    id="cmd-k-btn"
+                    class="cmd-k-trigger"
+                    aria-label="Open Interactive Terminal (Ctrl+K)"
+                    title="Press Ctrl + K for AI Terminal">
+                    <i class="fas fa-terminal"></i>
+                    <span class="cmd-shortcut">Ctrl K</span>
+                </button>
+
+                <!-- Sound FX Toggle -->
+                <button
+                    id="sound-toggle"
+                    class="sound-toggle"
+                    aria-label="Toggle UI Sound Effects"
+                    title="Toggle UI Sound FX">
+                    <i class="fas fa-volume-xmark"></i>
+                </button>
+
+                <!-- Theme Toggle -->
+                <button
+                    id="theme-toggle"
+                    class="theme-toggle"
+                    aria-label="Toggle dark and light mode"
+                    title="Toggle Dark / Light Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+
+
+                <!-- Mobile Menu Button -->
+                <button
+                    id="menu-toggle"
+                    class="menu-toggle"
+                    aria-label="Open navigation menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <!-- =================================
+         MAIN CONTENT
+    ================================== -->
+    <main>
+
+
+        <!-- =================================
+             HERO SECTION
+        ================================== -->
+        <section id="home" class="hero section">
+
+            <div class="container hero-container">
+
+                <!-- Hero Text -->
+                <div class="hero-content">
+
+                    <div class="hero-badge">
+                        <span class="status-dot"></span>
+                        <span>B.Tech CSE (AI) Student &amp; AI Systems Developer</span>
+                    </div>
+
+                    <h1 class="hero-title">
+                        Brajesh <span class="gradient-text">Kushwaha</span>
+                    </h1>
+
+
+                    <!-- Typing Animation -->
+                    <h2 class="hero-subtitle">
+                        I specialize in
+                        <span id="typing-text"></span>
+                        <span class="typing-cursor">|</span>
+                    </h2>
+
+
+                    <p class="hero-description">
+                        Pursuing Computer Science &amp; Engineering (AI) at Scope Global Skills University (SGSU) — developing Artificial Intelligence systems, Generative AI API pipelines, Python automation frameworks, and modern full-stack web applications.
+                    </p>
+
+                    <!-- Quick Facts with 3D Tilt -->
+                    <div class="quick-facts">
+                        <div class="quick-fact" data-tilt>
+                            <strong>B.Tech</strong>
+                            <span>CSE (AI) Major</span>
+                        </div>
+                        <div class="quick-fact" data-tilt>
+                            <strong>100%</strong>
+                            <span>Pure Tech Focus</span>
+                        </div>
+                        <div class="quick-fact" data-tilt>
+                            <strong>4+</strong>
+                            <span>Core Tech Stacks</span>
+                        </div>
+                    </div>
+
+
+                    <!-- Hero Buttons -->
+                    <div class="hero-buttons">
+
+                        <a href="#projects" class="btn btn-primary magnetic-btn">
+                            <span>Explore Tech Projects</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+
+                        <a href="ai-lab.html" class="btn btn-outline magnetic-btn">
+                            <i class="fas fa-microchip"></i>
+                            <span>AI Studio Lab</span>
+                        </a>
+
+                        <a href="terminal.html" class="btn btn-secondary magnetic-btn">
+                            <i class="fas fa-terminal"></i>
+                            <span>Coding Terminal REPL</span>
+                        </a>
+
+                    </div>
+
+                    <!-- Social Links -->
+                    <div class="social-links">
+
+                        <a href="https://github.com/brajeshkushwa9089-lgtm"
+                            aria-label="GitHub"
+                            target="_blank"
+                            title="GitHub Profile & Repositories">
+                            <i class="fab fa-github"></i>
+                         </a>
+
+
+                        <a href="https://www.linkedin.com/in/brajesh-kushwaha-6b3b992a4?utm_source=share_via&utm_content=profile&utm_medium=member_android"
+                            aria-label="LinkedIn"
+                            target="_blank"
+                            title="LinkedIn Network">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+
+
+                        <a href="mailto:brajeshkushwa9089@gmail.com"
+                            aria-label="Email"
+                            title="Send Technical Inquiry">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+
+                    </div>
+
+                </div>
+
+                <!-- Hero Image with Floating Badges & 3D Tilt -->
+                <div class="hero-image">
+
+                    <div class="hero-image-wrapper" data-tilt>
+
+                        <div class="hero-image-glow"></div>
+
+                        <!-- Floating Badges around Avatar -->
+                        <div class="floating-badge fb-1">
+                            <i class="fas fa-brain"></i>
+                            <div class="fb-text">
+                                <strong>AI &amp; ML Systems</strong>
+                                <small>Python &amp; Neural Nets</small>
+                            </div>
+                        </div>
+
+                        <div class="floating-badge fb-2">
+                            <i class="fas fa-wand-magic-sparkles"></i>
+                            <div class="fb-text">
+                                <strong>Prompt Architect</strong>
+                                <small>Midjourney &amp; Flux API</small>
+                            </div>
+                        </div>
+
+                        <div class="floating-badge fb-3">
+                            <i class="fas fa-code"></i>
+                            <div class="fb-text">
+                                <strong>Full-Stack Web Dev</strong>
+                                <small>JS ES6+ &amp; Web Systems</small>
+                            </div>
+                        </div>
+
+                        <div class="floating-badge fb-4">
+                            <i class="fas fa-graduation-cap"></i>
+                            <div class="fb-text">
+                                <strong>B.Tech CS (AI)</strong>
+                                <small>SGSU 2026-2030</small>
+                            </div>
+                        </div>
+
+                        <img
+                            src="image.png"
+                            alt="Brajesh Kushwaha"
+                            height="300"
+                            class="profile-image">
+
+                    </div>
+
+                    <!-- Live AI Vision Status Pill -->
+                    <div class="hero-image-status-pill">
+                        <span class="live-dot"></span>
+                        <span>CS (AI) &amp; Software Systems Engine</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Scroll Indicator -->
+            <a href="#about" class="scroll-indicator" aria-label="Scroll to About section">
+                <span>Explore Journey</span>
+                <i class="fas fa-chevron-down"></i>
+            </a>
+
+        </section>
+
+
+        <!-- =================================
+             ABOUT SECTION
+        ================================== -->
+        <section id="about" class="about section">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <span class="section-label">
+                        About Me
+                    </span>
+
+                    <h2>
+                        Know More About Me
+                    </h2>
+
+                    <p>
+                        A little introduction about who I am,
+                        what I do and what I want to achieve.
+                    </p>
+
+                </div>
+
+
+                <div class="about-container">
+
+                    <div class="about-image">
+
+                        <img
+                            src="b.png"
+                            alt="About Brajesh Kushwaha"
+                            height="300"
+                            width="300">
+
+                    </div>
+
+
+                    <div class="about-content">
+
+                        <h3>
+                            I'm Brajesh Kushwaha
+                        </h3>
+
+                        <p>
+                            I am <strong>Brajesh Kushwaha</strong>, a Computer Science &amp; Engineering (AI) student at NIAT × Scope Global Skills University (SGSU), dedicated to mastering <strong>Computer Science, Artificial Intelligence, and Software Engineering</strong>.
+                        </p>
+                        <p>
+                            My technical specialization encompasses Artificial Intelligence, Machine Learning algorithms, Generative AI API frameworks, Data Structures &amp; Algorithms (DSA), Python programming, and Full-Stack Web Architecture.
+                        </p>
+                        <p>
+                            I design, engineer, and deploy practical software applications by combining algorithmic foundations with modern AI tools, creating high-performance browser REPLs, automated workflow systems, and interactive web tools.
+                        </p>
+
+
+                        <!-- Personal Information -->
+                        <div class="personal-info">
+
+                            <div class="info-item">
+                                <span>Name:</span>
+                                <strong>Brajesh Kushwaha</strong>
+                            </div>
+
+                            <div class="info-item">
+                                <span>Degree:</span>
+                                <strong>B.Tech CSE (AI) Scholar</strong>
+                            </div>
+
+                            <div class="info-item">
+                                <span>Institution:</span>
+                                <strong>SGSU (NIAT Partnered)</strong>
+                            </div>
+
+                            <div class="info-item">
+                                <span>Core Languages:</span>
+                                <strong>Python, JavaScript, C/C++</strong>
+                            </div>
+
+                            <div class="info-item">
+                                <span>Specialization:</span>
+                                <strong>AI, ML &amp; Web Systems</strong>
+                            </div>
+
+                            <div class="info-item">
+                                <span>Email:</span>
+                                <strong>brajeshkushwa9089@gmail.com</strong>
+                            </div>
+
+                        </div>
+
+
+                        <a href="#contact" class="btn btn-primary">
+                            Let's Talk
+                            <i class="fas fa-paper-plane"></i>
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             SKILLS SECTION
+        ================================== -->
+        <section id="skills" class="skills section">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <span class="section-label">
+                        Expertise &amp; Toolkit
+                    </span>
+
+                    <h2>
+                        Skills &amp; <span class="gradient-text">Technologies</span>
+                    </h2>
+
+                    <p>
+                        A blend of cutting-edge generative AI models, high-performance web engineering frameworks, and core programming languages.
+                    </p>
+
+                </div>
+
+                <!-- Skill Category Filter Buttons -->
+                <div class="skill-category-filters">
+                    <button class="skill-filter-btn active" data-skill-filter="all">
+                        <i class="fas fa-layer-group"></i> All Toolkit
+                    </button>
+                    <button class="skill-filter-btn" data-skill-filter="ai">
+                        <i class="fas fa-robot"></i> Generative AI &amp; Prompts
+                    </button>
+                    <button class="skill-filter-btn" data-skill-filter="video">
+                        <i class="fas fa-video"></i> Video &amp; Post-FX
+                    </button>
+                    <button class="skill-filter-btn" data-skill-filter="code">
+                        <i class="fas fa-code"></i> Web &amp; Programming
+                    </button>
+                </div>
+
+
+                <!-- Skill Cards Grid -->
+                <div class="skills-grid">
+
+                    <!-- Generative AI -->
+                    <div class="skill-card" data-category="ai" data-tilt>
+                        <div class="skill-card-glow"></div>
+                        <i class="fas fa-robot"></i>
+                        <h3>Generative AI</h3>
+                        <div class="skill-progress">
+                            <span data-progress="92"></span>
+                        </div>
+                        <p><span class="skill-counter" data-target="92">0</span>%</p>
+                        <div class="skill-tags">
+                            <span>MidJourney v6</span>
+                            <span>Runway Gen-3</span>
+                            <span>ElevenLabs</span>
+                        </div>
+                    </div>
+
+                    <!-- Prompt Engineering -->
+                    <div class="skill-card" data-category="ai" data-tilt>
+                        <div class="skill-card-glow"></div>
+                        <i class="fas fa-wand-magic-sparkles"></i>
+                        <h3>Prompt Engineering</h3>
+                        <div class="skill-progress">
+                            <span data-progress="94"></span>
+                        </div>
+                        <p><span class="skill-counter" data-target="94">0</span>%</p>
+                        <div class="skill-tags">
+                            <span>Camera Vectors</span>
+                            <span>Seed Anchoring</span>
+                            <span>Style Mimicry</span>
+                        </div>
+                    </div>
+
+                    <!-- Python -->
+                    <div class="skill-card" data-category="code" data-tilt>
+                        <div class="skill-card-glow"></div>
+                        <i class="fab fa-python"></i>
+                        <h3>Python</h3>
+                        <div class="skill-progress">
+                            <span data-progress="80"></span>
+                        </div>
+                        <p><span class="skill-counter" data-target="80">0</span>%</p>
+                        <div class="skill-tags">
+                            <span>Automation</span>
+                            <span>Data Scripts</span>
+                            <span>AI API Wrappers</span>
+                        </div>
+                    </div>
+
+                    <!-- JavaScript -->
+                    <div class="skill-card" data-category="code" data-tilt>
+                        <div class="skill-card-glow"></div>
+                        <i class="fab fa-js"></i>
+                        <h3>JavaScript (ES6+)</h3>
+                        <div class="skill-progress">
+                            <span data-progress="78"></span>
+                        </div>
+                        <p><span class="skill-counter" data-target="78">0</span>%</p>
+                        <div class="skill-tags">
+                            <span>Web Audio</span>
+                            <span>Canvas FX</span>
+                            <span>Async APIs</span>
+                        </div>
+                    </div>
+
+                    <!-- HTML5 -->
+                    <div class="skill-card" data-category="code" data-tilt>
+                        <div class="skill-card-glow"></div>
+                        <i class="fab fa-html5"></i>
+                        <h3>HTML5</h3>
+                        <div class="skill-progress">
+                            <span data-progress="90"></span>
+                        </div>
+                        <p><span class="skill-counter" data-target="90">0</span>%</p>
+                        <div class="skill-tags">
+                            <span>Semantic SEO</span>
+                            <span>Accessibility</span>
+                            <span>Modern DOM</span>
+                        </div>
+                    </div>
+
+                    <!-- CSS3 -->
+                    <div class="skill-card" data-category="code" data-tilt>
+                        <div class="skill-card-glow"></div>
+                        <i class="fab fa-css3-alt"></i>
+                        <h3>CSS3</h3>
+                        <div class="skill-progress">
+                            <span data-progress="88"></span>
+                        </div>
+                        <p><span class="skill-counter" data-target="88">0</span>%</p>
+                        <div class="skill-tags">
+                            <span>Glassmorphism</span>
+                            <span>3D Transforms</span>
+                            <span>Responsive</span>
+                        </div>
+                    </div>
+
+                    <!-- Git & GitHub -->
+                    <div class="skill-card" data-category="code" data-tilt>
+                        <div class="skill-card-glow"></div>
+                        <i class="fab fa-github"></i>
+                        <h3>Git &amp; GitHub</h3>
+                        <div class="skill-progress">
+                            <span data-progress="75"></span>
+                        </div>
+                        <p><span class="skill-counter" data-target="75">0</span>%</p>
+                        <div class="skill-tags">
+                            <span>Version Control</span>
+                            <span>Workflows</span>
+                            <span>Open Source</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             AI SOFTWARE SYSTEMS PIPELINE SECTION
+        ================================== -->
+        <section id="pipeline" class="pipeline section">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <span class="section-label">
+                        Software Architecture
+                    </span>
+
+                    <h2>
+                        My Systems <span class="gradient-text">Pipeline</span>
+                    </h2>
+
+                    <p>
+                        A systematic 5-phase engineering workflow for designing, building, training, and deploying AI software applications.
+                    </p>
+
+                </div>
+
+                <div class="pipeline-track">
+
+                    <!-- Pipeline Step 1 -->
+                    <div class="pipeline-card" data-tilt>
+                        <div class="pipeline-step-num">01</div>
+                        <div class="pipeline-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3>System Specs &amp; Data ETL</h3>
+                        <p>
+                            Defining software requirements, vector embeddings, prompt templates, and system architecture specs in Python and LLMs.
+                        </p>
+                        <div class="pipeline-tags">
+                            <span>System Specs</span>
+                            <span>Data ETL</span>
+                            <span>Vector Embedding</span>
+                        </div>
+                    </div>
+
+                    <!-- Pipeline Step 2 -->
+                    <div class="pipeline-card" data-tilt>
+                        <div class="pipeline-step-num">02</div>
+                        <div class="pipeline-icon">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                        <h3>Prompt Architecture &amp; Models</h3>
+                        <p>
+                            Formulating multi-attribute prompt logic, seed anchors, parameter tuning, and REST API integration across neural diffusion models.
+                        </p>
+                        <div class="pipeline-tags">
+                            <span>Midjourney v6</span>
+                            <span>Runway API</span>
+                            <span>Seed Anchoring</span>
+                        </div>
+                    </div>
+
+                    <!-- Pipeline Step 3 -->
+                    <div class="pipeline-card" data-tilt>
+                        <div class="pipeline-step-num">03</div>
+                        <div class="pipeline-icon">
+                            <i class="fas fa-wave-square"></i>
+                        </div>
+                        <h3>Neural Voice &amp; DSP Audio</h3>
+                        <p>
+                            Generating multi-character speech synthesis via ElevenLabs API, digital signal processing (DSP), and audio alignment.
+                        </p>
+                        <div class="pipeline-tags">
+                            <span>ElevenLabs API</span>
+                            <span>DSP Signal</span>
+                            <span>Audio Waveform</span>
+                        </div>
+                    </div>
+
+                    <!-- Pipeline Step 4 -->
+                    <div class="pipeline-card" data-tilt>
+                        <div class="pipeline-step-num">04</div>
+                        <div class="pipeline-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3>Automated Asset Compilation</h3>
+                        <p>
+                            High-throughput video rendering in Premiere/FFmpeg, keyframe motion calculation, and dynamic subtitle generation.
+                        </p>
+                        <div class="pipeline-tags">
+                            <span>Python Automation</span>
+                            <span>FFmpeg Engine</span>
+                            <span>Dynamic Subs</span>
+                        </div>
+                    </div>
+
+                    <!-- Pipeline Step 5 -->
+                    <div class="pipeline-card" data-tilt>
+                        <div class="pipeline-step-num">05</div>
+                        <div class="pipeline-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3>Deployment &amp; Optimization</h3>
+                        <p>
+                            Benchmarking system latency, API throughput optimization, responsive web deployment, and CI/CD integration.
+                        </p>
+                        <div class="pipeline-tags">
+                            <span>API Throughput</span>
+                            <span>CI/CD Deploy</span>
+                            <span>Web REPL</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             PROJECTS SECTION
+        ================================== -->
+        <section id="projects" class="projects section">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <span class="section-label">
+                        My Work
+                    </span>
+
+                    <h2>
+                        Featured Projects
+                    </h2>
+
+                    <p>
+                        Some of the projects I have created.
+                    </p>
+
+                </div>
+
+
+                <!-- Project Filters -->
+                <div class="project-filters">
+
+                    <button class="filter-btn active"
+                            data-filter="all">
+                        All
+                    </button>
+
+                    <button class="filter-btn"
+                            data-filter="web">
+                        Web
+                    </button>
+
+                    <button class="filter-btn"
+                            data-filter="HTML/CSS/JS">
+                        HTML/CSS/JS
+                    </button>
+
+                    <button class="filter-btn"
+                            data-filter="C/c++">
+                        C/c++
+                    </button>
+
+                    <button class="filter-btn"
+                            data-filter="python">
+                        Python
+                    </button>
+
+                </div>
+
+
+                <!-- Projects Grid -->
+                <div class="projects-grid" id="projects-container">
+
+                    <!-- Project 1: Generative AI Multimodal Pipeline -->
+                    <article class="project-card" data-category="ai" data-tilt data-project-id="1">
+
+                        <div class="project-badge-top">
+                            <span class="badge-pill hot"><i class="fas fa-brain"></i> AI Engineering</span>
+                            <span class="badge-format">Multimodal API</span>
+                        </div>
+
+                        <div class="project-image">
+
+                            <img
+                                src="bk.png"
+                                alt="Generative AI Multimodal Pipeline">
+
+                            <div class="project-overlay">
+
+                                <button class="overlay-btn btn-case-study" data-project="1" title="View Case Study">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+
+                                <a href="https://github.com/brajeshkushwa9089-lgtm"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   aria-label="View Source Code"
+                                   title="Open GitHub Repository">
+                                    <i class="fab fa-github"></i>
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                        <div class="project-content">
+
+                            <div class="project-meta-row">
+                                <span class="project-category">AI Architecture</span>
+                                <span class="project-metric">Automated API</span>
+                            </div>
+
+                            <h3>Generative AI Multimodal Pipeline</h3>
+
+                            <p>
+                                Automated software pipeline integrating LLM script reasoning, Stable Diffusion visual diffusion, ElevenLabs neural speech synthesis, and FFmpeg video rendering.
+                            </p>
+
+                            <div class="project-tech">
+                                <span>Python API</span>
+                                <span>Midjourney v6</span>
+                                <span>Runway Gen-3</span>
+                                <span>ElevenLabs</span>
+                            </div>
+
+                            <div class="project-card-footer">
+                                <button class="btn btn-secondary btn-sm btn-case-study" data-project="1">
+                                    <span>Case Study</span>
+                                    <i class="fas fa-arrow-up-right-from-square"></i>
+                                </button>
+                                <a href="https://github.com/brajeshkushwa9089-lgtm" target="_blank" class="card-link-icon" title="View Source on GitHub">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Project 2: AI Content Creation & Automation -->
+                    <article class="project-card" data-category="ai" data-tilt data-project-id="2">
+
+                        <div class="project-badge-top">
+                            <span class="badge-pill ai"><i class="fas fa-robot"></i> Pipeline</span>
+                            <span class="badge-format">Automation</span>
+                        </div>
+
+                        <div class="project-image">
+
+                            <img
+                                src="Ai content.png"
+                                alt="AI Content Creation & Automation">
+
+                            <div class="project-overlay">
+
+                                <button class="overlay-btn btn-case-study" data-project="2" title="View Case Study">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+
+                                <a href="#projects"
+                                   class="btn-case-study"
+                                   data-project="2"
+                                   aria-label="View details"
+                                   title="View Architecture">
+                                    <i class="fas fa-sitemap"></i>
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                        <div class="project-content">
+
+                            <div class="project-meta-row">
+                                <span class="project-category">Generative AI</span>
+                                <span class="project-metric">10x Speedup</span>
+                            </div>
+
+                            <h3>AI Content Creation &amp; Automation</h3>
+
+                            <p>
+                                Practical multi-model workflows for batch visual synthesis, automated script execution, seed stabilization, and high-performance asset processing pipelines.
+                            </p>
+
+                            <div class="project-tech">
+                                <span>MidJourney</span>
+                                <span>Runway Gen-3</span>
+                                <span>Python</span>
+                                <span>Workflow Automation</span>
+                            </div>
+
+                            <div class="project-card-footer">
+                                <button class="btn btn-secondary btn-sm btn-case-study" data-project="2">
+                                    <span>Case Study</span>
+                                    <i class="fas fa-arrow-up-right-from-square"></i>
+                                </button>
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Project 3: Neural Video Synthesis Engine -->
+                    <article class="project-card" data-category="ai" data-tilt data-project-id="3">
+
+                        <div class="project-badge-top">
+                            <span class="badge-pill creative"><i class="fas fa-eye"></i> Computer Vision</span>
+                            <span class="badge-format">Optical Physics</span>
+                        </div>
+
+                        <div class="project-image">
+
+                            <img
+                                src="cin.png"
+                                alt="Neural Video Synthesis Engine">
+
+                            <div class="project-overlay">
+
+                                <button class="overlay-btn btn-case-study" data-project="3" title="View Case Study">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <div class="project-content">
+
+                            <div class="project-meta-row">
+                                <span class="project-category">Computer Vision</span>
+                                <span class="project-metric">Optical Diffusion</span>
+                            </div>
+
+                            <h3>Neural Video Synthesis &amp; Optical Engine</h3>
+
+                            <p>
+                                Vertical video synthesis framework exploring neural motion vectors, anamorphic optical camera simulation, volumetric lighting shaders, and speed ramping.
+                            </p>
+
+                            <div class="project-tech">
+                                <span>Generative AI</span>
+                                <span>Computer Vision</span>
+                                <span>Python APIs</span>
+                                <span>Color Grading</span>
+                            </div>
+
+                            <div class="project-card-footer">
+                                <button class="btn btn-secondary btn-sm btn-case-study" data-project="3">
+                                    <span>Case Study</span>
+                                    <i class="fas fa-arrow-up-right-from-square"></i>
+                                </button>
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Project 4: Portfolio Website -->
+                    <article class="project-card" data-category="web" data-tilt data-project-id="4">
+
+                        <div class="project-badge-top">
+                            <span class="badge-pill web"><i class="fas fa-code"></i> Live System</span>
+                            <span class="badge-format">Interactive</span>
+                        </div>
+
+                        <div class="project-image">
+
+                            <img
+                                src="inter.png"
+                                alt="Portfolio Website">
+
+                            <div class="project-overlay">
+
+                                <button class="overlay-btn btn-case-study" data-project="4" title="View Case Study">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+
+                                <a href="https://github.com/brajeshkushwa9089-lgtm"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   aria-label="Project source code"
+                                   title="GitHub Source Code">
+                                    <i class="fab fa-github"></i>
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                        <div class="project-content">
+
+                            <div class="project-meta-row">
+                                <span class="project-category">Web Development</span>
+                                <span class="project-metric">Audio &amp; Canvas</span>
+                            </div>
+
+                            <h3>Interactive AI Portfolio</h3>
+
+                            <p>
+                                Ultra-modern responsive web showcase with Web Audio synthesizer, neural constellation particle engine, interactive AI prompt studio, and terminal console.
+                            </p>
+
+                            <div class="project-tech">
+                                <span>HTML5</span>
+                                <span>Modern CSS</span>
+                                <span>JavaScript ES6+</span>
+                                <span>Web Audio API</span>
+                            </div>
+
+                            <div class="project-card-footer">
+                                <button class="btn btn-secondary btn-sm btn-case-study" data-project="4">
+                                    <span>Case Study</span>
+                                    <i class="fas fa-arrow-up-right-from-square"></i>
+                                </button>
+                                <a href="https://github.com/brajeshkushwa9089-lgtm" target="_blank" class="card-link-icon" title="View Code on GitHub">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             AI PROMPT STUDIO & LAB SECTION
+        ================================== -->
+        <section id="ai-lab" class="ai-lab section">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <span class="section-label">
+                        Interactive Showcase
+                    </span>
+
+                    <h2>
+                        AI Prompt Studio &amp; <span class="gradient-text">Lab</span>
+                    </h2>
+
+                    <p>
+                        Test my prompt engineering blueprints in real-time. Select an archetype or tweak camera parameters to generate production-grade prompts ready for Midjourney and Runway.
+                    </p>
+
+                </div>
+
+                <div class="prompt-studio-wrapper">
+
+                    <!-- Studio Controls -->
+                    <div class="prompt-controls">
+
+                        <div class="control-group">
+                            <label class="control-title"><i class="fas fa-wand-magic-sparkles"></i> Select Visual Archetype</label>
+                            <div class="archetype-buttons">
+                                <button class="archetype-btn active" data-archetype="neural3d">
+                                    <i class="fas fa-cubes"></i>
+                                    <span>3D Character Diffusion</span>
+                                </button>
+                                <button class="archetype-btn" data-archetype="cinematic">
+                                    <i class="fas fa-clapperboard"></i>
+                                    <span>Moody Trading Noir</span>
+                                </button>
+                                <button class="archetype-btn" data-archetype="cyberpunk">
+                                    <i class="fas fa-city"></i>
+                                    <span>Cyberpunk 2099 Avatar</span>
+                                </button>
+                                <button class="archetype-btn" data-archetype="photoreal">
+                                    <i class="fas fa-camera"></i>
+                                    <span>Hyper-Real 8K Portrait</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="control-grid">
+
+                            <div class="control-select-wrap">
+                                <label for="prompt-aspect"><i class="fas fa-expand"></i> Aspect Ratio</label>
+                                <select id="prompt-aspect" class="studio-select">
+                                    <option value="--ar 9:16">9:16 (YouTube Shorts / Reels)</option>
+                                    <option value="--ar 16:9">16:9 (Cinematic Widescreen)</option>
+                                    <option value="--ar 1:1">1:1 (Square Post)</option>
+                                    <option value="--ar 21:9">21:9 (Anamorphic Cinema)</option>
+                                </select>
+                            </div>
+
+                            <div class="control-select-wrap">
+                                <label for="prompt-lighting"><i class="fas fa-sun"></i> Lighting Setup</label>
+                                <select id="prompt-lighting" class="studio-select">
+                                    <option value="volumetric neon rim light, moody chiaroscuro">Volumetric Neon Rim</option>
+                                    <option value="golden hour backlight with cinematic lens flare">Golden Hour Lens Flare</option>
+                                    <option value="studio softbox commercial key light">Studio Softbox Key</option>
+                                    <option value="cyber-magenta and emerald reflections">Cyberpunk Reflections</option>
+                                </select>
+                            </div>
+
+                            <div class="control-select-wrap">
+                                <label for="prompt-camera"><i class="fas fa-video"></i> Camera &amp; Lens</label>
+                                <select id="prompt-camera" class="studio-select">
+                                    <option value="shot on 35mm anamorphic lens, f/1.8 shallow depth of field">35mm Anamorphic (f/1.8)</option>
+                                    <option value="macro close-up eye focus, 85mm portrait prime">85mm Portrait Prime</option>
+                                    <option value="dynamic low-angle heroic perspective">Dynamic Low-Angle Heroic</option>
+                                    <option value="slow sweeping drone panoramic orbit">Sweeping Drone Orbit</option>
+                                </select>
+                            </div>
+
+                            <div class="control-select-wrap">
+                                <label for="prompt-engine"><i class="fas fa-microchip"></i> Target AI Model</label>
+                                <select id="prompt-engine" class="studio-select">
+                                    <option value="Midjourney v6.1">Midjourney v6.1</option>
+                                    <option value="Runway Gen-3 Alpha">Runway Gen-3 (Video)</option>
+                                    <option value="Flux.1 Schnell">Flux.1 Schnell</option>
+                                    <option value="Leonardo AI Kino XL">Leonardo Kino XL</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Studio Live Output Preview -->
+                    <div class="prompt-output-card" data-tilt>
+
+                        <div class="prompt-output-header">
+                            <div class="prompt-meta">
+                                <span class="badge-engine" id="badge-engine">Midjourney v6.1</span>
+                                <span class="badge-status"><i class="fas fa-bolt"></i> Prompt Active</span>
+                            </div>
+                            <div class="prompt-header-actions">
+                                <button id="simulate-ai-btn" class="btn btn-outline btn-sm" title="Simulate AI Render Output">
+                                    <i class="fas fa-wand-magic-sparkles"></i>
+                                    <span>Test Render</span>
+                                </button>
+                                <button id="copy-prompt-btn" class="btn btn-secondary btn-sm" title="Copy Prompt to Clipboard">
+                                    <i class="fas fa-copy"></i>
+                                    <span>Copy Prompt</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Simulated AI Render Progress Overlay -->
+                        <div id="ai-render-progress" class="ai-render-progress" style="display: none;">
+                            <div class="progress-bar-inner" id="ai-progress-bar"></div>
+                            <span class="progress-label" id="ai-progress-label">Synthesizing Diffusion Latent Vectors... 0%</span>
+                        </div>
+
+                        <div class="prompt-code-box">
+                            <span class="prompt-command-prefix">/imagine prompt:</span>
+                            <p id="prompt-display-text" class="prompt-text">
+                                Loading prompt recipe...
+                            </p>
+                        </div>
+
+                        <div class="prompt-breakdown">
+                            <div class="breakdown-item">
+                                <strong>Negative Filter:</strong>
+                                <span id="prompt-negative">blurry, oversaturated, deformed hands, low resolution, plastic skin, watermark</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <strong>Production Tip:</strong>
+                                <span id="prompt-tip">Lock character seed using --seed 42099 to maintain face structure across multi-scene shorts.</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             GITHUB PROJECTS SECTION
+        ================================== -->
+        <section id="github" class="github section">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <span class="section-label">
+                        GitHub
+                    </span>
+
+                    <h2>
+                        My GitHub Projects
+                    </h2>
+
+                    <p>
+                        My latest repositories will appear here automatically.
+                    </p>
+
+                </div>
+
+
+                <!-- JavaScript will insert GitHub repositories here -->
+                <div id="github-projects"
+                     class="github-grid">
+
+                    <div class="github-loading">
+                        Loading GitHub projects...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             EDUCATION SECTION
+        ================================== -->
+        <section id="education" class="education section">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <span class="section-label">
+                        My Journey
+                    </span>
+
+                    <h2>
+                        Education & Journey
+                    </h2>
+
+                </div>
+
+
+                <div class="timeline">
+
+                    <div class="timeline-item">
+
+                        <div class="timeline-dot"></div>
+
+                        <div class="timeline-content">
+
+                            <span class="timeline-date">
+                                2026-2030
+                            </span>
+
+                            <h3>
+                                College / Graduation
+                            </h3>
+
+                            <p>
+                               Scope Global Skills University (SGSU), Bachelor of Technology in Computer Science and Engineering (Artificial Intelligence).
+                            </p>
+
+                            <p>
+                               I completed my schooling in Lalitpur, Uttar Pradesh. Currently, I am pursuing my higher education in Bhopal, Madhya Pradesh.
+                            </p>
+
+                            <p>
+                              I am interested in learning about technology, computer science, and new digital tools. Along with my studies, I am also working on improving my technical and creative skills.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="timeline-item">
+
+                        <div class="timeline-dot"></div>
+
+                        <div class="timeline-content">
+
+                            <span class="timeline-date">
+                                2024 – 2025
+                            </span>
+
+                            <h3>
+                                Started Programming
+                            </h3>
+
+                            <p>
+                                Started learning programming,
+                                web development and Python.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             SERVICES SECTION
+        ================================== -->
+        <section id="services" class="services section">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <span class="section-label">
+                        What I Do
+                    </span>
+
+                    <h2>
+                        My Services
+                    </h2>
+
+                </div>
+
+
+                <div class="services-grid">
+
+                    <div class="service-card">
+                        <i class="fas fa-code"></i>
+                        <h3>Full-Stack Web Engineering</h3>
+                        <p>
+                            High-performance, responsive web applications, browser REPLs, and custom UI engines built with ES6+ &amp; modern DOM.
+                        </p>
+                    </div>
+
+
+                    <div class="service-card">
+                        <i class="fab fa-python"></i>
+                        <h3>Python &amp; Automation Engineering</h3>
+                        <p>
+                            Custom Python automation frameworks, REST API wrappers, data processing scripts, and CLI tools.
+                        </p>
+                    </div>
+
+
+                    <div class="service-card">
+                        <i class="fas fa-brain"></i>
+                        <h3>AI &amp; Machine Learning Systems</h3>
+                        <p>
+                            Generative AI model integrations, neural speech synthesis, multi-seed character anchors, and LLM prompt engineering.
+                        </p>
+                    </div>
+
+
+                    <div class="service-card">
+                        <i class="fas fa-layer-group"></i>
+                        <h3>Software Architecture &amp; Optimization</h3>
+                        <p>
+                            Scalable code architecture, version control workflows, performance tuning, and cross-platform UI integration.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             ACHIEVEMENTS SECTION
+        ================================== -->
+        <section id="achievements" class="achievements section">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <span class="section-label">
+                        Achievements
+                    </span>
+
+                    <h2>
+                        My Achievements
+                    </h2>
+
+                </div>
+
+
+                <div class="achievement-grid">
+
+                    <div class="achievement-card">
+
+                        <i class="fas fa-terminal"></i>
+
+                        <div>
+                            <h3>Full-Stack REPL &amp; IDE</h3>
+                            <p>
+                                Engineered an in-browser live JavaScript REPL interpreter with CLI commands &amp; code exercises.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="achievement-card">
+
+                        <i class="fas fa-robot"></i>
+
+                        <div>
+                            <h3>AI Systems Pipeline</h3>
+                            <p>
+                                Built automated script-to-visual generation workflows with multi-model neural APIs.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="achievement-card">
+
+                        <i class="fas fa-star"></i>
+
+                        <div>
+                            <h3>B.Tech CS (AI) Scholar</h3>
+                            <p>
+                                Pursuing a Bachelor's in Computer Science with a specialization in Artificial Intelligence at SGSU.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             CONTACT SECTION
+        ================================== -->
+        <section id="contact" class="contact section">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <span class="section-label">
+                        Contact Me
+                    </span>
+
+                    <h2>
+                        Let's Connect
+                    </h2>
+
+                    <p>
+                        Have a project or idea? Send me a message.
+                    </p>
+
+                </div>
+
+
+                <div class="contact-container">
+
+
+                    <!-- Contact Information -->
+                    <div class="contact-info">
+
+                        <a href="mailto:brajeshkushwa9089@gmail.com" class="contact-card contact-card-link" title="Click to send email">
+
+                            <i class="fas fa-envelope"></i>
+
+                            <div>
+                                <h3>Email</h3>
+                                <p>brajeshkushwa9089@gmail.com</p>
+                            </div>
+
+                        </a>
+
+
+                        <a href="tel:+919170473679" class="contact-card contact-card-link" title="Click to call">
+
+                            <i class="fas fa-phone"></i>
+
+                            <div>
+                                <h3>Phone / Direct Call</h3>
+                                <p>+91 91704 73679</p>
+                            </div>
+
+                        </a>
+
+
+                        <a href="https://wa.me/919170473679" target="_blank" rel="noopener noreferrer" class="contact-card contact-card-link whatsapp-card" title="Chat on WhatsApp">
+
+                            <i class="fab fa-whatsapp"></i>
+
+                            <div>
+                                <h3>WhatsApp</h3>
+                                <p>Instant Chat (+91 91704 73679)</p>
+                            </div>
+
+                        </a>
+
+
+                        <a href="https://www.linkedin.com/in/brajesh-kushwaha-6b3b992a4" target="_blank" rel="noopener noreferrer" class="contact-card contact-card-link" title="LinkedIn Profile">
+
+                            <i class="fab fa-linkedin-in"></i>
+
+                            <div>
+                                <h3>LinkedIn</h3>
+                                <p>Brajesh Kushwaha</p>
+                            </div>
+
+                        </a>
+
+                    </div>
+
+
+                    <!-- Contact Form -->
+                    <form id="contact-form"
+                          class="contact-form">
+
+                        <div class="form-group">
+
+                            <label for="name">
+                                Your Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                placeholder="Enter your name"
+                                required>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="email">
+                                Your Email
+                            </label>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="Enter your email"
+                                required>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="subject">
+                                Subject
+                            </label>
+
+                            <input
+                                type="text"
+                                id="subject"
+                                name="subject"
+                                placeholder="Enter subject"
+                                required>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="message">
+                                Message
+                            </label>
+
+                            <textarea
+                                id="message"
+                                name="message"
+                                rows="6"
+                                placeholder="Write your message..."
+                                required></textarea>
+
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary">
+
+                            <span>Send Message</span>
+
+                            <i class="fas fa-paper-plane"></i>
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =================================
+         SCROLL TO TOP BUTTON (WITH SVG PROGRESS RING)
+    ================================== -->
+    <button
+        id="scroll-top"
+        class="scroll-top"
+        aria-label="Scroll to top"
+        title="Scroll to Top">
+
+        <svg class="progress-ring" width="50" height="50" viewBox="0 0 50 50">
+            <circle class="progress-ring-track" cx="25" cy="25" r="22" stroke-width="3" fill="transparent" />
+            <circle id="scroll-progress-circle" class="progress-ring-bar" cx="25" cy="25" r="22" stroke-width="3" fill="transparent" stroke-dasharray="138.23" stroke-dashoffset="138.23" />
+        </svg>
+
+        <i class="fas fa-arrow-up"></i>
+
+    </button>
+
+
+    <!-- =================================
+         TOAST NOTIFICATION
+    ================================== -->
+    <div id="toast"
+         class="toast"
+         role="alert">
+
+        <i class="fas fa-check-circle"></i>
+
+        <span id="toast-message">
+            Message sent successfully!
+        </span>
+
+    </div>
+
+
+    <!-- =================================
+         FOOTER
+    ================================== -->
+    <footer class="footer">
+
+        <div class="container footer-container">
+
+            <div class="footer-brand">
+
+                <a href="#home" class="logo">
+                    <span class="logo-bracket">&lt;</span><span class="logo-name">Brajesh</span><span class="logo-accent">.AI</span><span class="logo-bracket">/&gt;</span>
+                </a>
+
+                <p>
+                    Synthesizing imagination into AI video, generative media &amp; responsive web systems.
+                </p>
+
+                <div class="footer-terminal-link">
+                    <button class="footer-terminal-btn" id="footer-terminal-trigger">
+                        <i class="fas fa-terminal"></i>
+                        <span>Launch Developer Console (Ctrl+K)</span>
+                    </button>
+                </div>
+
+            </div>
+
+
+            <div class="footer-socials">
+
+                <a href="https://github.com/brajeshkushwa9089-lgtm" aria-label="GitHub" target="_blank" title="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+
+                <a href="https://www.linkedin.com/in/brajesh-kushwaha-6b3b992a4?utm_source=share_via&utm_content=profile&utm_medium=member_android" aria-label="LinkedIn" target="_blank" title="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+
+                <a href="https://www.instagram.com/b_kushwaha_r?stkn=MW82aTNxdzN2cHkwOQ==" aria-label="Instagram" target="_blank" title="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+
+                <a href="https://github.com/brajeshkushwa9089-lgtm" aria-label="GitHub Profile" target="_blank" title="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+
+            </div>
+
+
+            <div class="footer-bottom">
+
+                <p>
+                    © <span id="current-year"></span>
+                    Brajesh Kushwaha. Handcrafted with Generative AI &amp; Modern Web Tech.
+                </p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =================================
+         INTERACTIVE AI TERMINAL MODAL (CTRL+K)
+    ================================== -->
+    <div id="terminal-modal" class="terminal-modal" role="dialog" aria-modal="true" aria-label="Brajesh Kushwaha AI Console">
+
+        <div class="terminal-overlay" id="terminal-overlay"></div>
+
+        <div class="terminal-window">
+
+            <!-- Terminal Header -->
+            <div class="terminal-header">
+                <div class="terminal-dots">
+                    <span class="dot dot-red" id="terminal-close-dot" title="Close"></span>
+                    <span class="dot dot-yellow"></span>
+                    <span class="dot dot-green"></span>
+                </div>
+                <div class="terminal-title">
+                    <i class="fas fa-terminal"></i>
+                    <span>brajesh@ai-core: ~ (Ctrl+K to toggle)</span>
+                </div>
+                <button class="terminal-close-btn" id="terminal-close-btn" aria-label="Close Terminal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Terminal Body -->
+            <div class="terminal-body" id="terminal-body">
+                <div class="terminal-line system-welcome">
+                    ⚡ <strong>Brajesh Kushwaha Interactive Console [v2.4-AI]</strong>
+                </div>
+                <div class="terminal-line system-help">
+                    Type <span class="cmd-highlight">'help'</span> to see all commands, or click any quick action below:
+                </div>
+                <div class="terminal-quick-chips">
+                    <button class="term-chip" data-cmd="help">help</button>
+                    <button class="term-chip" data-cmd="skills">skills</button>
+                    <button class="term-chip" data-cmd="projects">projects</button>
+                    <button class="term-chip" data-cmd="pipeline">pipeline</button>
+                    <button class="term-chip" data-cmd="prompt">prompt</button>
+                    <button class="term-chip" data-cmd="theme">theme</button>
+                    <button class="term-chip" data-cmd="resume">resume</button>
+                    <button class="term-chip" data-cmd="quote">quote</button>
+                    <button class="term-chip" data-cmd="matrix">matrix</button>
+                    <button class="term-chip" data-cmd="clear">clear</button>
+                </div>
+                <div id="terminal-output"></div>
+            </div>
+
+            <!-- Terminal Input Row -->
+            <form id="terminal-form" class="terminal-input-row">
+                <span class="terminal-prompt-symbol">brajesh_ai &gt;</span>
+                <input
+                    type="text"
+                    id="terminal-input"
+                    class="terminal-input"
+                    autocomplete="off"
+                    spellcheck="false"
+                    placeholder="Type a command and press Enter..."
+                    aria-label="Terminal command input">
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================
+         PROJECT CASE STUDY MODAL
+    ================================== -->
+    <div id="project-modal" class="project-modal" role="dialog" aria-modal="true" aria-label="Project Case Study">
+
+        <div class="project-modal-backdrop" id="project-modal-backdrop"></div>
+
+        <div class="project-modal-card">
+
+            <button class="project-modal-close" id="project-modal-close" aria-label="Close Case Study">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="project-modal-header">
+                <span class="project-modal-tag" id="modal-project-tag">Generative AI Engine</span>
+                <h2 id="modal-project-title">Generative AI Multimodal Pipeline</h2>
+            </div>
+
+            <div class="project-modal-body">
+
+                <div class="project-modal-media">
+                    <img id="modal-project-img" src="bk.png" alt="Project Preview">
+                </div>
+
+                <div class="project-modal-info">
+                    <h3>Project Architecture &amp; Execution</h3>
+                    <p id="modal-project-desc">Detailed architectural breakdown of the generative AI automation engine, real-time audio synthesis, and automated rendering workflow.</p>
+
+                    <div class="modal-section-block">
+                        <h4><i class="fas fa-brain"></i> AI &amp; Tech Stack</h4>
+                        <div class="project-tech" id="modal-project-tech">
+                            <span>Python</span>
+                            <span>PyTorch</span>
+                            <span>REST APIs</span>
+                            <span>FFmpeg</span>
+                        </div>
+                    </div>
+
+                    <div class="modal-section-block">
+                        <h4><i class="fas fa-bullseye"></i> Key Highlights</h4>
+                        <ul class="modal-highlights-list" id="modal-project-highlights">
+                            <li>End-to-end generative neural synthesis with persistent latent seeds</li>
+                            <li>Automated voice synthesis, lip-sync alignment, and audio processing</li>
+                            <li>Engineered high-concurrency batch execution pipelines for low latency</li>
+                        </ul>
+                    </div>
+
+                    <div class="project-modal-actions">
+                        <a id="modal-project-link" href="#" target="_blank" class="btn btn-primary">
+                            <span>Open Project</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <button class="btn btn-secondary" id="modal-dismiss-btn">
+                            Close
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================
+         JAVASCRIPT
+    ================================== -->
+    <script src="script.js"></script>
+
+</body>
+</html>

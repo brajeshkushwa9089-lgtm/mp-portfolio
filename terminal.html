@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Brajesh Kushwaha Interactive AI & Coding Terminal — Execute JavaScript, Python, CLI Commands, and Practice Coding Real-time in Browser">
+    <meta name="keywords" content="Brajesh Kushwaha, Coding Terminal, REPL, JavaScript Sandbox, Python Interpreter, Practice Coding, Interactive Terminal">
+    <meta name="author" content="Brajesh Kushwaha">
+    
+    <title>Interactive Terminal & Coding Playground | Brajesh Kushwaha</title>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        /* Terminal Page Specific Styling */
+        .terminal-page-wrapper {
+            padding-top: 90px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .terminal-main-container {
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 20px;
+            height: calc(100vh - 130px);
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 0 20px 20px;
+        }
+
+        @media (max-width: 992px) {
+            .terminal-main-container {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+        }
+
+        .terminal-full-window {
+            background: #080813;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 18px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(124, 58, 237, 0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .terminal-top-bar {
+            background: rgba(15, 14, 30, 0.95);
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .terminal-top-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .terminal-screen {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            color: #34d399;
+            font-size: 0.92rem;
+            line-height: 1.6;
+            background: radial-gradient(circle at 50% 0%, rgba(6, 182, 212, 0.05), transparent 70%), #05050c;
+        }
+
+        .terminal-prompt-line {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(15, 14, 30, 0.9);
+            padding: 12px 18px;
+            border-top: 1px solid var(--border);
+        }
+
+        .term-prompt-label {
+            color: #06b6d4;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .term-main-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #f5f3ff;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+        }
+
+        /* Sidebar Practice Panel */
+        .practice-sidebar {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 20px;
+            backdrop-filter: blur(16px);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+        }
+
+        .practice-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .practice-card h3 {
+            font-size: 0.95rem;
+            color: var(--text);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .practice-card p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+
+        .preset-code-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: rgba(124, 58, 237, 0.2);
+            border: 1px solid var(--primary-light);
+            border-radius: 8px;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .preset-code-btn:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .output-highlight-success {
+            color: #34d399;
+        }
+        .output-highlight-error {
+            color: #f87171;
+        }
+        .output-highlight-info {
+            color: #38bdf8;
+        }
+        .output-highlight-val {
+            color: #f472b6;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Page Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <p>Booting Interactive REPL Engine...</p>
+        </div>
+    </div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Background Canvas -->
+    <div class="background-effects">
+        <canvas id="neural-canvas" class="neural-canvas"></canvas>
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="cyber-grid"></div>
+    </div>
+
+    <!-- Navbar -->
+    <header class="header" id="header">
+        <nav class="navbar container">
+            <a href="index.html" class="logo">
+                <span class="logo-bracket">&lt;</span><span class="logo-name">Brajesh</span><span class="logo-accent">.AI</span><span class="logo-bracket">/&gt;</span>
+            </a>
+
+            <div class="nav-status-pill">
+                <span class="pulse-dot"></span>
+                <span class="status-text">REPL IDE v3.0 Active</span>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html#home" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="index.html#projects" class="nav-link">Projects</a></li>
+                <li class="nav-item"><a href="ai-lab.html" class="nav-link">AI Studio Lab</a></li>
+                <li class="nav-item"><a href="terminal.html" class="nav-link active">Coding Terminal</a></li>
+                <li class="nav-item"><a href="index.html#contact" class="nav-link">Contact</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <button id="sound-toggle" class="sound-toggle" title="Toggle UI Sound FX">
+                    <i class="fas fa-volume-xmark"></i>
+                </button>
+                <button id="theme-toggle" class="theme-toggle" title="Toggle Dark / Light Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="terminal-page-wrapper">
+        <div class="terminal-main-container">
+            
+            <!-- Terminal Console Window -->
+            <div class="terminal-full-window">
+                <div class="terminal-top-bar">
+                    <div class="terminal-dots">
+                        <span class="dot dot-red" id="clear-term-btn" title="Clear Output"></span>
+                        <span class="dot dot-yellow"></span>
+                        <span class="dot dot-green"></span>
+                    </div>
+                    <div class="terminal-top-title">
+                        <i class="fas fa-terminal"></i>
+                        <span>brajesh@repl-ide: ~/workspace (JS &amp; Python REPL)</span>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="footer-terminal-btn" id="btn-copy-term-output" title="Copy Terminal Output">
+                            <i class="fas fa-copy"></i> Copy Log
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Terminal Output Screen -->
+                <div class="terminal-screen" id="term-screen">
+                    <div class="terminal-line output-highlight-info">
+                        ⚡ <strong>Brajesh Kushwaha Full-Stack Interactive REPL Terminal [v3.0]</strong>
+                    </div>
+                    <div class="terminal-line">
+                        System environment loaded. Practice JavaScript, Python math, array methods, or test AI prompts live!
+                    </div>
+                    <div class="terminal-line output-highlight-val">
+                        Type <span class="cmd-highlight">'help'</span> for CLI commands, <span class="cmd-highlight">'js &lt;code&gt;'</span> to run JavaScript, or click any exercise on the right!
+                    </div>
+                    <br>
+                    <div id="term-dynamic-output"></div>
+                </div>
+
+                <!-- Input Row -->
+                <form id="term-input-form" class="terminal-prompt-line">
+                    <span class="term-prompt-label">dev@brajesh_ai:~$&nbsp;</span>
+                    <input 
+                        type="text" 
+                        id="term-input-field" 
+                        class="term-main-input" 
+                        autocomplete="off" 
+                        spellcheck="false" 
+                        placeholder="Type 'js console.log(123)' or 'help' and press Enter..."
+                        autofocus>
+                </form>
+            </div>
+
+            <!-- Sidebar Practice Challenges -->
+            <div class="practice-sidebar">
+                <h2 style="font-size: 1.1rem; color: var(--secondary); display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-code"></i> Coding Exercises
+                </h2>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">
+                    Click any challenge to load its code into the terminal REPL!
+                </p>
+
+                <!-- Challenge 1 -->
+                <div class="practice-card">
+                    <h3><i class="fas fa-cube" style="color: #38bdf8;"></i> 1. Reverse a String</h3>
+                    <p>Write a JS function that reverses a given string.</p>
+                    <button class="preset-code-btn" data-code="js const rev = str => str.split('').reverse().join(''); console.log(rev('Brajesh Kushwaha AI'));">
+                        <i class="fas fa-play"></i> Run Challenge #1
+                    </button>
+                </div>
+
+                <!-- Challenge 2 -->
+                <div class="practice-card">
+                    <h3><i class="fas fa-calculator" style="color: #f472b6;"></i> 2. Fibonacci Generator</h3>
+                    <p>Generate first 8 numbers in the Fibonacci sequence.</p>
+                    <button class="preset-code-btn" data-code="js const fib = n => Array.from({length: n}).reduce((acc, _, i) => i < 2 ? [...acc, i] : [...acc, acc[i-1] + acc[i-2]], []); console.log(fib(8));">
+                        <i class="fas fa-play"></i> Run Challenge #2
+                    </button>
+                </div>
+
+                <!-- Challenge 3 -->
+                <div class="practice-card">
+                    <h3><i class="fas fa-robot" style="color: #a78bfa;"></i> 3. Midjourney Prompt Builder</h3>
+                    <p>Format a Midjourney v6 prompt string programmatically.</p>
+                    <button class="preset-code-btn" data-code="js const buildPrompt = (subject, style) => `/imagine prompt: ${subject}, ${style} --ar 9:16 --v 6.1`; console.log(buildPrompt('3D Toon Character', 'volumetric neon lighting'));">
+                        <i class="fas fa-play"></i> Run Challenge #3
+                    </button>
+                </div>
+
+                <!-- Challenge 4 -->
+                <div class="practice-card">
+                    <h3><i class="fas fa-layer-group" style="color: #34d399;"></i> 4. Array Filter &amp; Map</h3>
+                    <p>Filter numbers > 50 and double their values.</p>
+                    <button class="preset-code-btn" data-code="js const nums = [10, 45, 60, 85, 30, 99]; console.log(nums.filter(x => x > 50).map(x => x * 2));">
+                        <i class="fas fa-play"></i> Run Challenge #4
+                    </button>
+                </div>
+
+                <!-- Quick Commands Cheat Sheet -->
+                <div class="practice-card">
+                    <h3><i class="fas fa-terminal" style="color: #f59e0b;"></i> Quick CLI Commands</h3>
+                    <p>Try typing these in the terminal:</p>
+                    <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;">
+                        <button class="term-chip" data-cmd="help">help</button>
+                        <button class="term-chip" data-cmd="js 5 + 5 * 2">js math</button>
+                        <button class="term-chip" data-cmd="matrix">matrix</button>
+                        <button class="term-chip" data-cmd="skills">skills</button>
+                        <button class="term-chip" data-cmd="projects">projects</button>
+                        <button class="term-chip" data-cmd="clear">clear</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    <script>
+        // Dedicated Terminal Page REPL Engine
+        document.addEventListener("DOMContentLoaded", () => {
+            const termInput = document.getElementById("term-input-field");
+            const termForm = document.getElementById("term-input-form");
+            const termDynamicOutput = document.getElementById("term-dynamic-output");
+            const termScreen = document.getElementById("term-screen");
+            const clearBtn = document.getElementById("clear-term-btn");
+            const copyLogBtn = document.getElementById("btn-copy-term-output");
+            const history = [];
+            let historyIdx = -1;
+
+            function appendLine(htmlContent, className = "") {
+                const line = document.createElement("div");
+                line.className = "terminal-line " + className;
+                line.innerHTML = htmlContent;
+                if (termDynamicOutput) termDynamicOutput.appendChild(line);
+                if (termScreen) termScreen.scrollTop = termScreen.scrollHeight;
+            }
+
+            function executeCommand(rawInput) {
+                const input = rawInput.trim();
+                if (!input) return;
+
+                history.push(input);
+                historyIdx = history.length;
+
+                // Echo Command
+                appendLine(`<span style="color:#06b6d4">dev@brajesh_ai:~$</span> <strong>${escapeHTML(input)}</strong>`);
+
+                // Check command type
+                const lower = input.toLowerCase();
+
+                if (lower.startsWith("js ")) {
+                    // JavaScript Evaluation REPL
+                    const jsCode = input.substring(3);
+                    try {
+                        const logs = [];
+                        const customConsole = {
+                            log: (...args) => logs.push(args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(" ")),
+                            error: (...args) => logs.push("❌ " + args.join(" ")),
+                            warn: (...args) => logs.push("⚠️ " + args.join(" "))
+                        };
+                        const evalFunc = new Function('console', `return (${jsCode});`);
+                        const evalRes = evalFunc(customConsole);
+                        
+                        if (logs.length > 0) {
+                            logs.forEach(l => appendLine(`📤 ${escapeHTML(l)}`, "output-highlight-success"));
+                        }
+                        if (evalRes !== undefined) {
+                            appendLine(`➡ Return: <span class="output-highlight-val">${escapeHTML(typeof evalRes === 'object' ? JSON.stringify(evalRes) : String(evalRes))}</span>`);
+                        }
+                    } catch (err) {
+                        appendLine(`💥 JS Execution Error: ${escapeHTML(err.message)}`, "output-highlight-error");
+                    }
+                } else if (lower === "help") {
+                    appendLine(`
+                        <div class="output-highlight-info"><strong>Available REPL &amp; CLI Commands:</strong></div>
+                        <div>🔹 <span class="output-highlight-val">js &lt;expression&gt;</span> - Execute live JavaScript code (e.g. <code>js Math.sqrt(144)</code>)</div>
+                        <div>🔹 <span class="output-highlight-val">help</span> - Show this command list</div>
+                        <div>🔹 <span class="output-highlight-val">skills</span> - Display Brajesh's tech stack</div>
+                        <div>🔹 <span class="output-highlight-val">projects</span> - View featured AI &amp; Web projects</div>
+                        <div>🔹 <span class="output-highlight-val">matrix</span> - Launch digital rain stream</div>
+                        <div>🔹 <span class="output-highlight-val">clear</span> - Clear terminal screen</div>
+                    `);
+                } else if (lower === "clear") {
+                    if (termDynamicOutput) termDynamicOutput.innerHTML = "";
+                } else if (lower === "skills") {
+                    appendLine(`⚡ <strong>Technical Skills:</strong> AI & ML Systems (92%), Python / PyTorch (88%), JavaScript ES6+ (88%), REST APIs (85%), HTML5/CSS3 (90%).`);
+                } else if (lower === "projects") {
+                    appendLine(`🚀 <strong>Projects:</strong> Generative AI Multimodal Pipeline, AI Content Automation Engine, Neural Video Synthesis Engine, Interactive Portfolio REPL.`);
+                } else if (lower === "matrix") {
+                    appendLine(`<span style="color:#22c55e">MATRIX_LINK::CONNECTED. Welcome to the neural grid, developer.</span>`);
+                } else {
+                    // Fallback try JS or command not found
+                    try {
+                        const evalRes = eval(input);
+                        if (evalRes !== undefined) {
+                            appendLine(`➡ Output: <span class="output-highlight-val">${escapeHTML(String(evalRes))}</span>`);
+                        }
+                    } catch (e) {
+                        appendLine(`Unrecognized command: '${escapeHTML(input)}'. Prefix with <span class="output-highlight-val">'js '</span> to run JavaScript code, or type <span class="output-highlight-val">'help'</span>.`, "output-highlight-error");
+                    }
+                }
+
+                if (termInput) termInput.value = "";
+            }
+
+            function escapeHTML(str) {
+                return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+            }
+
+            if (termForm) {
+                termForm.addEventListener("submit", (e) => {
+                    e.preventDefault();
+                    if (termInput) executeCommand(termInput.value);
+                });
+            }
+
+            // Keyboard history navigation (Up / Down arrows)
+            if (termInput) {
+                termInput.addEventListener("keydown", (e) => {
+                    if (e.key === "ArrowUp") {
+                        if (historyIdx > 0) {
+                            historyIdx--;
+                            termInput.value = history[historyIdx];
+                        }
+                    } else if (e.key === "ArrowDown") {
+                        if (historyIdx < history.length - 1) {
+                            historyIdx++;
+                            termInput.value = history[historyIdx];
+                        } else {
+                            historyIdx = history.length;
+                            termInput.value = "";
+                        }
+                    }
+                });
+            }
+
+            // Preset practice buttons
+            document.querySelectorAll(".preset-code-btn").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const code = btn.dataset.code;
+                    if (code) {
+                        if (termInput) termInput.value = code;
+                        executeCommand(code);
+                    }
+                });
+            });
+
+            if (clearBtn) {
+                clearBtn.addEventListener("click", () => {
+                    if (termDynamicOutput) termDynamicOutput.innerHTML = "";
+                });
+            }
+
+            if (copyLogBtn) {
+                copyLogBtn.addEventListener("click", () => {
+                    if (termScreen) {
+                        navigator.clipboard.writeText(termScreen.innerText).then(() => {
+                            if (window.showToast) window.showToast("📋 Terminal logs copied!");
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

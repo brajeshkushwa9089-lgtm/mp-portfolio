@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Brajesh Kushwaha AI Lab — Interactive Prompt Engineering Studio, Neural Diffusion Simulator & Generative Workflows">
+    <meta name="keywords" content="Brajesh Kushwaha, AI Lab, Neural Latent Diffusion, PyTorch, PyDiffusion, Generative AI Systems, Computer Science Engineering">
+    <meta name="author" content="Brajesh Kushwaha">
+    
+    <title>AI Studio & Lab | Brajesh Kushwaha</title>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+    <!-- Page Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <p>Initializing AI Latent Lab...</p>
+        </div>
+    </div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Background Canvas & Effects -->
+    <div class="background-effects">
+        <canvas id="neural-canvas" class="neural-canvas"></canvas>
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+        <div class="cyber-grid"></div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="header" id="header">
+        <nav class="navbar container">
+            <a href="index.html" class="logo" aria-label="Brajesh Kushwaha Home">
+                <span class="logo-bracket">&lt;</span><span class="logo-name">Brajesh</span><span class="logo-accent">.AI</span><span class="logo-bracket">/&gt;</span>
+            </a>
+
+            <div class="nav-status-pill">
+                <span class="pulse-dot"></span>
+                <span class="status-text">AI Lab v2.5 Online</span>
+            </div>
+
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item"><a href="index.html#home" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="index.html#about" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="index.html#skills" class="nav-link">Skills</a></li>
+                <li class="nav-item"><a href="index.html#projects" class="nav-link">Projects</a></li>
+                <li class="nav-item"><a href="ai-lab.html" class="nav-link active">AI Studio Lab</a></li>
+                <li class="nav-item"><a href="terminal.html" class="nav-link">Coding REPL</a></li>
+                <li class="nav-item"><a href="index.html#contact" class="nav-link">Contact</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <button id="cmd-k-btn" class="cmd-k-trigger" title="Press Ctrl + K for AI Terminal">
+                    <i class="fas fa-terminal"></i>
+                    <span class="cmd-shortcut">Ctrl K</span>
+                </button>
+                <button id="sound-toggle" class="sound-toggle" title="Toggle UI Sound FX">
+                    <i class="fas fa-volume-xmark"></i>
+                </button>
+                <button id="theme-toggle" class="theme-toggle" title="Toggle Dark / Light Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button id="menu-toggle" class="menu-toggle" aria-label="Open navigation menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="lab-main-content">
+
+        <!-- HERO SECTION: AI LAB -->
+        <section class="hero section lab-hero">
+            <div class="container text-center">
+                <div class="hero-badge">
+                    <span class="status-dot"></span>
+                    <span>Interactive Generative Media Sandbox</span>
+                </div>
+                <h1 class="hero-title">
+                    AI Creative <span class="gradient-text">Studio &amp; Lab</span>
+                </h1>
+                <p class="hero-description" style="max-width: 780px; margin: 0 auto 30px;">
+                    Explore production-grade prompt engineering blueprints, multi-seed character consistency locks, neural audio soundscapes, and viral 9:16 vertical video script architectures.
+                </p>
+                <div class="hero-buttons" style="justify-content: center;">
+                    <a href="#studio" class="btn btn-primary">
+                        <i class="fas fa-wand-magic-sparkles"></i>
+                        <span>Launch Prompt Generator</span>
+                    </a>
+                    <a href="#cookbook" class="btn btn-secondary">
+                        <i class="fas fa-book-open"></i>
+                        <span>Prompt Cookbook</span>
+                    </a>
+                    <a href="index.html" class="btn btn-outline">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Back to Portfolio</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 1: INTERACTIVE PROMPT STUDIO & LAB -->
+        <section id="studio" class="ai-lab section">
+            <div class="container">
+                <div class="section-heading">
+                    <span class="section-label">Real-Time Synthesis</span>
+                    <h2>Interactive Prompt <span class="gradient-text">Architect</span></h2>
+                    <p>Customize model parameters, lighting vectors, camera optics, and style flags to craft production-ready prompts.</p>
+                </div>
+
+                <div class="prompt-studio-wrapper">
+                    <!-- Controls -->
+                    <div class="prompt-controls">
+                        <div class="control-group">
+                            <label class="control-title"><i class="fas fa-wand-magic-sparkles"></i> Visual Style Archetype</label>
+                            <div class="archetype-buttons">
+                                <button class="archetype-btn active" data-archetype="neural3d">
+                                    <i class="fas fa-cubes"></i>
+                                    <span>3D Character Diffusion</span>
+                                </button>
+                                <button class="archetype-btn" data-archetype="cinematic">
+                                    <i class="fas fa-clapperboard"></i>
+                                    <span>Moody Trading Noir</span>
+                                </button>
+                                <button class="archetype-btn" data-archetype="cyberpunk">
+                                    <i class="fas fa-city"></i>
+                                    <span>Cyberpunk 2099 Avatar</span>
+                                </button>
+                                <button class="archetype-btn" data-archetype="photoreal">
+                                    <i class="fas fa-camera"></i>
+                                    <span>Hyper-Real 8K Portrait</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="control-grid">
+                            <div class="control-select-wrap">
+                                <label for="prompt-aspect"><i class="fas fa-expand"></i> Aspect Ratio</label>
+                                <select id="prompt-aspect" class="studio-select">
+                                    <option value="--ar 9:16">9:16 (YouTube Shorts / Reels)</option>
+                                    <option value="--ar 16:9">16:9 (Widescreen Cinema)</option>
+                                    <option value="--ar 1:1">1:1 (Square Feed)</option>
+                                    <option value="--ar 21:9">21:9 (Anamorphic Ultrawide)</option>
+                                </select>
+                            </div>
+
+                            <div class="control-select-wrap">
+                                <label for="prompt-lighting"><i class="fas fa-sun"></i> Lighting Vector</label>
+                                <select id="prompt-lighting" class="studio-select">
+                                    <option value="volumetric neon rim light, moody chiaroscuro">Volumetric Neon Rim</option>
+                                    <option value="golden hour backlight with cinematic lens flare">Golden Hour Flare</option>
+                                    <option value="studio softbox commercial key light">Studio Softbox Key</option>
+                                    <option value="cyber-magenta and emerald reflections">Cyberpunk Neon</option>
+                                </select>
+                            </div>
+
+                            <div class="control-select-wrap">
+                                <label for="prompt-camera"><i class="fas fa-video"></i> Camera &amp; Lens Optics</label>
+                                <select id="prompt-camera" class="studio-select">
+                                    <option value="shot on 35mm anamorphic lens, f/1.8 shallow depth of field">35mm Anamorphic (f/1.8)</option>
+                                    <option value="macro close-up eye focus, 85mm portrait prime">85mm Portrait Prime</option>
+                                    <option value="dynamic low-angle heroic perspective">Dynamic Low-Angle Heroic</option>
+                                    <option value="slow sweeping drone panoramic orbit">Sweeping Drone Orbit</option>
+                                </select>
+                            </div>
+
+                            <div class="control-select-wrap">
+                                <label for="prompt-engine"><i class="fas fa-microchip"></i> Target AI Engine</label>
+                                <select id="prompt-engine" class="studio-select">
+                                    <option value="Midjourney v6.1">Midjourney v6.1</option>
+                                    <option value="Runway Gen-3 Alpha">Runway Gen-3 (Video)</option>
+                                    <option value="Flux.1 Schnell">Flux.1 Schnell</option>
+                                    <option value="Stable Diffusion 3.5">Stable Diffusion 3.5</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Output Card -->
+                    <div class="prompt-output-card" data-tilt>
+                        <div class="prompt-output-header">
+                            <div class="prompt-meta">
+                                <span class="badge-engine" id="badge-engine">Midjourney v6.1</span>
+                                <span class="badge-status"><i class="fas fa-bolt"></i> Ready</span>
+                            </div>
+                            <div class="prompt-header-actions">
+                                <button id="simulate-ai-btn" class="btn btn-outline btn-sm">
+                                    <i class="fas fa-wand-magic-sparkles"></i>
+                                    <span>Test Render</span>
+                                </button>
+                                <button id="copy-prompt-btn" class="btn btn-secondary btn-sm">
+                                    <i class="fas fa-copy"></i>
+                                    <span>Copy Prompt</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="ai-render-progress" class="ai-render-progress" style="display: none;">
+                            <div class="progress-bar-inner" id="ai-progress-bar"></div>
+                            <span class="progress-label" id="ai-progress-label">Synthesizing Diffusion Latent Vectors... 0%</span>
+                        </div>
+
+                        <div class="prompt-code-box">
+                            <span class="prompt-command-prefix">/imagine prompt:</span>
+                            <p id="prompt-display-text" class="prompt-text">Loading recipe...</p>
+                        </div>
+
+                        <div class="prompt-breakdown">
+                            <div class="breakdown-item">
+                                <strong>Negative Filter:</strong>
+                                <span id="prompt-negative">blurry, oversaturated, deformed hands, low resolution</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <strong>Production Tip:</strong>
+                                <span id="prompt-tip">Lock seed '--seed 88201' for consistent facial features across YouTube Shorts.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: PROMPT COOKBOOK & PRESETS -->
+        <section id="cookbook" class="services section">
+            <div class="container">
+                <div class="section-heading">
+                    <span class="section-label">Curated Recipes</span>
+                    <h2>AI Prompt <span class="gradient-text">Cookbook</span></h2>
+                    <p>Tested multi-model prompt blueprints for viral 9:16 vertical shorts, character animation, and photorealism.</p>
+                </div>
+
+                <div class="services-grid">
+                    <div class="service-card" data-tilt>
+                        <i class="fas fa-cubes"></i>
+                        <h3>3D Stylized Character Diffusion</h3>
+                        <p>Expressive 3D synthetic character rendering, Octane Render style, volumetric studio lighting, Pixar aesthetic.</p>
+                        <div class="pipeline-tags" style="margin-top: 15px;">
+                            <span>Midjourney v6.1</span>
+                            <span>--ar 9:16</span>
+                            <span>--stylize 250</span>
+                        </div>
+                    </div>
+
+                    <div class="service-card" data-tilt>
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Cyberpunk Trading Desk</h3>
+                        <p>Dark trading workstation with glowing multi-monitor chart reflections, 3 AM volumetric neon smoke.</p>
+                        <div class="pipeline-tags" style="margin-top: 15px;">
+                            <span>Runway Gen-3</span>
+                            <span>--ar 9:16</span>
+                            <span>Anamorphic</span>
+                        </div>
+                    </div>
+
+                    <div class="service-card" data-tilt>
+                        <i class="fas fa-robot"></i>
+                        <h3>Futuristic Tech Creator</h3>
+                        <p>Indian AI developer with floating holographic code interface, wet street reflections, UE5 lighting.</p>
+                        <div class="pipeline-tags" style="margin-top: 15px;">
+                            <span>Flux.1 Schnell</span>
+                            <span>--ar 16:9</span>
+                            <span>Raytraced</span>
+                        </div>
+                    </div>
+
+                    <div class="service-card" data-tilt>
+                        <i class="fas fa-camera"></i>
+                        <h3>Hasselblad Studio Portrait</h3>
+                        <p>Commercial editorial photo, natural skin subsurface scattering, medium format prime lens crispness.</p>
+                        <div class="pipeline-tags" style="margin-top: 15px;">
+                            <span>Midjourney v6.1</span>
+                            <span>--ar 1:1</span>
+                            <span>Raw Style</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: NEURAL LATENT DIFFUSION & PROMPT ARCHITECTURE -->
+        <section class="pipeline section">
+            <div class="container">
+                <div class="section-heading">
+                    <span class="section-label">Generative AI Engineering</span>
+                    <h2>Neural Latent Diffusion &amp; <span class="gradient-text">Prompt Architecture</span></h2>
+                    <p>Structured 4-stage prompt engineering blueprints for high-precision neural model output generation.</p>
+                </div>
+
+                <div class="pipeline-track">
+                    <div class="pipeline-card" data-tilt>
+                        <div class="pipeline-step-num">01</div>
+                        <div class="pipeline-icon"><i class="fas fa-brain"></i></div>
+                        <h3>Persona &amp; Style Vector</h3>
+                        <p>Defining model persona, rendering engine parameters (Octane/UE5), and structural style bounds.</p>
+                    </div>
+
+                    <div class="pipeline-card" data-tilt>
+                        <div class="pipeline-step-num">02</div>
+                        <div class="pipeline-icon"><i class="fas fa-camera"></i></div>
+                        <h3>Camera Optics &amp; Focal Spec</h3>
+                        <p>Specifying focal length (35mm/85mm prime), aperture (f/1.8), perspective, and subject attributes.</p>
+                    </div>
+
+                    <div class="pipeline-card" data-tilt>
+                        <div class="pipeline-step-num">03</div>
+                        <div class="pipeline-icon"><i class="fas fa-sun"></i></div>
+                        <h3>Volumetric Lighting Shaders</h3>
+                        <p>Injecting volumetric rim lighting, raytraced reflections, chiaroscuro contrast, and color spaces.</p>
+                    </div>
+
+                    <div class="pipeline-card" data-tilt>
+                        <div class="pipeline-step-num">04</div>
+                        <div class="pipeline-icon"><i class="fas fa-key"></i></div>
+                        <h3>Negative Filter &amp; Seed Lock</h3>
+                        <p>Enforcing strict negative filters (--no blur, artifact) and locking seed (--seed 88201) for 100% reproducibility.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-brand">
+                <a href="index.html" class="logo">
+                    <span class="logo-bracket">&lt;</span><span class="logo-name">Brajesh</span><span class="logo-accent">.AI</span><span class="logo-bracket">/&gt;</span>
+                </a>
+                <p>Synthesizing imagination into AI video, generative media &amp; responsive web systems.</p>
+            </div>
+
+            <div class="footer-socials">
+                <a href="https://github.com/brajeshkushwa9089-lgtm" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/brajesh-kushwaha-6b3b992a4" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://www.instagram.com/b_kushwaha_r" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://github.com/brajeshkushwa9089-lgtm" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© <span id="current-year"></span> Brajesh Kushwaha. AI Creative Lab &amp; Portfolio.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Terminal Modal (Ctrl+K) -->
+    <div id="terminal-modal" class="terminal-modal" role="dialog" aria-modal="true" aria-label="Brajesh Kushwaha AI Console">
+        <div class="terminal-overlay" id="terminal-overlay"></div>
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <div class="terminal-dots">
+                    <span class="dot dot-red" id="terminal-close-dot"></span>
+                    <span class="dot dot-yellow"></span>
+                    <span class="dot dot-green"></span>
+                </div>
+                <div class="terminal-title"><i class="fas fa-terminal"></i> <span>brajesh@ai-lab: ~ (Ctrl+K to toggle)</span></div>
+                <button class="terminal-close-btn" id="terminal-close-btn"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="terminal-body" id="terminal-body">
+                <div class="terminal-line system-welcome">⚡ <strong>Brajesh Kushwaha AI Studio Console [v2.5-LAB]</strong></div>
+                <div class="terminal-line system-help">Type <span class="cmd-highlight">'help'</span> or click a quick action:</div>
+                <div class="terminal-quick-chips">
+                    <button class="term-chip" data-cmd="help">help</button>
+                    <button class="term-chip" data-cmd="prompt">prompt</button>
+                    <button class="term-chip" data-cmd="skills">skills</button>
+                    <button class="term-chip" data-cmd="projects">projects</button>
+                    <button class="term-chip" data-cmd="quote">quote</button>
+                    <button class="term-chip" data-cmd="clear">clear</button>
+                </div>
+                <div id="terminal-output"></div>
+            </div>
+            <form id="terminal-form" class="terminal-input-row">
+                <span class="terminal-prompt-symbol">brajesh_ai &gt;</span>
+                <input type="text" id="terminal-input" class="terminal-input" autocomplete="off" spellcheck="false" placeholder="Type a command...">
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
