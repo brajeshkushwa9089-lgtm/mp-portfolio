@@ -734,23 +734,23 @@ document.addEventListener("DOMContentLoaded", () => {
         5: {
             title: "Hostel Research & Expense Tracker",
             tag: "Full-Stack Web Application",
-            img: "bk.png",
-            desc: "A comprehensive full-stack web application designed for students to research, compare, and manage hostel accommodations along with real-time monthly expense tracking and secure user authentication.",
-            tech: ["React.js", "JavaScript ES6+", "Vite", "Authentication & Login", "Responsive UI"],
+            img: "hostal.png",
+            desc: "A comprehensive full-stack web application designed for students to research, compare, and manage hostel accommodations along with real-time monthly expense tracking, MVC architecture, and Supabase PostgreSQL database.",
+            tech: ["React.js", "Node.js", "Express.js", "Supabase PostgreSQL", "Tailwind CSS"],
             highlights: [
-                "Secure user login and authentication flow for personalized expense dashboards",
-                "Interactive hostel research, comparison metrics, and accommodation filtering",
-                "Real-time student expense logging, category breakdown, and monthly budget tracking",
-                "Deployed live with responsive mobile-first design for on-the-go access"
+                "Full-stack architecture: Routes -> Controllers -> Services -> Models -> Supabase PostgreSQL",
+                "Search nearby hostels by city, area, college, or pincode with side-by-side comparison",
+                "Real-time student expense logging, category analytics, and monthly budget tracking",
+                "Secure authentication, favorites saving, and responsive mobile-first design"
             ],
             link: "https://fix-hostel-tracker-login--jeebrajesh42.replit.app"
         },
         6: {
             title: "HostelTracker Discovery & Explorer",
             tag: "Frontend Web Architecture",
-            img: "Ai content.png",
+            img: "hostal 1.png",
             desc: "An intuitive student hostel discovery and comparison web portal deployed on Vercel, enabling students to filter nearby hostels by maximum rent budget, sort by highest ratings, compare amenities, and estimate monthly living costs.",
-            tech: ["React.js", "Tailwind CSS", "URL Query State", "Vite", "Vercel Cloud"],
+            tech: ["React.js", "Tailwind CSS", "Supabase", "Vite", "Vercel Cloud"],
             highlights: [
                 "Dynamic URL parameter filtering (e.g. maxRent=25000 & sort=highest_rating) for shareable search states",
                 "Interactive hostel comparison engine for pricing, ratings, and student amenities",
@@ -760,16 +760,16 @@ document.addEventListener("DOMContentLoaded", () => {
             link: "https://hostal-reseacher-frontend.vercel.app/explore?maxRent=25000&sort=highest_rating"
         },
         7: {
-            title: "SpendWise — Smart Expense Tracker",
+            title: "SpendWise (TeenTrack) — Expense Tracker",
             tag: "FinTech Web Application",
-            img: "cin.png",
-            desc: "A smart teenager & student expense tracking platform engineered to visualize personal money flow, manage budgets effortlessly, and build lifelong data-driven financial habits.",
-            tech: ["React.js", "Tailwind CSS", "Dark/Light Theme", "Vite", "Vercel Cloud"],
+            img: "spinwesa.png",
+            desc: "A smart teenager & student expense tracking platform engineered to visualize personal money flow with interactive charts, set budgets, and provide smart spending suggestions.",
+            tech: ["React.js", "Node.js", "Express.js", "Supabase PostgreSQL", "Tailwind CSS"],
             highlights: [
-                "Interactive money-flow visualization and category-wise expense breakdown",
-                "Effortless budget planning tools tailored for students and young developers",
-                "Seamless Dark and Light mode UI transitions with responsive layout",
-                "Fast cloud deployment on Vercel with modern React component architecture"
+                "Interactive money-flow visualization with donut and bar charts for spending patterns",
+                "Smart AI-style suggestions analyzing food, transport, and entertainment expenses",
+                "Full-stack Node.js & Express backend integrated with Supabase PostgreSQL database",
+                "Seamless Dark and Light mode UI transitions deployed on Vercel"
             ],
             link: "https://teen-tracker-frontend-three.vercel.app/"
         }
