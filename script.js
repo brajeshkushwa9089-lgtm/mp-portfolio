@@ -492,8 +492,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const filter = button.dataset.filter;
             projectCards.forEach(card => {
-                const category = card.dataset.category;
-                if (filter === "all" || category === filter) {
+                const categories = (card.dataset.category || "").split(" ");
+                if (filter === "all" || categories.includes(filter)) {
                     card.style.display = "flex";
                     setTimeout(() => card.classList.add("visible"), 50);
                 } else {
@@ -730,6 +730,48 @@ document.addEventListener("DOMContentLoaded", () => {
                 "Developer terminal console emulator accessible via Ctrl+K keyboard shortcut"
             ],
             link: "https://github.com/brajeshkushwa9089-lgtm"
+        },
+        5: {
+            title: "Hostel Research & Expense Tracker",
+            tag: "Full-Stack Web Application",
+            img: "bk.png",
+            desc: "A comprehensive full-stack web application designed for students to research, compare, and manage hostel accommodations along with real-time monthly expense tracking and secure user authentication.",
+            tech: ["React.js", "JavaScript ES6+", "Vite", "Authentication & Login", "Responsive UI"],
+            highlights: [
+                "Secure user login and authentication flow for personalized expense dashboards",
+                "Interactive hostel research, comparison metrics, and accommodation filtering",
+                "Real-time student expense logging, category breakdown, and monthly budget tracking",
+                "Deployed live with responsive mobile-first design for on-the-go access"
+            ],
+            link: "https://fix-hostel-tracker-login--jeebrajesh42.replit.app"
+        },
+        6: {
+            title: "HostelTracker Discovery & Explorer",
+            tag: "Frontend Web Architecture",
+            img: "Ai content.png",
+            desc: "An intuitive student hostel discovery and comparison web portal deployed on Vercel, enabling students to filter nearby hostels by maximum rent budget, sort by highest ratings, compare amenities, and estimate monthly living costs.",
+            tech: ["React.js", "Tailwind CSS", "URL Query State", "Vite", "Vercel Cloud"],
+            highlights: [
+                "Dynamic URL parameter filtering (e.g. maxRent=25000 & sort=highest_rating) for shareable search states",
+                "Interactive hostel comparison engine for pricing, ratings, and student amenities",
+                "Estimated monthly living cost calculator integrated into the discovery workflow",
+                "Modern responsive UI engineered with Tailwind CSS and deployed on Vercel edge network"
+            ],
+            link: "https://hostal-reseacher-frontend.vercel.app/explore?maxRent=25000&sort=highest_rating"
+        },
+        7: {
+            title: "SpendWise — Smart Expense Tracker",
+            tag: "FinTech Web Application",
+            img: "cin.png",
+            desc: "A smart teenager & student expense tracking platform engineered to visualize personal money flow, manage budgets effortlessly, and build lifelong data-driven financial habits.",
+            tech: ["React.js", "Tailwind CSS", "Dark/Light Theme", "Vite", "Vercel Cloud"],
+            highlights: [
+                "Interactive money-flow visualization and category-wise expense breakdown",
+                "Effortless budget planning tools tailored for students and young developers",
+                "Seamless Dark and Light mode UI transitions with responsive layout",
+                "Fast cloud deployment on Vercel with modern React component architecture"
+            ],
+            link: "https://teen-tracker-frontend-three.vercel.app/"
         }
     };
 
@@ -870,11 +912,12 @@ document.addEventListener("DOMContentLoaded", () => {
 <div class="terminal-line">🔹 Version Control &amp; DevOps: Git, GitHub Actions, Linux CLI [80%]</div>
         `,
         projects: () => `
-<div class="terminal-line">🚀 <strong>Featured Technical Projects:</strong></div>
-<div class="terminal-line">1. <strong>Generative AI Multimodal Pipeline</strong> - LLM + Diffusion + Neural Voice API framework (<a href="https://github.com/brajeshkushwa9089-lgtm" target="_blank" style="color:var(--secondary)">GitHub</a>)</div>
-<div class="terminal-line">2. <strong>AI Content Automation Engine</strong> - Multi-model batch generation workflow</div>
-<div class="terminal-line">3. <strong>Neural Video Synthesis Engine</strong> - Optical vision &amp; camera rendering physics</div>
-<div class="terminal-line">4. <strong>Full-Stack Interactive REPL IDE</strong> - Web Audio, Canvas &amp; In-Browser JS Interpreter</div>
+<div class="terminal-line">🚀 <strong>Featured Live Web Applications &amp; AI Projects:</strong></div>
+<div class="terminal-line">1. <strong>Hostel Research &amp; Expense Tracker</strong> - Full-stack login &amp; budget app (<a href="https://fix-hostel-tracker-login--jeebrajesh42.replit.app" target="_blank" style="color:var(--secondary)">Live App</a>)</div>
+<div class="terminal-line">2. <strong>HostelTracker Discovery &amp; Explorer</strong> - Hostel search &amp; rent filter portal (<a href="https://hostal-reseacher-frontend.vercel.app/explore?maxRent=25000&sort=highest_rating" target="_blank" style="color:var(--secondary)">Live on Vercel</a>)</div>
+<div class="terminal-line">3. <strong>SpendWise — Smart Expense Tracker</strong> - FinTech budgeting &amp; money flow UI (<a href="https://teen-tracker-frontend-three.vercel.app/" target="_blank" style="color:var(--secondary)">Live on Vercel</a>)</div>
+<div class="terminal-line">4. <strong>Generative AI Multimodal Pipeline</strong> - LLM + Diffusion + Neural Voice API framework (<a href="https://github.com/brajeshkushwa9089-lgtm" target="_blank" style="color:var(--secondary)">GitHub</a>)</div>
+<div class="terminal-line">5. <strong>Full-Stack Interactive REPL IDE</strong> - Web Audio, Canvas &amp; In-Browser JS Interpreter</div>
         `,
         pipeline: () => `
 <div class="terminal-line">🎬 <strong>AI Systems Pipeline (5 Phases):</strong></div>
