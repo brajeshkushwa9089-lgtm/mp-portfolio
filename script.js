@@ -136,16 +136,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       3. IMMERSIVE 3D SPACE UNIVERSE & ROTATING PLANET
-       Combining ONLY two primary visual concepts:
-       1) Cinematic Moving 3D Universe (multi-depth starfield,
-          forward-motion hyperspace travel, purple-blue nebula clouds)
-       2) Glowing Rotating 3D Planet with Atmospheric Edges,
-          Multiple Orbital Rings & Satellite Particles
+       3. THE THINKING MACHINE — V2
+       A Signature 3D Computational Sculpture for a CSE (AI) Portfolio
+       - Flowing parametric curves & precision filaments
+       - Translucent graphite & glass-like faceted surfaces
+       - Interconnected geometric ribbons & mathematical contour lines
+       - Sparse cyan & violet compute nodes with glint flares
+       - 3-Phase Continuous Signature Animation Cycle:
+         Phase A (Observe) -> Phase B (Compute) -> Phase C (Resolve)
+       - Interactive pointer spotlight, mouse parallax, and scroll dynamics
        ===================================================== */
-    function init3DSpaceUniverse() {
-        const spaceCanvas = document.getElementById("space-3d-canvas") || document.getElementById("neural-canvas");
-        if (!spaceCanvas) return;
+    function initThinkingMachineSculpture() {
+        const canvas = document.getElementById("space-3d-canvas") || document.getElementById("neural-canvas");
+        if (!canvas) return;
 
         if (typeof THREE === "undefined") {
             let attempts = 0;
@@ -153,7 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 attempts++;
                 if (typeof THREE !== "undefined") {
                     clearInterval(checkInterval);
-                    init3DSpaceUniverse();
+                    initThinkingMachineSculpture();
                 } else if (attempts > 30) {
                     clearInterval(checkInterval);
                 }
@@ -161,27 +164,54 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // --- SCENE, CAMERA & RENDERER ---
+        // --- WEBGL CONTEXT & RENDERER INITIALIZATION ---
+        let renderer;
+        try {
+            renderer = new THREE.WebGLRenderer({
+                canvas: canvas,
+                antialias: true,
+                alpha: true,
+                powerPreference: "high-performance"
+            });
+        } catch (e) {
+            console.warn("WebGL not supported, falling back gracefully.", e);
+            return;
+        }
+
         const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x030712, 0.0012);
+        // Deep obsidian atmospheric depth
+        scene.fog = new THREE.FogExp2(0x02040a, 0.0018);
 
-        const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 2000);
-        camera.position.set(0, 0, 48);
+        const camera = new THREE.PerspectiveCamera(46, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 0, 52);
 
-        const renderer = new THREE.WebGLRenderer({
-            canvas: spaceCanvas,
-            antialias: true,
-            alpha: true,
-            powerPreference: "high-performance"
-        });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = 1.15;
+        renderer.toneMappingExposure = 1.25;
 
-        // --- PROCEDURAL TEXTURES ---
-        // 1. Glowing Circular Star Particle Sprite
-        function createStarTexture() {
+        // --- LIGHTING ---
+        // 1. Soft Midnight Navy Ambient Fill
+        const ambientLight = new THREE.AmbientLight(0x081126, 0.75);
+        scene.add(ambientLight);
+
+        // 2. Computational Key Light (Luminous Electric Cyan)
+        const keyLight = new THREE.DirectionalLight(0x38bdf8, 2.2);
+        keyLight.position.set(-28, 32, 38);
+        scene.add(keyLight);
+
+        // 3. Mathematical Rim Light (Muted Violet)
+        const rimLight = new THREE.DirectionalLight(0x8b5cf6, 1.6);
+        rimLight.position.set(32, -24, -20);
+        scene.add(rimLight);
+
+        // 4. Dynamic Interactive Pointer Spotlight (Follows Cursor in 3D)
+        const pointerLight = new THREE.PointLight(0x22d3ee, 1.9, 52);
+        pointerLight.position.set(12, 2, 22);
+        scene.add(pointerLight);
+
+        // --- PROCEDURAL GLOW SPRITE TEXTURE ---
+        function createGlowSpriteTexture() {
             const size = 64;
             const c = document.createElement("canvas");
             c.width = size;
@@ -190,9 +220,9 @@ document.addEventListener("DOMContentLoaded", () => {
             const center = size / 2;
             const grad = ctx.createRadialGradient(center, center, 0, center, center, center);
             grad.addColorStop(0.0, "rgba(255, 255, 255, 1.0)");
-            grad.addColorStop(0.2, "rgba(235, 245, 255, 0.95)");
-            grad.addColorStop(0.45, "rgba(139, 92, 246, 0.45)");
-            grad.addColorStop(0.75, "rgba(6, 182, 212, 0.15)");
+            grad.addColorStop(0.2, "rgba(165, 243, 252, 0.95)");
+            grad.addColorStop(0.5, "rgba(34, 211, 238, 0.35)");
+            grad.addColorStop(0.75, "rgba(139, 92, 246, 0.12)");
             grad.addColorStop(1.0, "rgba(0, 0, 0, 0)");
             ctx.fillStyle = grad;
             ctx.beginPath();
@@ -200,422 +230,407 @@ document.addEventListener("DOMContentLoaded", () => {
             ctx.fill();
             return new THREE.CanvasTexture(c);
         }
-        const starTexture = createStarTexture();
+        const glowSpriteTexture = createGlowSpriteTexture();
 
-        // 2. Cosmic Nebula Cloud Texture (Electric Violet & Cyan)
-        function createNebulaTexture(colorInner, colorOuter) {
-            const size = 256;
-            const c = document.createElement("canvas");
-            c.width = size;
-            c.height = size;
-            const ctx = c.getContext("2d");
-            const center = size / 2;
-            const grad = ctx.createRadialGradient(center, center, 0, center, center, center);
-            grad.addColorStop(0.0, colorInner);
-            grad.addColorStop(0.4, colorOuter);
-            grad.addColorStop(0.8, "rgba(30, 27, 75, 0.05)");
-            grad.addColorStop(1.0, "rgba(0, 0, 0, 0)");
-            ctx.fillStyle = grad;
-            ctx.beginPath();
-            ctx.arc(center, center, center, 0, Math.PI * 2);
-            ctx.fill();
-            return new THREE.CanvasTexture(c);
+        // --- SCULPTURE ROOT GROUP ---
+        const sculptureGroup = new THREE.Group();
+        scene.add(sculptureGroup);
+
+        // --- PARAMETRIC MATHEMATICS ENGINE ---
+        // Spine curve evaluated continuously along longitudinal parameter u in [0, 1]
+        function getSpinePosition(u, t, morph) {
+            let x = -20 + (32 * u) + (7.5 * Math.sin(u * Math.PI * 1.5)) - (4.5 * Math.sin(u * Math.PI * 3.0) * (u > 0.6 ? 1 : 0));
+            let y = -15 + (18 * u) + (19 * Math.pow(u, 2.2)) + (3.2 * Math.sin(u * Math.PI * 1.8));
+            let z = -5 + (12 * Math.sin(u * Math.PI * 1.4)) - (10 * Math.sin(u * Math.PI * 2.8) * Math.max(0, u - 0.45));
+
+            // Subtle harmonic breathing (Phase A)
+            const breath = Math.sin(t * 0.75 + u * 2.2) * 0.35;
+            x += breath * 0.55;
+            y += breath * 0.75;
+
+            // Computational morphing (Phase B)
+            if (morph > 0.0005) {
+                x += morph * 3.2 * Math.sin(u * Math.PI * 2.5);
+                y += morph * 2.2 * Math.cos(u * Math.PI * 2.0);
+                z += morph * 4.2 * Math.sin(u * Math.PI * 1.8);
+            }
+            return { x, y, z };
         }
-        const nebulaTexViolet = createNebulaTexture("rgba(124, 58, 237, 0.20)", "rgba(67, 56, 202, 0.10)");
-        const nebulaTexCyan = createNebulaTexture("rgba(6, 182, 212, 0.16)", "rgba(30, 58, 138, 0.08)");
 
-        // 3. High-Detail Procedural Planet Surface Texture
-        function createPlanetTexture() {
-            const width = 1024;
-            const height = 512;
-            const c = document.createElement("canvas");
-            c.width = width;
-            c.height = height;
-            const ctx = c.getContext("2d");
+        // Longitudinal slice frames cached per frame for 60fps performance
+        const NUM_STEPS = 90;
+        let sliceFrames = [];
 
-            // Base deep midnight navy to abyss gradient
-            const baseGrad = ctx.createLinearGradient(0, 0, 0, height);
-            baseGrad.addColorStop(0.0, "#030612");
-            baseGrad.addColorStop(0.3, "#0a1130");
-            baseGrad.addColorStop(0.5, "#0d1a45");
-            baseGrad.addColorStop(0.7, "#09102b");
-            baseGrad.addColorStop(1.0, "#02040d");
-            ctx.fillStyle = baseGrad;
-            ctx.fillRect(0, 0, width, height);
+        function computeSliceFrames(t, morph) {
+            const eps = 0.005;
+            sliceFrames = [];
+            for (let i = 0; i < NUM_STEPS; i++) {
+                const u = i / (NUM_STEPS - 1);
+                const pPrev = getSpinePosition(Math.max(0, u - eps), t, morph);
+                const pNext = getSpinePosition(Math.min(1, u + eps), t, morph);
+                const pos = getSpinePosition(u, t, morph);
 
-            // Oceanic & energy bands
-            for (let i = 0; i < 22; i++) {
-                const y = (i / 22) * height;
-                const bandH = Math.sin((i / 22) * Math.PI) * 40 + 12;
-                const grad = ctx.createLinearGradient(0, y, 0, y + bandH);
-                const isCyan = i % 3 === 0;
-                const isViolet = i % 2 === 0;
-                const color = isCyan ? "rgba(6, 182, 212, " : (isViolet ? "rgba(139, 92, 246, " : "rgba(79, 70, 229, ");
-                grad.addColorStop(0.0, color + "0.0)");
-                grad.addColorStop(0.5, color + (Math.random() * 0.35 + 0.15) + ")");
-                grad.addColorStop(1.0, color + "0.0)");
-                ctx.fillStyle = grad;
-                ctx.fillRect(0, y - 4, width, bandH);
+                const dx = pNext.x - pPrev.x;
+                const dy = pNext.y - pPrev.y;
+                const dz = pNext.z - pPrev.z;
+                const len = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1;
+                const Tx = dx / len, Ty = dy / len, Tz = dz / len;
+
+                let upX = 0, upY = 0, upZ = 1;
+                if (Math.abs(Tz) > 0.95) { upX = 0; upY = 1; upZ = 0; }
+
+                // B0 = T x up
+                let b0X = Ty * upZ - Tz * upY;
+                let b0Y = Tz * upX - Tx * upZ;
+                let b0Z = Tx * upY - Ty * upX;
+                const b0Len = Math.sqrt(b0X * b0X + b0Y * b0Y + b0Z * b0Z) || 1;
+                b0X /= b0Len; b0Y /= b0Len; b0Z /= b0Len;
+
+                // N0 = B0 x T
+                let n0X = b0Y * Tz - b0Z * Ty;
+                let n0Y = b0Z * Tx - b0X * Tz;
+                let n0Z = b0X * Ty - b0Y * Tx;
+                const n0Len = Math.sqrt(n0X * n0X + n0Y * n0Y + n0Z * n0Z) || 1;
+                n0X /= n0Len; n0Y /= n0Len; n0Z /= n0Len;
+
+                // Continuous signature twist
+                const twist = u * Math.PI * 2.2 + 0.35 * Math.sin(u * Math.PI) + morph * 0.60 * Math.sin(u * Math.PI);
+                const cosT = Math.cos(twist), sinT = Math.sin(twist);
+
+                // T x B0
+                const tbX = Ty * b0Z - Tz * b0Y;
+                const tbY = Tz * b0X - Tx * b0Z;
+                const tbZ = Tx * b0Y - Ty * b0X;
+                const Bx = b0X * cosT + tbX * sinT;
+                const By = b0Y * cosT + tbY * sinT;
+                const Bz = b0Z * cosT + tbZ * sinT;
+
+                // T x N0
+                const tnX = Ty * n0Z - Tz * n0Y;
+                const tnY = Tz * n0X - Tx * n0Z;
+                const tnZ = Tx * n0Y - Ty * n0X;
+                const Nx = n0X * cosT + tnX * sinT;
+                const Ny = n0Y * cosT + tnY * sinT;
+                const Nz = n0Z * cosT + tnZ * sinT;
+
+                // Dynamic width with laminar expansion and inflection waist
+                const width = 2.8 + 12.5 * Math.pow(Math.sin(u * Math.PI), 1.25) + 3.0 * Math.sin(u * Math.PI * 2.0) + morph * 3.6 * Math.sin(u * Math.PI);
+                const sinU = Math.sin(u * Math.PI);
+
+                sliceFrames.push({
+                    u,
+                    pos,
+                    Bx, By, Bz,
+                    Nx, Ny, Nz,
+                    width,
+                    halfW: width * 0.5,
+                    sinU
+                });
             }
-
-            // Continental landmasses & energy clusters
-            for (let cIdx = 0; cIdx < 32; cIdx++) {
-                const cx = Math.random() * width;
-                const cy = Math.random() * height;
-                const r = Math.random() * 85 + 30;
-                const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
-                grad.addColorStop(0.0, "rgba(167, 139, 250, 0.50)");
-                grad.addColorStop(0.35, "rgba(124, 58, 237, 0.28)");
-                grad.addColorStop(0.75, "rgba(6, 182, 212, 0.14)");
-                grad.addColorStop(1.0, "rgba(0, 0, 0, 0)");
-                ctx.fillStyle = grad;
-                ctx.beginPath();
-                ctx.arc(cx, cy, r, 0, Math.PI * 2);
-                ctx.fill();
-            }
-
-            // High-tech energetic latitude lines & grid lattice
-            ctx.strokeStyle = "rgba(56, 189, 248, 0.12)";
-            ctx.lineWidth = 1;
-            for (let lat = 35; lat < height; lat += 35) {
-                ctx.beginPath();
-                ctx.moveTo(0, lat);
-                ctx.lineTo(width, lat);
-                ctx.stroke();
-            }
-            for (let lon = 70; lon < width; lon += 70) {
-                ctx.beginPath();
-                ctx.moveTo(lon, 0);
-                ctx.lineTo(lon, height);
-                ctx.stroke();
-            }
-
-            // Luminous cyber energy nodes
-            for (let n = 0; n < 45; n++) {
-                const nx = Math.random() * width;
-                const ny = Math.random() * height;
-                ctx.fillStyle = "rgba(165, 243, 252, 0.85)";
-                ctx.beginPath();
-                ctx.arc(nx, ny, Math.random() * 2 + 1, 0, Math.PI * 2);
-                ctx.fill();
-            }
-
-            const tex = new THREE.CanvasTexture(c);
-            tex.wrapS = THREE.RepeatWrapping;
-            tex.wrapT = THREE.ClampToEdgeWrapping;
-            return tex;
         }
-        const planetTexture = createPlanetTexture();
 
-        // 4. Planetary Ring Texture (1D Radial Striation)
-        function createRingTexture() {
-            const size = 512;
-            const c = document.createElement("canvas");
-            c.width = size;
-            c.height = 1;
-            const ctx = c.getContext("2d");
-            const grad = ctx.createLinearGradient(0, 0, size, 0);
-            grad.addColorStop(0.0, "rgba(0, 0, 0, 0)");
-            grad.addColorStop(0.12, "rgba(139, 92, 246, 0.35)");
-            grad.addColorStop(0.25, "rgba(6, 182, 212, 0.85)");
-            grad.addColorStop(0.38, "rgba(124, 58, 237, 0.40)");
-            grad.addColorStop(0.48, "rgba(10, 15, 35, 0.10)");
-            grad.addColorStop(0.60, "rgba(167, 139, 250, 0.90)");
-            grad.addColorStop(0.72, "rgba(6, 182, 212, 0.70)");
-            grad.addColorStop(0.85, "rgba(79, 70, 229, 0.45)");
-            grad.addColorStop(0.95, "rgba(139, 92, 246, 0.20)");
-            grad.addColorStop(1.0, "rgba(0, 0, 0, 0)");
-            ctx.fillStyle = grad;
-            ctx.fillRect(0, 0, size, 1);
-            return new THREE.CanvasTexture(c);
-        }
-        const ringTexture = createRingTexture();
+        // --- LAYER 1: PRIMARY COMPUTATIONAL MANIFOLD (36 PRECISION FILAMENTS) ---
+        const NUM_FILAMENTS = 36;
+        const filamentLines = [];
+        const filamentGeos = [];
 
-        // --- 1. CINEMATIC MOVING 3D UNIVERSE ---
-        const universeGroup = new THREE.Group();
-        scene.add(universeGroup);
+        const filamentGroup = new THREE.Group();
+        sculptureGroup.add(filamentGroup);
 
-        // A. Distant Deep-Field Starfield
-        const deepStarCount = 1800;
-        const deepStarGeo = new THREE.BufferGeometry();
-        const deepStarPos = new Float32Array(deepStarCount * 3);
-        const deepStarColors = new Float32Array(deepStarCount * 3);
+        for (let k = 0; k < NUM_FILAMENTS; k++) {
+            const v = (k / (NUM_FILAMENTS - 1)) * 2 - 1; // [-1, 1]
+            const absV = Math.abs(v);
 
-        for (let i = 0; i < deepStarCount; i++) {
-            const theta = Math.random() * Math.PI * 2;
-            const phi = Math.acos((Math.random() * 2) - 1);
-            const r = 280 + Math.random() * 750;
+            // Pre-allocate buffer geometry
+            const posArray = new Float32Array(NUM_STEPS * 3);
+            const geo = new THREE.BufferGeometry();
+            geo.setAttribute("position", new THREE.BufferAttribute(posArray, 3));
+            filamentGeos.push(geo);
 
-            deepStarPos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
-            deepStarPos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
-            deepStarPos[i * 3 + 2] = r * Math.cos(phi);
+            // Color tuning matching reference visual language
+            let col = 0x22d3ee;
+            let opacity = 0.85;
 
-            const rnd = Math.random();
-            if (rnd < 0.45) {
-                deepStarColors[i * 3] = 0.94; deepStarColors[i * 3 + 1] = 0.96; deepStarColors[i * 3 + 2] = 1.0;
-            } else if (rnd < 0.75) {
-                deepStarColors[i * 3] = 0.65; deepStarColors[i * 3 + 1] = 0.52; deepStarColors[i * 3 + 2] = 0.98;
+            if (absV <= 0.35) {
+                // Core luminous cyan strands
+                col = 0x38bdf8;
+                opacity = 0.95;
+            } else if (absV <= 0.72) {
+                // Intermediate cyan-indigo strands
+                col = 0x06b6d4;
+                opacity = 0.75;
             } else {
-                deepStarColors[i * 3] = 0.18; deepStarColors[i * 3 + 1] = 0.75; deepStarColors[i * 3 + 2] = 0.95;
+                // Perimeter muted violet / indigo contour threads
+                col = 0xa78bfa;
+                opacity = 0.55;
             }
-        }
-        deepStarGeo.setAttribute("position", new THREE.BufferAttribute(deepStarPos, 3));
-        deepStarGeo.setAttribute("color", new THREE.BufferAttribute(deepStarColors, 3));
 
-        const deepStarMat = new THREE.PointsMaterial({
-            size: 1.6,
-            map: starTexture,
-            vertexColors: true,
-            transparent: true,
-            opacity: 0.85,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false
-        });
-        const deepStarfield = new THREE.Points(deepStarGeo, deepStarMat);
-        universeGroup.add(deepStarfield);
-
-        // B. Forward-Motion Hyperspace Starfield (Simulating Traveling Through Space)
-        const warpCount = 1200;
-        const warpGeo = new THREE.BufferGeometry();
-        const warpPositions = new Float32Array(warpCount * 3);
-        const warpColors = new Float32Array(warpCount * 3);
-
-        for (let i = 0; i < warpCount; i++) {
-            warpPositions[i * 3] = (Math.random() - 0.5) * 550;
-            warpPositions[i * 3 + 1] = (Math.random() - 0.5) * 400;
-            warpPositions[i * 3 + 2] = -650 + Math.random() * 750;
-
-            const isCyan = Math.random() > 0.42;
-            warpColors[i * 3] = isCyan ? 0.20 : 0.68;
-            warpColors[i * 3 + 1] = isCyan ? 0.78 : 0.48;
-            warpColors[i * 3 + 2] = 1.0;
-        }
-        warpGeo.setAttribute("position", new THREE.BufferAttribute(warpPositions, 3));
-        warpGeo.setAttribute("color", new THREE.BufferAttribute(warpColors, 3));
-
-        const warpMat = new THREE.PointsMaterial({
-            size: 1.8,
-            map: starTexture,
-            vertexColors: true,
-            transparent: true,
-            opacity: 0.88,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false
-        });
-        const warpStarfield = new THREE.Points(warpGeo, warpMat);
-        universeGroup.add(warpStarfield);
-
-        // C. Subtle Purple-Blue Nebula Clouds
-        const nebulaGroup = new THREE.Group();
-        for (let i = 0; i < 10; i++) {
-            const isCyan = i % 2 === 0;
-            const nebMat = new THREE.SpriteMaterial({
-                map: isCyan ? nebulaTexCyan : nebulaTexViolet,
+            const mat = new THREE.LineBasicMaterial({
+                color: col,
                 transparent: true,
-                opacity: 0.75,
+                opacity: opacity,
                 blending: THREE.AdditiveBlending,
                 depthWrite: false
             });
-            const sprite = new THREE.Sprite(nebMat);
-            const scale = 260 + Math.random() * 200;
-            sprite.scale.set(scale, scale, 1);
-            sprite.position.set(
-                (Math.random() - 0.5) * 450,
-                (Math.random() - 0.5) * 300,
-                -380 + Math.random() * 250
-            );
-            nebulaGroup.add(sprite);
+
+            const line = new THREE.Line(geo, mat);
+            line.userData = { v, vSq: v * v, baseOpacity: opacity };
+            filamentLines.push(line);
+            filamentGroup.add(line);
         }
-        universeGroup.add(nebulaGroup);
 
-        // --- 2. GLOWING ROTATING 3D PLANET WITH ORBITAL RINGS ---
-        const planetGroup = new THREE.Group();
-        scene.add(planetGroup);
+        // --- LAYER 2: TRANSLUCENT GRAPHITE & GLASS-LIKE RIBBON MESH ---
+        // Connects core filaments across middle parameter space
+        const MESH_U_STEPS = 45;
+        const MESH_V_STEPS = 10;
+        const meshTotalVerts = MESH_U_STEPS * MESH_V_STEPS;
+        const meshPosArray = new Float32Array(meshTotalVerts * 3);
+        const meshIndices = [];
 
-        // A. Planet Sphere Body
-        const planetRadius = 10.5;
-        const planetGeom = new THREE.SphereGeometry(planetRadius, 64, 64);
-        const planetMat = new THREE.MeshStandardMaterial({
-            map: planetTexture,
-            roughness: 0.58,
-            metalness: 0.28,
-            emissive: new THREE.Color(0x0a1033),
-            emissiveIntensity: 0.45
-        });
-        const planetMesh = new THREE.Mesh(planetGeom, planetMat);
-        planetGroup.add(planetMesh);
-
-        // B. Glowing Violet & Cyan Atmospheric Edge (Fresnel Atmosphere)
-        const atmosphereGeom = new THREE.SphereGeometry(planetRadius * 1.055, 64, 64);
-        const atmosphereMat = new THREE.ShaderMaterial({
-            vertexShader: `
-                varying vec3 vNormal;
-                varying vec3 vPosition;
-                void main() {
-                    vNormal = normalize(normalMatrix * normal);
-                    vPosition = (modelViewMatrix * vec4(position, 1.0)).xyz;
-                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-                }
-            `,
-            fragmentShader: `
-                varying vec3 vNormal;
-                varying vec3 vPosition;
-                void main() {
-                    vec3 viewDir = normalize(-vPosition);
-                    float fresnel = 1.0 - max(dot(viewDir, vNormal), 0.0);
-                    float intensity = pow(fresnel, 2.5);
-                    vec3 cyan = vec3(0.04, 0.76, 0.94);
-                    vec3 violet = vec3(0.58, 0.28, 0.98);
-                    vec3 glow = mix(cyan, violet, intensity * 0.72);
-                    gl_FragColor = vec4(glow, intensity * 0.90);
-                }
-            `,
-            blending: THREE.AdditiveBlending,
-            side: THREE.BackSide,
-            transparent: true,
-            depthWrite: false
-        });
-        const atmosphereMesh = new THREE.Mesh(atmosphereGeom, atmosphereMat);
-        planetGroup.add(atmosphereMesh);
-
-        // C. Primary Planetary Ring with Radial Mapping
-        const ringInner = 16.2;
-        const ringOuter = 25.5;
-        const ringGeom = new THREE.RingGeometry(ringInner, ringOuter, 96, 4);
-        // Remap UV coordinates so radial distance maps cleanly across the 1D ring gradient
-        const rPos = ringGeom.attributes.position;
-        const rUvs = ringGeom.attributes.uv;
-        for (let i = 0; i < rPos.count; i++) {
-            const rx = rPos.getX(i);
-            const ry = rPos.getY(i);
-            const radius = Math.sqrt(rx * rx + ry * ry);
-            const u = Math.min(Math.max((radius - ringInner) / (ringOuter - ringInner), 0), 1);
-            rUvs.setXY(i, u, 0.5);
-        }
-        rUvs.needsUpdate = true;
-
-        const ringMat = new THREE.MeshBasicMaterial({
-            map: ringTexture,
-            side: THREE.DoubleSide,
-            transparent: true,
-            opacity: 0.88,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false
-        });
-        const primaryRing = new THREE.Mesh(ringGeom, ringMat);
-        primaryRing.rotation.x = Math.PI * 0.38;
-        primaryRing.rotation.z = Math.PI * 0.08;
-        planetGroup.add(primaryRing);
-
-        // D. Secondary Gyroscopic Energy Ring (contrasting angle)
-        const gyroInner = 13.2;
-        const gyroOuter = 14.2;
-        const gyroGeom = new THREE.RingGeometry(gyroInner, gyroOuter, 72, 2);
-        const gyroMat = new THREE.MeshBasicMaterial({
-            color: 0x38bdf8,
-            side: THREE.DoubleSide,
-            transparent: true,
-            opacity: 0.55,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false
-        });
-        const gyroRing = new THREE.Mesh(gyroGeom, gyroMat);
-        gyroRing.rotation.x = Math.PI * 0.65;
-        gyroRing.rotation.y = Math.PI * 0.22;
-        planetGroup.add(gyroRing);
-
-        // E. Outer Subtle Orbital Torus Filament
-        const torusGeom = new THREE.TorusGeometry(28, 0.08, 16, 120);
-        const torusMat = new THREE.MeshBasicMaterial({
-            color: 0x8b5cf6,
-            transparent: true,
-            opacity: 0.40,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false
-        });
-        const outerTorus = new THREE.Mesh(torusGeom, torusMat);
-        outerTorus.rotation.x = Math.PI * 0.42;
-        planetGroup.add(outerTorus);
-
-        // F. Tiny Luminous Particles Moving Along Orbital Paths
-        const satelliteCount = 180;
-        const satGeo = new THREE.BufferGeometry();
-        const satPositions = new Float32Array(satelliteCount * 3);
-        const satColors = new Float32Array(satelliteCount * 3);
-        const satRadii = new Float32Array(satelliteCount);
-        const satAngles = new Float32Array(satelliteCount);
-        const satSpeeds = new Float32Array(satelliteCount);
-
-        for (let i = 0; i < satelliteCount; i++) {
-            const r = ringInner + Math.random() * (ringOuter - ringInner);
-            const a = Math.random() * Math.PI * 2;
-            satRadii[i] = r;
-            satAngles[i] = a;
-            satSpeeds[i] = (0.0035 + Math.random() * 0.0055) * (Math.random() < 0.15 ? -1 : 1);
-
-            satPositions[i * 3] = Math.cos(a) * r;
-            satPositions[i * 3 + 1] = Math.sin(a) * r;
-            satPositions[i * 3 + 2] = (Math.random() - 0.5) * 0.5;
-
-            const isCyan = Math.random() > 0.45;
-            satColors[i * 3] = isCyan ? 0.08 : 0.68;
-            satColors[i * 3 + 1] = isCyan ? 0.82 : 0.45;
-            satColors[i * 3 + 2] = 1.0;
-        }
-        satGeo.setAttribute("position", new THREE.BufferAttribute(satPositions, 3));
-        satGeo.setAttribute("color", new THREE.BufferAttribute(satColors, 3));
-
-        const satMat = new THREE.PointsMaterial({
-            size: 1.5,
-            map: starTexture,
-            vertexColors: true,
-            transparent: true,
-            opacity: 0.92,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false
-        });
-        const orbitalSatellites = new THREE.Points(satGeo, satMat);
-        primaryRing.add(orbitalSatellites);
-
-        // --- 3. LIGHTING ---
-        // Distant cosmic star directional light
-        const dirLight = new THREE.DirectionalLight(0xdbeafe, 2.0);
-        dirLight.position.set(-45, 35, 45);
-        scene.add(dirLight);
-
-        // Violet atmospheric rim light
-        const rimLight = new THREE.PointLight(0x8b5cf6, 1.4, 160);
-        rimLight.position.set(25, -12, -22);
-        scene.add(rimLight);
-
-        // Ambient midnight-navy light
-        const ambLight = new THREE.AmbientLight(0x0a1030, 0.55);
-        scene.add(ambLight);
-
-        // --- 4. RESPONSIVE COMPOSITION & POSITIONING ---
-        let basePosY = 2.2;
-        function updatePlanetLayout() {
-            const width = window.innerWidth;
-            if (width < 768) {
-                // Mobile: centered in upper hero background so text remains 100% legible
-                basePosY = 9.2;
-                planetGroup.position.set(0, basePosY, -8);
-                planetGroup.scale.set(0.70, 0.70, 0.70);
-            } else if (width < 992) {
-                // Tablet: slightly offset to right
-                basePosY = 4.0;
-                planetGroup.position.set(11, basePosY, -3);
-                planetGroup.scale.set(0.85, 0.85, 0.85);
-            } else {
-                // Desktop: complements hero content, framing avatar on right side
-                basePosY = 2.2;
-                planetGroup.position.set(16.5, basePosY, 0);
-                planetGroup.scale.set(1.0, 1.0, 1.0);
+        for (let iu = 0; iu < MESH_U_STEPS - 1; iu++) {
+            for (let iv = 0; iv < MESH_V_STEPS - 1; iv++) {
+                const a = iu * MESH_V_STEPS + iv;
+                const b = (iu + 1) * MESH_V_STEPS + iv;
+                const c = (iu + 1) * MESH_V_STEPS + (iv + 1);
+                const d = iu * MESH_V_STEPS + (iv + 1);
+                meshIndices.push(a, b, d);
+                meshIndices.push(b, c, d);
             }
         }
-        updatePlanetLayout();
 
-        // --- 5. INTERACTIONS: MOUSE PARALLAX & SCROLL DYNAMICS ---
+        const ribbonMeshGeo = new THREE.BufferGeometry();
+        ribbonMeshGeo.setAttribute("position", new THREE.BufferAttribute(meshPosArray, 3));
+        ribbonMeshGeo.setIndex(meshIndices);
+
+        const graphiteGlassMat = new THREE.MeshStandardMaterial({
+            color: 0x0a1628,
+            roughness: 0.16,
+            metalness: 0.88,
+            transparent: true,
+            opacity: 0.32,
+            side: THREE.DoubleSide,
+            depthWrite: false,
+            blending: THREE.NormalBlending
+        });
+
+        const ribbonMesh = new THREE.Mesh(ribbonMeshGeo, graphiteGlassMat);
+        sculptureGroup.add(ribbonMesh);
+
+        // --- LAYER 3: SECONDARY INTERWOVEN LATENT RIBBON (18 FILAMENTS) ---
+        const NUM_LATENT = 18;
+        const latentGeos = [];
+        const latentLines = [];
+        const latentGroup = new THREE.Group();
+        sculptureGroup.add(latentGroup);
+
+        for (let l = 0; l < NUM_LATENT; l++) {
+            const lv = (l / (NUM_LATENT - 1)) * 2 - 1;
+            const posArray = new Float32Array(NUM_STEPS * 3);
+            const geo = new THREE.BufferGeometry();
+            geo.setAttribute("position", new THREE.BufferAttribute(posArray, 3));
+            latentGeos.push(geo);
+
+            const mat = new THREE.LineBasicMaterial({
+                color: l % 2 === 0 ? 0x8b5cf6 : 0xa78bfa,
+                transparent: true,
+                opacity: 0.45,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+
+            const line = new THREE.Line(geo, mat);
+            line.userData = { lv };
+            latentLines.push(line);
+            latentGroup.add(line);
+        }
+
+        // --- LAYER 4: ORTHOGONAL MATHEMATICAL CONTOUR RIBS ---
+        const NUM_RIBS = 18;
+        const RIB_V_STEPS = 25;
+        const ribGeos = [];
+        const ribLines = [];
+        const ribGroup = new THREE.Group();
+        sculptureGroup.add(ribGroup);
+
+        for (let r = 0; r < NUM_RIBS; r++) {
+            const uFrac = 0.08 + (r / (NUM_RIBS - 1)) * 0.84;
+            const posArray = new Float32Array(RIB_V_STEPS * 3);
+            const geo = new THREE.BufferGeometry();
+            geo.setAttribute("position", new THREE.BufferAttribute(posArray, 3));
+            ribGeos.push(geo);
+
+            const mat = new THREE.LineBasicMaterial({
+                color: 0x38bdf8,
+                transparent: true,
+                opacity: 0.30,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+
+            const line = new THREE.Line(geo, mat);
+            line.userData = { uFrac };
+            ribLines.push(line);
+            ribGroup.add(line);
+        }
+
+        // --- LAYER 5: SPARSE CYAN & VIOLET COMPUTE NODES ---
+        const NODE_DEFS = [
+            { u: 0.10, v: 0.00, color: 0x22d3ee },
+            { u: 0.18, v: -0.35, color: 0xa78bfa },
+            { u: 0.26, v: 0.28, color: 0x22d3ee },
+            { u: 0.34, v: -0.22, color: 0x38bdf8 },
+            { u: 0.42, v: 0.45, color: 0xa78bfa }, // Crest swell
+            { u: 0.50, v: 0.00, color: 0x22d3ee },
+            { u: 0.58, v: -0.42, color: 0xa78bfa }, // Twist waist
+            { u: 0.66, v: 0.25, color: 0x22d3ee },
+            { u: 0.74, v: -0.28, color: 0x38bdf8 },
+            { u: 0.82, v: 0.38, color: 0xa78bfa }, // Ascending loop
+            { u: 0.90, v: -0.12, color: 0x22d3ee },
+            { u: 0.96, v: 0.00, color: 0xa78bfa }
+        ];
+
+        const computeNodes = [];
+        const nodeGroup = new THREE.Group();
+        sculptureGroup.add(nodeGroup);
+
+        const nodeGeom = new THREE.OctahedronGeometry(0.38, 0);
+
+        NODE_DEFS.forEach((def) => {
+            const nodeMat = new THREE.MeshStandardMaterial({
+                color: 0x050e1f,
+                emissive: new THREE.Color(def.color),
+                emissiveIntensity: 0.9,
+                roughness: 0.18,
+                metalness: 0.92
+            });
+
+            const mesh = new THREE.Mesh(nodeGeom, nodeMat);
+
+            // Attached luminous glint sprite (matches reference image flare)
+            const spriteMat = new THREE.SpriteMaterial({
+                map: glowSpriteTexture,
+                color: def.color,
+                transparent: true,
+                opacity: 0.85,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+            const sprite = new THREE.Sprite(spriteMat);
+            sprite.scale.set(1.9, 1.9, 1);
+            mesh.add(sprite);
+
+            mesh.userData = {
+                u: def.u,
+                v: def.v,
+                color: def.color,
+                baseEmissive: 0.9,
+                sprite: sprite
+            };
+
+            computeNodes.push(mesh);
+            nodeGroup.add(mesh);
+        });
+
+        // --- LAYER 6: LUMINOUS SIGNAL PACKETS (COMPUTE TRAVELERS) ---
+        const NUM_SIGNALS = 8;
+        const signalSprites = [];
+        const signalGroup = new THREE.Group();
+        sculptureGroup.add(signalGroup);
+
+        for (let s = 0; s < NUM_SIGNALS; s++) {
+            const isCyan = s % 2 === 0;
+            const sigMat = new THREE.SpriteMaterial({
+                map: glowSpriteTexture,
+                color: isCyan ? 0x22d3ee : 0xa78bfa,
+                transparent: true,
+                opacity: 0.0,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+            const sprite = new THREE.Sprite(sigMat);
+            sprite.scale.set(2.4, 2.4, 1);
+            sprite.userData = {
+                filamentIdx: Math.floor(6 + (s / NUM_SIGNALS) * 24),
+                delay: s * 0.10,
+                speed: 1.1 + (s % 3) * 0.12
+            };
+            signalSprites.push(sprite);
+            signalGroup.add(sprite);
+        }
+
+        // Helper to evaluate 3D point on manifold at arbitrary u, v from cached slices
+        function sampleManifoldPoint(u, v) {
+            const clampedU = Math.min(Math.max(u, 0), 1);
+            const stepFloat = clampedU * (NUM_STEPS - 1);
+            const idxA = Math.floor(stepFloat);
+            const idxB = Math.min(idxA + 1, NUM_STEPS - 1);
+            const f = stepFloat - idxA;
+
+            const slA = sliceFrames[idxA];
+            const slB = sliceFrames[idxB];
+            if (!slA || !slB) return { x: 0, y: 0, z: 0 };
+
+            // Lerp slice values
+            const posX = slA.pos.x + (slB.pos.x - slA.pos.x) * f;
+            const posY = slA.pos.y + (slB.pos.y - slA.pos.y) * f;
+            const posZ = slA.pos.z + (slB.pos.z - slA.pos.z) * f;
+
+            const Bx = slA.Bx + (slB.Bx - slA.Bx) * f;
+            const By = slA.By + (slB.By - slA.By) * f;
+            const Bz = slA.Bz + (slB.Bz - slA.Bz) * f;
+
+            const Nx = slA.Nx + (slB.Nx - slA.Nx) * f;
+            const Ny = slA.Ny + (slB.Ny - slA.Ny) * f;
+            const Nz = slA.Nz + (slB.Nz - slA.Nz) * f;
+
+            const halfW = slA.halfW + (slB.halfW - slA.halfW) * f;
+            const sinU = slA.sinU + (slB.sinU - slA.sinU) * f;
+            const camber = (1.0 - v * v) * 1.35 * sinU;
+
+            return {
+                x: posX + (v * halfW * Bx) + (camber * Nx),
+                y: posY + (v * halfW * By) + (camber * Ny),
+                z: posZ + (v * halfW * Bz) + (camber * Nz)
+            };
+        }
+
+        // --- RESPONSIVE COMPOSITION & POSITIONING ---
+        let basePosY = 0.5;
+        let baseRotX = 0.05;
+        let baseRotY = -0.15;
+        let isMobileScreen = false;
+
+        function updateSculptureLayout() {
+            const width = window.innerWidth;
+            if (width < 768) {
+                // Mobile: centered in upper hero background, text remains 100% legible
+                isMobileScreen = true;
+                basePosY = 4.8;
+                baseRotX = 0.10;
+                baseRotY = -0.10;
+                sculptureGroup.position.set(0, basePosY, -10);
+                sculptureGroup.scale.set(0.65, 0.65, 0.65);
+            } else if (width < 992) {
+                // Tablet: offset right
+                isMobileScreen = false;
+                basePosY = 1.8;
+                baseRotX = 0.08;
+                baseRotY = -0.12;
+                sculptureGroup.position.set(7.5, basePosY, -4);
+                sculptureGroup.scale.set(0.82, 0.82, 0.82);
+            } else {
+                // Desktop: frames hero typography on right half
+                isMobileScreen = false;
+                basePosY = 0.5;
+                baseRotX = 0.05;
+                baseRotY = -0.15;
+                sculptureGroup.position.set(12.5, basePosY, 0);
+                sculptureGroup.scale.set(1.0, 1.0, 1.0);
+            }
+        }
+        updateSculptureLayout();
+
+        // --- INTERACTIONS: MOUSE PARALLAX & POINTER SPOTLIGHT ---
         const mouse = { x: 0, y: 0 };
         window.addEventListener("mousemove", (e) => {
             mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
@@ -624,67 +639,192 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-        // --- 6. ANIMATION LOOP ---
+        // --- 3-PHASE CONTINUOUS SIGNATURE ANIMATION LOOP ---
         let animationFrameId = null;
-        let clock = new THREE.Clock();
+        const clock = new THREE.Clock();
 
-        function animateSpaceScene() {
-            const delta = Math.min(clock.getDelta(), 0.1);
-            const time = clock.getElapsedTime();
+        function updateGeometryBuffers(time, morphFactor, computeProgress, isComputePhase) {
+            // 1. Compute and cache slice frames for this time sample
+            computeSliceFrames(time, morphFactor);
 
-            if (!prefersReducedMotion) {
-                // Planet & Rings continuous smooth rotation
-                planetMesh.rotation.y += 0.0028;
-                gyroRing.rotation.z += 0.0035;
-                primaryRing.rotation.z -= 0.0008;
+            // 2. Update Primary Filaments
+            for (let k = 0; k < NUM_FILAMENTS; k++) {
+                const line = filamentLines[k];
+                const v = line.userData.v;
+                const vSq = line.userData.vSq;
+                const posArr = filamentGeos[k].attributes.position.array;
 
-                // Move satellites along orbital path
-                const satPosArr = satGeo.attributes.position.array;
-                for (let i = 0; i < satelliteCount; i++) {
-                    satAngles[i] += satSpeeds[i];
-                    satPosArr[i * 3] = Math.cos(satAngles[i]) * satRadii[i];
-                    satPosArr[i * 3 + 1] = Math.sin(satAngles[i]) * satRadii[i];
+                for (let i = 0; i < NUM_STEPS; i++) {
+                    const sl = sliceFrames[i];
+                    const camber = (1.0 - vSq) * 1.35 * sl.sinU;
+                    posArr[i * 3 + 0] = sl.pos.x + (v * sl.halfW * sl.Bx) + (camber * sl.Nx);
+                    posArr[i * 3 + 1] = sl.pos.y + (v * sl.halfW * sl.By) + (camber * sl.Ny);
+                    posArr[i * 3 + 2] = sl.pos.z + (v * sl.halfW * sl.Bz) + (camber * sl.Nz);
                 }
-                satGeo.attributes.position.needsUpdate = true;
+                filamentGeos[k].attributes.position.needsUpdate = true;
+            }
 
-                // Natural forward-motion universe flight
-                const warpArr = warpGeo.attributes.position.array;
-                const starSpeed = 0.36;
-                for (let i = 0; i < warpCount; i++) {
-                    warpArr[i * 3 + 2] += starSpeed;
-                    if (warpArr[i * 3 + 2] > camera.position.z + 30) {
-                        warpArr[i * 3 + 2] = -650;
-                        warpArr[i * 3] = (Math.random() - 0.5) * 550;
-                        warpArr[i * 3 + 1] = (Math.random() - 0.5) * 400;
+            // 3. Update Translucent Graphite & Glass Ribbon Mesh
+            const meshPos = ribbonMeshGeo.attributes.position.array;
+            for (let iu = 0; iu < MESH_U_STEPS; iu++) {
+                const u = 0.06 + (iu / (MESH_U_STEPS - 1)) * 0.88;
+                for (let iv = 0; iv < MESH_V_STEPS; iv++) {
+                    const v = -0.42 + (iv / (MESH_V_STEPS - 1)) * 0.84;
+                    const pt = sampleManifoldPoint(u, v);
+                    const idx = (iu * MESH_V_STEPS + iv) * 3;
+                    meshPos[idx + 0] = pt.x;
+                    meshPos[idx + 1] = pt.y;
+                    meshPos[idx + 2] = pt.z;
+                }
+            }
+            ribbonMeshGeo.attributes.position.needsUpdate = true;
+            ribbonMeshGeo.computeVertexNormals();
+
+            // 4. Update Secondary Interwoven Latent Filaments
+            for (let l = 0; l < NUM_LATENT; l++) {
+                const lv = latentLines[l].userData.lv;
+                const posArr = latentGeos[l].attributes.position.array;
+                const phaseOffset = l * 0.28;
+
+                for (let i = 0; i < NUM_STEPS; i++) {
+                    const sl = sliceFrames[i];
+                    const harmonicWave = Math.sin(sl.u * Math.PI * 3.5 + time * 0.8 + phaseOffset) * 1.8;
+                    const crossV = (lv * 0.6) + (harmonicWave * 0.25);
+                    const camber = (1.0 - crossV * crossV) * 1.1 * sl.sinU;
+
+                    posArr[i * 3 + 0] = sl.pos.x + (crossV * sl.halfW * sl.Bx) + (camber * sl.Nx) + (sl.Nx * harmonicWave * 0.6);
+                    posArr[i * 3 + 1] = sl.pos.y + (crossV * sl.halfW * sl.By) + (camber * sl.Ny) + (sl.Ny * harmonicWave * 0.6);
+                    posArr[i * 3 + 2] = sl.pos.z + (crossV * sl.halfW * sl.Bz) + (camber * sl.Nz) + (sl.Bz * harmonicWave * 0.6);
+                }
+                latentGeos[l].attributes.position.needsUpdate = true;
+            }
+
+            // 5. Update Orthogonal Mathematical Contour Ribs
+            for (let r = 0; r < NUM_RIBS; r++) {
+                const u = ribLines[r].userData.uFrac;
+                const posArr = ribGeos[r].attributes.position.array;
+                for (let iv = 0; iv < RIB_V_STEPS; iv++) {
+                    const v = (iv / (RIB_V_STEPS - 1)) * 2 - 1;
+                    const pt = sampleManifoldPoint(u, v);
+                    posArr[iv * 3 + 0] = pt.x;
+                    posArr[iv * 3 + 1] = pt.y;
+                    posArr[iv * 3 + 2] = pt.z;
+                }
+                ribGeos[r].attributes.position.needsUpdate = true;
+            }
+
+            // 6. Update Compute Nodes
+            computeNodes.forEach((node) => {
+                const pt = sampleManifoldPoint(node.userData.u, node.userData.v);
+                node.position.set(pt.x, pt.y, pt.z);
+
+                // Flaring during Compute Phase when signals pass
+                let flare = 0;
+                if (isComputePhase) {
+                    const distToCompute = Math.abs(computeProgress * 1.15 - node.userData.u);
+                    if (distToCompute < 0.12) {
+                        flare = Math.cos((distToCompute / 0.12) * Math.PI * 0.5);
                     }
                 }
-                warpGeo.attributes.position.needsUpdate = true;
 
-                // Slow subtle celestial drift
-                deepStarfield.rotation.y -= 0.0003;
-                nebulaGroup.rotation.z = Math.sin(time * 0.05) * 0.04;
+                node.material.emissiveIntensity = node.userData.baseEmissive + flare * 2.2;
+                const s = 1.9 + flare * 1.5;
+                node.userData.sprite.scale.set(s, s, 1);
+            });
+
+            // 7. Update Luminous Signal Packets
+            signalSprites.forEach((sprite) => {
+                if (isComputePhase) {
+                    const uProg = (computeProgress * sprite.userData.speed) - sprite.userData.delay;
+                    if (uProg >= 0.05 && uProg <= 0.95) {
+                        const v = (sprite.userData.filamentIdx / (NUM_FILAMENTS - 1)) * 2 - 1;
+                        const pt = sampleManifoldPoint(uProg, v);
+                        sprite.position.set(pt.x, pt.y, pt.z);
+                        const edgeFade = Math.sin(Math.min(Math.max((uProg - 0.05) / 0.90, 0), 1) * Math.PI);
+                        sprite.material.opacity = 0.95 * edgeFade;
+                    } else {
+                        sprite.material.opacity = 0.0;
+                    }
+                } else {
+                    sprite.material.opacity = 0.0;
+                }
+            });
+        }
+
+        function animateSculptureScene() {
+            const time = clock.getElapsedTime();
+
+            // --- 3-PHASE SIGNATURE ENGINE ---
+            // Period: 18 seconds
+            const cycleTime = time % 18.0;
+            let morphFactor = 0;
+            let computeProgress = 0;
+            let isComputePhase = false;
+
+            if (cycleTime < 6.5) {
+                // PHASE A — OBSERVE (0s - 6.5s)
+                // Structure breathes subtly, minimal movement, soft ambient lighting
+                morphFactor = 0.0;
+                isComputePhase = false;
+                keyLight.intensity = 2.2;
+                pointerLight.intensity = 1.9;
+            } else if (cycleTime < 13.5) {
+                // PHASE B — COMPUTE (6.5s - 13.5s)
+                // Luminous signals travel along selected curves.
+                // Connected regions illuminate in sequence.
+                // Geometric layers shift into a new configuration.
+                isComputePhase = true;
+                computeProgress = (cycleTime - 6.5) / 7.0; // [0, 1]
+                morphFactor = Math.sin(computeProgress * Math.PI);
+                keyLight.intensity = 2.2 + morphFactor * 0.8;
+                pointerLight.intensity = 1.9 + morphFactor * 0.9;
+            } else {
+                // PHASE C — RESOLVE (13.5s - 18.0s)
+                // Structure briefly settles into a balanced geometric arrangement,
+                // then smoothly returns to its initial state.
+                isComputePhase = false;
+                const resolveProgress = (cycleTime - 13.5) / 4.5; // [0, 1]
+                const easeOut = Math.pow(1 - resolveProgress, 2);
+                morphFactor = easeOut * 0.22;
+                keyLight.intensity = 2.2 + easeOut * 0.2;
+                pointerLight.intensity = 1.9 + easeOut * 0.2;
+            }
+
+            if (!prefersReducedMotion) {
+                updateGeometryBuffers(time, morphFactor, computeProgress, isComputePhase);
             }
 
             // Mouse parallax with smooth camera damping
-            const targetCamX = mouse.x * 3.2;
-            const targetCamY = mouse.y * 2.2;
+            const targetCamX = mouse.x * 3.6;
+            const targetCamY = mouse.y * 2.4;
             camera.position.x += (targetCamX - camera.position.x) * 0.045;
             camera.position.y += (targetCamY - camera.position.y) * 0.045;
 
-            // Scroll parallax: smoothly changes camera angle and planet elevation
+            // Pointer Spotlight smooth tracking in 3D
+            const targetLightX = (mouse.x * 24) + (isMobileScreen ? 0 : 8);
+            const targetLightY = (mouse.y * 18) + (isMobileScreen ? 4 : 1);
+            pointerLight.position.x += (targetLightX - pointerLight.position.x) * 0.08;
+            pointerLight.position.y += (targetLightY - pointerLight.position.y) * 0.08;
+
+            // Pointer proximity tilt on sculpture
+            const targetTiltX = baseRotX + (mouse.y * 0.06);
+            const targetTiltY = baseRotY + (mouse.x * 0.08);
+            sculptureGroup.rotation.x += (targetTiltX - sculptureGroup.rotation.x) * 0.05;
+            sculptureGroup.rotation.y += (targetTiltY - sculptureGroup.rotation.y) * 0.05;
+
+            // Scroll Parallax: gradually rotates sculpture and reveals internal layers
             const maxScroll = (document.documentElement.scrollHeight - window.innerHeight) || 1;
             const scrollFraction = Math.min(Math.max(window.scrollY / maxScroll, 0), 1);
-            if (!prefersReducedMotion) {
-                planetGroup.position.y = basePosY + (scrollFraction * 12);
-                planetGroup.rotation.y = scrollFraction * Math.PI * 1.5;
-            }
+            sculptureGroup.rotation.y += scrollFraction * 0.95;
+            sculptureGroup.rotation.x += scrollFraction * 0.22;
+            sculptureGroup.position.y = basePosY + (scrollFraction * 5.5);
 
             camera.lookAt(0, 0, 0);
             renderer.render(scene, camera);
-            animationFrameId = requestAnimationFrame(animateSpaceScene);
+            animationFrameId = requestAnimationFrame(animateSculptureScene);
         }
 
-        // --- 7. EVENT LISTENERS & RESOURCE OPTIMIZATION ---
+        // --- EVENT LISTENERS & RESOURCE OPTIMIZATIONS ---
         window.addEventListener("resize", () => {
             const w = window.innerWidth;
             const h = window.innerHeight;
@@ -692,7 +832,7 @@ document.addEventListener("DOMContentLoaded", () => {
             camera.updateProjectionMatrix();
             renderer.setSize(w, h);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-            updatePlanetLayout();
+            updateSculptureLayout();
         });
 
         // Tab visibility pause to preserve battery and GPU
@@ -701,17 +841,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (animationFrameId) cancelAnimationFrame(animationFrameId);
             } else {
                 clock.start();
-                animationFrameId = requestAnimationFrame(animateSpaceScene);
+                animationFrameId = requestAnimationFrame(animateSculptureScene);
             }
         });
 
         if (prefersReducedMotion) {
+            updateGeometryBuffers(0, 0, 0, false);
             renderer.render(scene, camera);
         } else {
-            animateSpaceScene();
+            animateSculptureScene();
         }
     }
-    init3DSpaceUniverse();
+    initThinkingMachineSculpture();
+
 
 
     /* =====================================================

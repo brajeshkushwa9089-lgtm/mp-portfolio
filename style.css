@@ -447,7 +447,7 @@ textarea:focus-visible {
     overflow: hidden;
     pointer-events: none;
     z-index: 0;
-    background: #030712;
+    background: radial-gradient(ellipse 95% 75% at 75% 35%, #050e20 0%, #02040a 60%, #010206 100%);
 }
 
 .gradient-orb {
