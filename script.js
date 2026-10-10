@@ -136,146 +136,582 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       3. INTERACTIVE NEURAL CONSTELLATION CANVAS
+       3. IMMERSIVE 3D SPACE UNIVERSE & ROTATING PLANET
+       Combining ONLY two primary visual concepts:
+       1) Cinematic Moving 3D Universe (multi-depth starfield,
+          forward-motion hyperspace travel, purple-blue nebula clouds)
+       2) Glowing Rotating 3D Planet with Atmospheric Edges,
+          Multiple Orbital Rings & Satellite Particles
        ===================================================== */
-    const canvas = document.getElementById("neural-canvas");
-    if (canvas) {
-        const ctx = canvas.getContext("2d");
-        let width = canvas.width = window.innerWidth;
-        let height = canvas.height = window.innerHeight;
-        let animationFrameId = null;
+    function init3DSpaceUniverse() {
+        const spaceCanvas = document.getElementById("space-3d-canvas") || document.getElementById("neural-canvas");
+        if (!spaceCanvas) return;
 
-        const mouse = {
-            x: null,
-            y: null,
-            radius: 140
-        };
-
-        window.addEventListener("mousemove", (e) => {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
-        });
-
-        window.addEventListener("mouseleave", () => {
-            mouse.x = null;
-            mouse.y = null;
-        });
-
-        window.addEventListener("resize", () => {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-            initParticles();
-        });
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.7;
-                this.vy = (Math.random() - 0.5) * 0.7;
-                this.radius = Math.random() * 2 + 1;
-            }
-
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-
-                if (this.x < 0 || this.x > width) this.vx *= -1;
-                if (this.y < 0 || this.y > height) this.vy *= -1;
-
-                // Mouse interaction
-                if (mouse.x !== null && mouse.y !== null) {
-                    const dx = mouse.x - this.x;
-                    const dy = mouse.y - this.y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < mouse.radius) {
-                        const force = (mouse.radius - dist) / mouse.radius;
-                        this.x -= (dx / dist) * force * 1.5;
-                        this.y -= (dy / dist) * force * 1.5;
-                    }
+        if (typeof THREE === "undefined") {
+            let attempts = 0;
+            const checkInterval = setInterval(() => {
+                attempts++;
+                if (typeof THREE !== "undefined") {
+                    clearInterval(checkInterval);
+                    init3DSpaceUniverse();
+                } else if (attempts > 30) {
+                    clearInterval(checkInterval);
                 }
+            }, 100);
+            return;
+        }
+
+        // --- SCENE, CAMERA & RENDERER ---
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x030712, 0.0012);
+
+        const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 2000);
+        camera.position.set(0, 0, 48);
+
+        const renderer = new THREE.WebGLRenderer({
+            canvas: spaceCanvas,
+            antialias: true,
+            alpha: true,
+            powerPreference: "high-performance"
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.15;
+
+        // --- PROCEDURAL TEXTURES ---
+        // 1. Glowing Circular Star Particle Sprite
+        function createStarTexture() {
+            const size = 64;
+            const c = document.createElement("canvas");
+            c.width = size;
+            c.height = size;
+            const ctx = c.getContext("2d");
+            const center = size / 2;
+            const grad = ctx.createRadialGradient(center, center, 0, center, center, center);
+            grad.addColorStop(0.0, "rgba(255, 255, 255, 1.0)");
+            grad.addColorStop(0.2, "rgba(235, 245, 255, 0.95)");
+            grad.addColorStop(0.45, "rgba(139, 92, 246, 0.45)");
+            grad.addColorStop(0.75, "rgba(6, 182, 212, 0.15)");
+            grad.addColorStop(1.0, "rgba(0, 0, 0, 0)");
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.arc(center, center, center, 0, Math.PI * 2);
+            ctx.fill();
+            return new THREE.CanvasTexture(c);
+        }
+        const starTexture = createStarTexture();
+
+        // 2. Cosmic Nebula Cloud Texture (Electric Violet & Cyan)
+        function createNebulaTexture(colorInner, colorOuter) {
+            const size = 256;
+            const c = document.createElement("canvas");
+            c.width = size;
+            c.height = size;
+            const ctx = c.getContext("2d");
+            const center = size / 2;
+            const grad = ctx.createRadialGradient(center, center, 0, center, center, center);
+            grad.addColorStop(0.0, colorInner);
+            grad.addColorStop(0.4, colorOuter);
+            grad.addColorStop(0.8, "rgba(30, 27, 75, 0.05)");
+            grad.addColorStop(1.0, "rgba(0, 0, 0, 0)");
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.arc(center, center, center, 0, Math.PI * 2);
+            ctx.fill();
+            return new THREE.CanvasTexture(c);
+        }
+        const nebulaTexViolet = createNebulaTexture("rgba(124, 58, 237, 0.20)", "rgba(67, 56, 202, 0.10)");
+        const nebulaTexCyan = createNebulaTexture("rgba(6, 182, 212, 0.16)", "rgba(30, 58, 138, 0.08)");
+
+        // 3. High-Detail Procedural Planet Surface Texture
+        function createPlanetTexture() {
+            const width = 1024;
+            const height = 512;
+            const c = document.createElement("canvas");
+            c.width = width;
+            c.height = height;
+            const ctx = c.getContext("2d");
+
+            // Base deep midnight navy to abyss gradient
+            const baseGrad = ctx.createLinearGradient(0, 0, 0, height);
+            baseGrad.addColorStop(0.0, "#030612");
+            baseGrad.addColorStop(0.3, "#0a1130");
+            baseGrad.addColorStop(0.5, "#0d1a45");
+            baseGrad.addColorStop(0.7, "#09102b");
+            baseGrad.addColorStop(1.0, "#02040d");
+            ctx.fillStyle = baseGrad;
+            ctx.fillRect(0, 0, width, height);
+
+            // Oceanic & energy bands
+            for (let i = 0; i < 22; i++) {
+                const y = (i / 22) * height;
+                const bandH = Math.sin((i / 22) * Math.PI) * 40 + 12;
+                const grad = ctx.createLinearGradient(0, y, 0, y + bandH);
+                const isCyan = i % 3 === 0;
+                const isViolet = i % 2 === 0;
+                const color = isCyan ? "rgba(6, 182, 212, " : (isViolet ? "rgba(139, 92, 246, " : "rgba(79, 70, 229, ");
+                grad.addColorStop(0.0, color + "0.0)");
+                grad.addColorStop(0.5, color + (Math.random() * 0.35 + 0.15) + ")");
+                grad.addColorStop(1.0, color + "0.0)");
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, y - 4, width, bandH);
             }
 
-            draw() {
-                const isLight = document.body.classList.contains("light-mode");
+            // Continental landmasses & energy clusters
+            for (let cIdx = 0; cIdx < 32; cIdx++) {
+                const cx = Math.random() * width;
+                const cy = Math.random() * height;
+                const r = Math.random() * 85 + 30;
+                const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+                grad.addColorStop(0.0, "rgba(167, 139, 250, 0.50)");
+                grad.addColorStop(0.35, "rgba(124, 58, 237, 0.28)");
+                grad.addColorStop(0.75, "rgba(6, 182, 212, 0.14)");
+                grad.addColorStop(1.0, "rgba(0, 0, 0, 0)");
+                ctx.fillStyle = grad;
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = isLight ? "rgba(124, 58, 237, 0.45)" : "rgba(6, 182, 212, 0.75)";
+                ctx.arc(cx, cy, r, 0, Math.PI * 2);
                 ctx.fill();
             }
-        }
 
-        let particles = [];
-        function initParticles() {
-            particles = [];
-            const count = Math.min(55, Math.floor((width * height) / 22000));
-            for (let i = 0; i < count; i++) {
-                particles.push(new Particle());
+            // High-tech energetic latitude lines & grid lattice
+            ctx.strokeStyle = "rgba(56, 189, 248, 0.12)";
+            ctx.lineWidth = 1;
+            for (let lat = 35; lat < height; lat += 35) {
+                ctx.beginPath();
+                ctx.moveTo(0, lat);
+                ctx.lineTo(width, lat);
+                ctx.stroke();
             }
-        }
-        initParticles();
-
-        function animateCanvas() {
-            ctx.clearRect(0, 0, width, height);
-            const isLight = document.body.classList.contains("light-mode");
-
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-
-                // Connect nearby particles
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-
-                    if (dist < 115) {
-                        const alpha = (1 - dist / 115) * (isLight ? 0.25 : 0.45);
-                        ctx.beginPath();
-                        ctx.strokeStyle = isLight
-                            ? `rgba(124, 58, 237, ${alpha})`
-                            : `rgba(167, 139, 250, ${alpha})`;
-                        ctx.lineWidth = 0.85;
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
-                    }
-                }
-
-                // Connect to mouse
-                if (mouse.x !== null && mouse.y !== null) {
-                    const dx = particles[i].x - mouse.x;
-                    const dy = particles[i].y - mouse.y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < mouse.radius) {
-                        const alpha = (1 - dist / mouse.radius) * 0.55;
-                        ctx.beginPath();
-                        ctx.strokeStyle = `rgba(6, 182, 212, ${alpha})`;
-                        ctx.lineWidth = 1;
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(mouse.x, mouse.y);
-                        ctx.stroke();
-                    }
-                }
+            for (let lon = 70; lon < width; lon += 70) {
+                ctx.beginPath();
+                ctx.moveTo(lon, 0);
+                ctx.lineTo(lon, height);
+                ctx.stroke();
             }
 
-            animationFrameId = requestAnimationFrame(animateCanvas);
+            // Luminous cyber energy nodes
+            for (let n = 0; n < 45; n++) {
+                const nx = Math.random() * width;
+                const ny = Math.random() * height;
+                ctx.fillStyle = "rgba(165, 243, 252, 0.85)";
+                ctx.beginPath();
+                ctx.arc(nx, ny, Math.random() * 2 + 1, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            const tex = new THREE.CanvasTexture(c);
+            tex.wrapS = THREE.RepeatWrapping;
+            tex.wrapT = THREE.ClampToEdgeWrapping;
+            return tex;
+        }
+        const planetTexture = createPlanetTexture();
+
+        // 4. Planetary Ring Texture (1D Radial Striation)
+        function createRingTexture() {
+            const size = 512;
+            const c = document.createElement("canvas");
+            c.width = size;
+            c.height = 1;
+            const ctx = c.getContext("2d");
+            const grad = ctx.createLinearGradient(0, 0, size, 0);
+            grad.addColorStop(0.0, "rgba(0, 0, 0, 0)");
+            grad.addColorStop(0.12, "rgba(139, 92, 246, 0.35)");
+            grad.addColorStop(0.25, "rgba(6, 182, 212, 0.85)");
+            grad.addColorStop(0.38, "rgba(124, 58, 237, 0.40)");
+            grad.addColorStop(0.48, "rgba(10, 15, 35, 0.10)");
+            grad.addColorStop(0.60, "rgba(167, 139, 250, 0.90)");
+            grad.addColorStop(0.72, "rgba(6, 182, 212, 0.70)");
+            grad.addColorStop(0.85, "rgba(79, 70, 229, 0.45)");
+            grad.addColorStop(0.95, "rgba(139, 92, 246, 0.20)");
+            grad.addColorStop(1.0, "rgba(0, 0, 0, 0)");
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, size, 1);
+            return new THREE.CanvasTexture(c);
+        }
+        const ringTexture = createRingTexture();
+
+        // --- 1. CINEMATIC MOVING 3D UNIVERSE ---
+        const universeGroup = new THREE.Group();
+        scene.add(universeGroup);
+
+        // A. Distant Deep-Field Starfield
+        const deepStarCount = 1800;
+        const deepStarGeo = new THREE.BufferGeometry();
+        const deepStarPos = new Float32Array(deepStarCount * 3);
+        const deepStarColors = new Float32Array(deepStarCount * 3);
+
+        for (let i = 0; i < deepStarCount; i++) {
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos((Math.random() * 2) - 1);
+            const r = 280 + Math.random() * 750;
+
+            deepStarPos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+            deepStarPos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+            deepStarPos[i * 3 + 2] = r * Math.cos(phi);
+
+            const rnd = Math.random();
+            if (rnd < 0.45) {
+                deepStarColors[i * 3] = 0.94; deepStarColors[i * 3 + 1] = 0.96; deepStarColors[i * 3 + 2] = 1.0;
+            } else if (rnd < 0.75) {
+                deepStarColors[i * 3] = 0.65; deepStarColors[i * 3 + 1] = 0.52; deepStarColors[i * 3 + 2] = 0.98;
+            } else {
+                deepStarColors[i * 3] = 0.18; deepStarColors[i * 3 + 1] = 0.75; deepStarColors[i * 3 + 2] = 0.95;
+            }
+        }
+        deepStarGeo.setAttribute("position", new THREE.BufferAttribute(deepStarPos, 3));
+        deepStarGeo.setAttribute("color", new THREE.BufferAttribute(deepStarColors, 3));
+
+        const deepStarMat = new THREE.PointsMaterial({
+            size: 1.6,
+            map: starTexture,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.85,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
+        });
+        const deepStarfield = new THREE.Points(deepStarGeo, deepStarMat);
+        universeGroup.add(deepStarfield);
+
+        // B. Forward-Motion Hyperspace Starfield (Simulating Traveling Through Space)
+        const warpCount = 1200;
+        const warpGeo = new THREE.BufferGeometry();
+        const warpPositions = new Float32Array(warpCount * 3);
+        const warpColors = new Float32Array(warpCount * 3);
+
+        for (let i = 0; i < warpCount; i++) {
+            warpPositions[i * 3] = (Math.random() - 0.5) * 550;
+            warpPositions[i * 3 + 1] = (Math.random() - 0.5) * 400;
+            warpPositions[i * 3 + 2] = -650 + Math.random() * 750;
+
+            const isCyan = Math.random() > 0.42;
+            warpColors[i * 3] = isCyan ? 0.20 : 0.68;
+            warpColors[i * 3 + 1] = isCyan ? 0.78 : 0.48;
+            warpColors[i * 3 + 2] = 1.0;
+        }
+        warpGeo.setAttribute("position", new THREE.BufferAttribute(warpPositions, 3));
+        warpGeo.setAttribute("color", new THREE.BufferAttribute(warpColors, 3));
+
+        const warpMat = new THREE.PointsMaterial({
+            size: 1.8,
+            map: starTexture,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.88,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
+        });
+        const warpStarfield = new THREE.Points(warpGeo, warpMat);
+        universeGroup.add(warpStarfield);
+
+        // C. Subtle Purple-Blue Nebula Clouds
+        const nebulaGroup = new THREE.Group();
+        for (let i = 0; i < 10; i++) {
+            const isCyan = i % 2 === 0;
+            const nebMat = new THREE.SpriteMaterial({
+                map: isCyan ? nebulaTexCyan : nebulaTexViolet,
+                transparent: true,
+                opacity: 0.75,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+            const sprite = new THREE.Sprite(nebMat);
+            const scale = 260 + Math.random() * 200;
+            sprite.scale.set(scale, scale, 1);
+            sprite.position.set(
+                (Math.random() - 0.5) * 450,
+                (Math.random() - 0.5) * 300,
+                -380 + Math.random() * 250
+            );
+            nebulaGroup.add(sprite);
+        }
+        universeGroup.add(nebulaGroup);
+
+        // --- 2. GLOWING ROTATING 3D PLANET WITH ORBITAL RINGS ---
+        const planetGroup = new THREE.Group();
+        scene.add(planetGroup);
+
+        // A. Planet Sphere Body
+        const planetRadius = 10.5;
+        const planetGeom = new THREE.SphereGeometry(planetRadius, 64, 64);
+        const planetMat = new THREE.MeshStandardMaterial({
+            map: planetTexture,
+            roughness: 0.58,
+            metalness: 0.28,
+            emissive: new THREE.Color(0x0a1033),
+            emissiveIntensity: 0.45
+        });
+        const planetMesh = new THREE.Mesh(planetGeom, planetMat);
+        planetGroup.add(planetMesh);
+
+        // B. Glowing Violet & Cyan Atmospheric Edge (Fresnel Atmosphere)
+        const atmosphereGeom = new THREE.SphereGeometry(planetRadius * 1.055, 64, 64);
+        const atmosphereMat = new THREE.ShaderMaterial({
+            vertexShader: `
+                varying vec3 vNormal;
+                varying vec3 vPosition;
+                void main() {
+                    vNormal = normalize(normalMatrix * normal);
+                    vPosition = (modelViewMatrix * vec4(position, 1.0)).xyz;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                varying vec3 vNormal;
+                varying vec3 vPosition;
+                void main() {
+                    vec3 viewDir = normalize(-vPosition);
+                    float fresnel = 1.0 - max(dot(viewDir, vNormal), 0.0);
+                    float intensity = pow(fresnel, 2.5);
+                    vec3 cyan = vec3(0.04, 0.76, 0.94);
+                    vec3 violet = vec3(0.58, 0.28, 0.98);
+                    vec3 glow = mix(cyan, violet, intensity * 0.72);
+                    gl_FragColor = vec4(glow, intensity * 0.90);
+                }
+            `,
+            blending: THREE.AdditiveBlending,
+            side: THREE.BackSide,
+            transparent: true,
+            depthWrite: false
+        });
+        const atmosphereMesh = new THREE.Mesh(atmosphereGeom, atmosphereMat);
+        planetGroup.add(atmosphereMesh);
+
+        // C. Primary Planetary Ring with Radial Mapping
+        const ringInner = 16.2;
+        const ringOuter = 25.5;
+        const ringGeom = new THREE.RingGeometry(ringInner, ringOuter, 96, 4);
+        // Remap UV coordinates so radial distance maps cleanly across the 1D ring gradient
+        const rPos = ringGeom.attributes.position;
+        const rUvs = ringGeom.attributes.uv;
+        for (let i = 0; i < rPos.count; i++) {
+            const rx = rPos.getX(i);
+            const ry = rPos.getY(i);
+            const radius = Math.sqrt(rx * rx + ry * ry);
+            const u = Math.min(Math.max((radius - ringInner) / (ringOuter - ringInner), 0), 1);
+            rUvs.setXY(i, u, 0.5);
+        }
+        rUvs.needsUpdate = true;
+
+        const ringMat = new THREE.MeshBasicMaterial({
+            map: ringTexture,
+            side: THREE.DoubleSide,
+            transparent: true,
+            opacity: 0.88,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
+        });
+        const primaryRing = new THREE.Mesh(ringGeom, ringMat);
+        primaryRing.rotation.x = Math.PI * 0.38;
+        primaryRing.rotation.z = Math.PI * 0.08;
+        planetGroup.add(primaryRing);
+
+        // D. Secondary Gyroscopic Energy Ring (contrasting angle)
+        const gyroInner = 13.2;
+        const gyroOuter = 14.2;
+        const gyroGeom = new THREE.RingGeometry(gyroInner, gyroOuter, 72, 2);
+        const gyroMat = new THREE.MeshBasicMaterial({
+            color: 0x38bdf8,
+            side: THREE.DoubleSide,
+            transparent: true,
+            opacity: 0.55,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
+        });
+        const gyroRing = new THREE.Mesh(gyroGeom, gyroMat);
+        gyroRing.rotation.x = Math.PI * 0.65;
+        gyroRing.rotation.y = Math.PI * 0.22;
+        planetGroup.add(gyroRing);
+
+        // E. Outer Subtle Orbital Torus Filament
+        const torusGeom = new THREE.TorusGeometry(28, 0.08, 16, 120);
+        const torusMat = new THREE.MeshBasicMaterial({
+            color: 0x8b5cf6,
+            transparent: true,
+            opacity: 0.40,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
+        });
+        const outerTorus = new THREE.Mesh(torusGeom, torusMat);
+        outerTorus.rotation.x = Math.PI * 0.42;
+        planetGroup.add(outerTorus);
+
+        // F. Tiny Luminous Particles Moving Along Orbital Paths
+        const satelliteCount = 180;
+        const satGeo = new THREE.BufferGeometry();
+        const satPositions = new Float32Array(satelliteCount * 3);
+        const satColors = new Float32Array(satelliteCount * 3);
+        const satRadii = new Float32Array(satelliteCount);
+        const satAngles = new Float32Array(satelliteCount);
+        const satSpeeds = new Float32Array(satelliteCount);
+
+        for (let i = 0; i < satelliteCount; i++) {
+            const r = ringInner + Math.random() * (ringOuter - ringInner);
+            const a = Math.random() * Math.PI * 2;
+            satRadii[i] = r;
+            satAngles[i] = a;
+            satSpeeds[i] = (0.0035 + Math.random() * 0.0055) * (Math.random() < 0.15 ? -1 : 1);
+
+            satPositions[i * 3] = Math.cos(a) * r;
+            satPositions[i * 3 + 1] = Math.sin(a) * r;
+            satPositions[i * 3 + 2] = (Math.random() - 0.5) * 0.5;
+
+            const isCyan = Math.random() > 0.45;
+            satColors[i * 3] = isCyan ? 0.08 : 0.68;
+            satColors[i * 3 + 1] = isCyan ? 0.82 : 0.45;
+            satColors[i * 3 + 2] = 1.0;
+        }
+        satGeo.setAttribute("position", new THREE.BufferAttribute(satPositions, 3));
+        satGeo.setAttribute("color", new THREE.BufferAttribute(satColors, 3));
+
+        const satMat = new THREE.PointsMaterial({
+            size: 1.5,
+            map: starTexture,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.92,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
+        });
+        const orbitalSatellites = new THREE.Points(satGeo, satMat);
+        primaryRing.add(orbitalSatellites);
+
+        // --- 3. LIGHTING ---
+        // Distant cosmic star directional light
+        const dirLight = new THREE.DirectionalLight(0xdbeafe, 2.0);
+        dirLight.position.set(-45, 35, 45);
+        scene.add(dirLight);
+
+        // Violet atmospheric rim light
+        const rimLight = new THREE.PointLight(0x8b5cf6, 1.4, 160);
+        rimLight.position.set(25, -12, -22);
+        scene.add(rimLight);
+
+        // Ambient midnight-navy light
+        const ambLight = new THREE.AmbientLight(0x0a1030, 0.55);
+        scene.add(ambLight);
+
+        // --- 4. RESPONSIVE COMPOSITION & POSITIONING ---
+        let basePosY = 2.2;
+        function updatePlanetLayout() {
+            const width = window.innerWidth;
+            if (width < 768) {
+                // Mobile: centered in upper hero background so text remains 100% legible
+                basePosY = 9.2;
+                planetGroup.position.set(0, basePosY, -8);
+                planetGroup.scale.set(0.70, 0.70, 0.70);
+            } else if (width < 992) {
+                // Tablet: slightly offset to right
+                basePosY = 4.0;
+                planetGroup.position.set(11, basePosY, -3);
+                planetGroup.scale.set(0.85, 0.85, 0.85);
+            } else {
+                // Desktop: complements hero content, framing avatar on right side
+                basePosY = 2.2;
+                planetGroup.position.set(16.5, basePosY, 0);
+                planetGroup.scale.set(1.0, 1.0, 1.0);
+            }
+        }
+        updatePlanetLayout();
+
+        // --- 5. INTERACTIONS: MOUSE PARALLAX & SCROLL DYNAMICS ---
+        const mouse = { x: 0, y: 0 };
+        window.addEventListener("mousemove", (e) => {
+            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        // --- 6. ANIMATION LOOP ---
+        let animationFrameId = null;
+        let clock = new THREE.Clock();
+
+        function animateSpaceScene() {
+            const delta = Math.min(clock.getDelta(), 0.1);
+            const time = clock.getElapsedTime();
+
+            if (!prefersReducedMotion) {
+                // Planet & Rings continuous smooth rotation
+                planetMesh.rotation.y += 0.0028;
+                gyroRing.rotation.z += 0.0035;
+                primaryRing.rotation.z -= 0.0008;
+
+                // Move satellites along orbital path
+                const satPosArr = satGeo.attributes.position.array;
+                for (let i = 0; i < satelliteCount; i++) {
+                    satAngles[i] += satSpeeds[i];
+                    satPosArr[i * 3] = Math.cos(satAngles[i]) * satRadii[i];
+                    satPosArr[i * 3 + 1] = Math.sin(satAngles[i]) * satRadii[i];
+                }
+                satGeo.attributes.position.needsUpdate = true;
+
+                // Natural forward-motion universe flight
+                const warpArr = warpGeo.attributes.position.array;
+                const starSpeed = 0.36;
+                for (let i = 0; i < warpCount; i++) {
+                    warpArr[i * 3 + 2] += starSpeed;
+                    if (warpArr[i * 3 + 2] > camera.position.z + 30) {
+                        warpArr[i * 3 + 2] = -650;
+                        warpArr[i * 3] = (Math.random() - 0.5) * 550;
+                        warpArr[i * 3 + 1] = (Math.random() - 0.5) * 400;
+                    }
+                }
+                warpGeo.attributes.position.needsUpdate = true;
+
+                // Slow subtle celestial drift
+                deepStarfield.rotation.y -= 0.0003;
+                nebulaGroup.rotation.z = Math.sin(time * 0.05) * 0.04;
+            }
+
+            // Mouse parallax with smooth camera damping
+            const targetCamX = mouse.x * 3.2;
+            const targetCamY = mouse.y * 2.2;
+            camera.position.x += (targetCamX - camera.position.x) * 0.045;
+            camera.position.y += (targetCamY - camera.position.y) * 0.045;
+
+            // Scroll parallax: smoothly changes camera angle and planet elevation
+            const maxScroll = (document.documentElement.scrollHeight - window.innerHeight) || 1;
+            const scrollFraction = Math.min(Math.max(window.scrollY / maxScroll, 0), 1);
+            if (!prefersReducedMotion) {
+                planetGroup.position.y = basePosY + (scrollFraction * 12);
+                planetGroup.rotation.y = scrollFraction * Math.PI * 1.5;
+            }
+
+            camera.lookAt(0, 0, 0);
+            renderer.render(scene, camera);
+            animationFrameId = requestAnimationFrame(animateSpaceScene);
         }
 
-        // Pause animation when tab is inactive to preserve CPU
+        // --- 7. EVENT LISTENERS & RESOURCE OPTIMIZATION ---
+        window.addEventListener("resize", () => {
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+            renderer.setSize(w, h);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+            updatePlanetLayout();
+        });
+
+        // Tab visibility pause to preserve battery and GPU
         document.addEventListener("visibilitychange", () => {
             if (document.hidden) {
-                cancelAnimationFrame(animationFrameId);
+                if (animationFrameId) cancelAnimationFrame(animationFrameId);
             } else {
-                animationFrameId = requestAnimationFrame(animateCanvas);
+                clock.start();
+                animationFrameId = requestAnimationFrame(animateSpaceScene);
             }
         });
 
-        // Respect reduced motion
-        if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-            animateCanvas();
+        if (prefersReducedMotion) {
+            renderer.render(scene, camera);
+        } else {
+            animateSpaceScene();
         }
     }
+    init3DSpaceUniverse();
 
 
     /* =====================================================

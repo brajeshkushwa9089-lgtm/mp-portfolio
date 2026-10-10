@@ -63,14 +63,10 @@
 
 
     <!-- =================================
-         BACKGROUND EFFECTS
+         3D SPACE UNIVERSE & ROTATING PLANET BACKGROUND
     ================================== -->
-    <div class="background-effects">
-        <canvas id="neural-canvas" class="neural-canvas"></canvas>
-        <div class="gradient-orb orb-1"></div>
-        <div class="gradient-orb orb-2"></div>
-        <div class="gradient-orb orb-3"></div>
-        <div class="cyber-grid"></div>
+    <div class="background-effects" aria-hidden="true">
+        <canvas id="space-3d-canvas" class="space-3d-canvas"></canvas>
     </div>
 
 
@@ -2058,8 +2054,14 @@
 
 
     <!-- =================================
-         JAVASCRIPT
+         THREE.JS 3D ENGINE & JAVASCRIPT
     ================================== -->
+    <script src="three.min.js"></script>
+    <script>
+        if (typeof THREE === 'undefined') {
+            document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>');
+        }
+    </script>
     <script src="script.js"></script>
 
 </body>

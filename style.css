@@ -438,34 +438,20 @@ textarea:focus-visible {
 
 
 /* =========================================================
-   8. BACKGROUND EFFECTS
+   8. 3D SPACE UNIVERSE & ROTATING PLANET BACKGROUND
 ========================================================= */
 
 .background-effects {
-
     position: fixed;
-
     inset: 0;
-
     overflow: hidden;
-
     pointer-events: none;
-
     z-index: 0;
+    background: #030712;
 }
 
-
 .gradient-orb {
-
-    position: absolute;
-
-    border-radius: 50%;
-
-    filter: blur(80px);
-
-    opacity: 0.35;
-
-    animation: floatingOrb 12s ease-in-out infinite;
+    display: none !important;
 }
 
 
@@ -2884,31 +2870,27 @@ textarea:focus-visible {
    37. CREATIVE UPGRADES & INTERACTIVE STYLES
    ========================================================= */
 
-/* --- Cyber Grid & Neural Canvas --- */
+/* --- 3D Space Universe & Planet Canvas --- */
+.space-3d-canvas,
 .neural-canvas {
     position: fixed;
     inset: 0;
     width: 100vw;
     height: 100vh;
     pointer-events: none;
-    z-index: 1;
-    opacity: 0.65;
+    z-index: 0;
+    display: block;
+    opacity: 1;
 }
 
+body.light-mode .space-3d-canvas,
 body.light-mode .neural-canvas {
-    opacity: 0.28;
+    opacity: 0.88;
+    filter: brightness(0.92);
 }
 
 .cyber-grid {
-    position: absolute;
-    inset: 0;
-    background-image: 
-        linear-gradient(rgba(124, 58, 237, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(124, 58, 237, 0.05) 1px, transparent 1px);
-    background-size: 60px 60px;
-    mask-image: radial-gradient(circle at 50% 50%, black 20%, transparent 80%);
-    -webkit-mask-image: radial-gradient(circle at 50% 50%, black 20%, transparent 80%);
-    pointer-events: none;
+    display: none !important;
 }
 
 /* --- Gradient Text Helper --- */
