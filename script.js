@@ -136,14 +136,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       3. THE THINKING MACHINE — V2 (ULTRA 3D EXPERIENCE)
-       A Signature 3D Computational Sculpture for a CSE (AI) Portfolio
-       - Continuous fluid traveling wave parametric manifold (44 precision filaments)
-       - The Quantum Tensor Core: Rotating wireframe icosahedron, inner glowing octahedron & gyroscopic rings
-       - 320 Quantum Stream Particles flowing along mathematical streamlines
-       - Dual laser scanline wavefronts sweeping along curves
-       - Interactive 3D click shockwaves and dynamic pointer spotlighting
-       - 3-Phase Continuous Signature Timeline: Observe -> Compute -> Resolve
+       3. THE THINKING MACHINE — FULL SCREEN 3D CYBER ENVIRONMENT
+       - Full-screen dual parametric manifold architecture (edge-to-edge 100vw x 100vh)
+       - Interactive scroll-driven 3D camera fly-through & rotation
+       - Dynamic scroll momentum & particle velocity surge
+       - The Quantum Tensor Core: Rotating wireframe icosahedron, obsidian core & gyroscopic rings
+       - 450 Quantum Stream & Ambient Cosmic Cyber Particles across full 3D volume
+       - Laser scanline wavefronts & click shockwaves
        ===================================================== */
     function initThinkingMachineSculpture() {
         const canvas = document.getElementById("space-3d-canvas") || document.getElementById("neural-canvas");
@@ -179,10 +178,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const scene = new THREE.Scene();
         // Deep obsidian atmospheric depth
-        scene.fog = new THREE.FogExp2(0x02040a, 0.0015);
+        scene.fog = new THREE.FogExp2(0x02040a, 0.0012);
 
-        const camera = new THREE.PerspectiveCamera(48, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 0, 50);
+        const camera = new THREE.PerspectiveCamera(54, window.innerWidth / window.innerHeight, 0.1, 1500);
+        camera.position.set(0, 0, 48);
 
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
@@ -191,29 +190,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // --- SCENE LIGHTING ---
         // 1. Ambient Deep Midnight Navy
-        const ambientLight = new THREE.AmbientLight(0x0a1632, 0.85);
+        const ambientLight = new THREE.AmbientLight(0x0a1632, 0.90);
         scene.add(ambientLight);
 
         // 2. Primary Computational Key Light (Luminous Electric Cyan)
-        const keyLight = new THREE.DirectionalLight(0x38bdf8, 2.5);
-        keyLight.position.set(-28, 35, 42);
+        const keyLight = new THREE.DirectionalLight(0x38bdf8, 2.6);
+        keyLight.position.set(-35, 40, 45);
         scene.add(keyLight);
 
         // 3. Mathematical Rim Light (Muted Electric Violet)
-        const rimLight = new THREE.DirectionalLight(0x8b5cf6, 1.8);
-        rimLight.position.set(34, -26, -20);
+        const rimLight = new THREE.DirectionalLight(0x8b5cf6, 2.0);
+        rimLight.position.set(40, -30, -25);
         scene.add(rimLight);
 
         // 4. Dynamic Interactive Pointer Spotlight (Follows Cursor in 3D)
-        const pointerLight = new THREE.PointLight(0x22d3ee, 2.4, 55);
-        pointerLight.position.set(10, 2, 22);
+        const pointerLight = new THREE.PointLight(0x22d3ee, 2.5, 65);
+        pointerLight.position.set(0, 0, 25);
         scene.add(pointerLight);
 
         // 5. Tensor Core Inner Glow Light
-        const coreLight = new THREE.PointLight(0xa78bfa, 2.2, 35);
+        const coreLight = new THREE.PointLight(0xa78bfa, 2.4, 45);
         scene.add(coreLight);
 
-        // --- PROCEDURAL GLOW SPRITE TEXTURES ---
+        // --- PROCEDURAL GLOW SPRITE TEXTURE ---
         function createGlowSpriteTexture() {
             const size = 64;
             const c = document.createElement("canvas");
@@ -239,156 +238,234 @@ document.addEventListener("DOMContentLoaded", () => {
         const sculptureGroup = new THREE.Group();
         scene.add(sculptureGroup);
 
-        // --- CLICK SHOCKWAVE STATE ---
+        // --- INTERACTIVE SCROLL & CLICK STATE ---
+        let targetScrollProg = 0;
+        let smoothScrollProg = 0;
+        let scrollVelocity = 0;
+        let lastScrollY = window.scrollY;
+
+        function updateScrollMetrics() {
+            const maxScroll = (document.documentElement.scrollHeight - window.innerHeight) || 1;
+            targetScrollProg = Math.min(Math.max(window.scrollY / maxScroll, 0), 1);
+            const deltaY = window.scrollY - lastScrollY;
+            lastScrollY = window.scrollY;
+            scrollVelocity = Math.min(scrollVelocity + Math.abs(deltaY) * 0.05, 3.5);
+        }
+
+        window.addEventListener("scroll", updateScrollMetrics, { passive: true });
+        window.addEventListener("wheel", (e) => {
+            scrollVelocity = Math.min(scrollVelocity + Math.abs(e.deltaY) * 0.008, 3.5);
+        }, { passive: true });
+
         let clickShockwaveIntensity = 0.0;
         let clickShockwaveProgress = 0.0;
-
         window.addEventListener("pointerdown", () => {
             clickShockwaveIntensity = 1.0;
             clickShockwaveProgress = 0.0;
         });
 
-        // --- PARAMETRIC MATHEMATICS ENGINE ---
-        // Spine curve evaluated continuously along longitudinal parameter u in [0, 1]
-        function getSpinePosition(u, t, morph) {
-            let x = -24 + (46 * u) + (6.0 * Math.sin(u * Math.PI * 1.4));
-            let y = -16 + (20 * u) + (18 * Math.pow(u, 2.0)) + (4.0 * Math.sin(u * Math.PI * 1.8));
-            let z = -6 + (14 * Math.sin(u * Math.PI * 1.3)) - (10 * Math.sin(u * Math.PI * 2.6) * Math.max(0, u - 0.4));
+        // --- FULL-SCREEN DUAL PARAMETRIC MATHEMATICS ENGINE ---
+        // 1. Manifold Alpha: Full-screen primary ribbon sweeping from (-44, -28) to (+44, +28)
+        function getSpineAlpha(u, t, morph, scrollProg, scrollVel) {
+            let x = -44 + (88 * u) + (10.0 * Math.sin(u * Math.PI * 1.4));
+            let y = -28 + (34 * u) + (26 * Math.pow(u, 2.0)) + (6.0 * Math.sin(u * Math.PI * 1.8));
+            let z = -12 + (24 * Math.sin(u * Math.PI * 1.3)) - (16 * Math.sin(u * Math.PI * 2.6) * Math.max(0, u - 0.4));
 
-            // Continuous fluid traveling wave (silky, hypnotic wave flow)
-            const wave1 = Math.sin(u * Math.PI * 3.5 - t * 1.6) * 1.5;
-            const wave2 = Math.cos(u * Math.PI * 2.2 + t * 1.1) * 1.1;
-            const wave3 = Math.sin(u * Math.PI * 5.0 - t * 2.4) * 0.7;
-            const waveEnvelope = Math.sin(u * Math.PI);
+            // Dynamic traveling wave speed accelerates when scrolling
+            const waveSpeed = 1.6 + scrollVel * 2.2;
+            const wave1 = Math.sin(u * Math.PI * 3.5 - t * waveSpeed) * (1.8 + scrollVel * 0.7);
+            const wave2 = Math.cos(u * Math.PI * 2.2 + t * (waveSpeed * 0.75)) * 1.3;
+            const waveEnv = Math.sin(u * Math.PI);
 
-            x += (wave1 + wave3) * waveEnvelope * 0.85;
-            y += (wave2 + wave1) * waveEnvelope * 0.95;
-            z += (wave2 - wave3) * waveEnvelope * 1.3;
+            x += wave1 * waveEnv * 0.95;
+            y += (wave2 + wave1) * waveEnv * 1.15;
+            z += (wave2 - wave1) * waveEnv * 1.45;
 
-            // Algorithmic morphing during Compute phase
+            // Scroll-driven structural morphing
+            x += Math.sin(scrollProg * Math.PI * 2.0 + u * Math.PI) * 5.0;
+            z += Math.cos(scrollProg * Math.PI * 2.0 + u * Math.PI) * 6.0;
+
             if (morph > 0.001) {
-                x += morph * 4.2 * Math.sin(u * Math.PI * 2.5 + t);
-                y += morph * 3.2 * Math.cos(u * Math.PI * 2.0 - t);
-                z += morph * 5.2 * Math.sin(u * Math.PI * 1.8);
+                x += morph * 4.5 * Math.sin(u * Math.PI * 2.5 + t);
+                y += morph * 3.5 * Math.cos(u * Math.PI * 2.0 - t);
+                z += morph * 5.5 * Math.sin(u * Math.PI * 1.8);
             }
 
-            // Click shockwave expansion
             if (clickShockwaveIntensity > 0.001) {
-                const distToShock = Math.abs(u - clickShockwaveProgress);
-                if (distToShock < 0.22) {
-                    const pulse = Math.cos((distToShock / 0.22) * Math.PI * 0.5) * clickShockwaveIntensity * 4.0;
+                const dist = Math.abs(u - clickShockwaveProgress);
+                if (dist < 0.22) {
+                    const pulse = Math.cos((dist / 0.22) * Math.PI * 0.5) * clickShockwaveIntensity * 4.5;
                     y += pulse;
-                    z += pulse * 1.25;
+                    z += pulse * 1.3;
                 }
             }
 
             return { x, y, z };
         }
 
-        // Longitudinal slice frames cached per frame for 60fps performance
-        const NUM_STEPS = 90;
-        let sliceFrames = [];
+        // 2. Manifold Beta: Full-screen counter-diagonal ribbon from (+42, -30) to (-38, +28)
+        function getSpineBeta(u, t, morph, scrollProg, scrollVel) {
+            let x = 42 - (84 * u) - (8.0 * Math.sin(u * Math.PI * 1.5));
+            let y = -30 + (32 * u) + (28 * Math.pow(u, 1.9)) + (5.0 * Math.sin(u * Math.PI * 2.0));
+            let z = 8 - (20 * Math.sin(u * Math.PI * 1.4)) + (14 * Math.sin(u * Math.PI * 2.4) * Math.max(0, u - 0.35));
 
-        function computeSliceFrames(t, morph) {
+            const waveSpeed = 1.4 + scrollVel * 2.0;
+            const wave = Math.sin(u * Math.PI * 4.0 + t * waveSpeed) * (1.6 + scrollVel * 0.6);
+            const waveEnv = Math.sin(u * Math.PI);
+
+            x += wave * waveEnv;
+            y += wave * waveEnv * 0.85;
+            z += wave * waveEnv * 1.25;
+
+            x -= Math.sin(scrollProg * Math.PI * 2.0 + u * Math.PI) * 4.0;
+            z -= Math.cos(scrollProg * Math.PI * 2.0 + u * Math.PI) * 5.0;
+
+            return { x, y, z };
+        }
+
+        const NUM_STEPS = 85;
+        let slicesAlpha = [];
+        let slicesBeta = [];
+
+        function computeFrames(t, morph, scrollProg, scrollVel) {
             const eps = 0.005;
-            sliceFrames = [];
+            slicesAlpha = [];
+            slicesBeta = [];
+
+            // Compute slices for Manifold Alpha
             for (let i = 0; i < NUM_STEPS; i++) {
                 const u = i / (NUM_STEPS - 1);
-                const pPrev = getSpinePosition(Math.max(0, u - eps), t, morph);
-                const pNext = getSpinePosition(Math.min(1, u + eps), t, morph);
-                const pos = getSpinePosition(u, t, morph);
+                const pPrev = getSpineAlpha(Math.max(0, u - eps), t, morph, scrollProg, scrollVel);
+                const pNext = getSpineAlpha(Math.min(1, u + eps), t, morph, scrollProg, scrollVel);
+                const pos = getSpineAlpha(u, t, morph, scrollProg, scrollVel);
 
-                const dx = pNext.x - pPrev.x;
-                const dy = pNext.y - pPrev.y;
-                const dz = pNext.z - pPrev.z;
+                const dx = pNext.x - pPrev.x, dy = pNext.y - pPrev.y, dz = pNext.z - pPrev.z;
                 const len = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1;
                 const Tx = dx / len, Ty = dy / len, Tz = dz / len;
 
                 let upX = 0, upY = 0, upZ = 1;
                 if (Math.abs(Tz) > 0.95) { upX = 0; upY = 1; upZ = 0; }
 
-                // B0 = T x up
-                let b0X = Ty * upZ - Tz * upY;
-                let b0Y = Tz * upX - Tx * upZ;
-                let b0Z = Tx * upY - Ty * upX;
+                let b0X = Ty * upZ - Tz * upY, b0Y = Tz * upX - Tx * upZ, b0Z = Tx * upY - Ty * upX;
                 const b0Len = Math.sqrt(b0X * b0X + b0Y * b0Y + b0Z * b0Z) || 1;
                 b0X /= b0Len; b0Y /= b0Len; b0Z /= b0Len;
 
-                // N0 = B0 x T
-                let n0X = b0Y * Tz - b0Z * Ty;
-                let n0Y = b0Z * Tx - b0X * Tz;
-                let n0Z = b0X * Ty - b0Y * Tx;
+                let n0X = b0Y * Tz - b0Z * Ty, n0Y = b0Z * Tx - b0X * Tz, n0Z = b0X * Ty - b0Y * Tx;
                 const n0Len = Math.sqrt(n0X * n0X + n0Y * n0Y + n0Z * n0Z) || 1;
                 n0X /= n0Len; n0Y /= n0Len; n0Z /= n0Len;
 
-                // Continuous signature twist
-                const twist = u * Math.PI * 2.4 + 0.55 * Math.sin(u * Math.PI - t * 0.85) + morph * 0.85 * Math.sin(u * Math.PI);
+                // Twist with scroll amplification
+                const twist = u * Math.PI * 2.4 + 0.55 * Math.sin(u * Math.PI - t * 0.85) + (scrollProg * Math.PI) + (scrollVel * 0.35);
                 const cosT = Math.cos(twist), sinT = Math.sin(twist);
 
-                // T x B0
-                const tbX = Ty * b0Z - Tz * b0Y;
-                const tbY = Tz * b0X - Tx * b0Z;
-                const tbZ = Tx * b0Y - Ty * b0X;
-                const Bx = b0X * cosT + tbX * sinT;
-                const By = b0Y * cosT + tbY * sinT;
-                const Bz = b0Z * cosT + tbZ * sinT;
+                const tbX = Ty * b0Z - Tz * b0Y, tbY = Tz * b0X - Tx * b0Z, tbZ = Tx * b0Y - Ty * b0X;
+                const Bx = b0X * cosT + tbX * sinT, By = b0Y * cosT + tbY * sinT, Bz = b0Z * cosT + tbZ * sinT;
 
-                // T x N0
-                const tnX = Ty * n0Z - Tz * n0Y;
-                const tnY = Tz * n0X - Tx * n0Z;
-                const tnZ = Tx * n0Y - Ty * n0X;
-                const Nx = n0X * cosT + tnX * sinT;
-                const Ny = n0Y * cosT + tnY * sinT;
-                const Nz = n0Z * cosT + tnZ * sinT;
+                const tnX = Ty * n0Z - Tz * n0Y, tnY = Tz * n0X - Tx * n0Z, tnZ = Tx * n0Y - Ty * n0X;
+                const Nx = n0X * cosT + tnX * sinT, Ny = n0Y * cosT + tnY * sinT, Nz = n0Z * cosT + tnZ * sinT;
 
-                // Dynamic width with laminar expansion and inflection waist
-                const width = 3.2 + 15.5 * Math.pow(Math.sin(u * Math.PI), 1.2) + 3.2 * Math.sin(u * Math.PI * 2.0 - t * 1.2) + morph * 4.2 * Math.sin(u * Math.PI);
+                const width = 4.0 + 18.0 * Math.pow(Math.sin(u * Math.PI), 1.2) + 3.5 * Math.sin(u * Math.PI * 2.0 - t * 1.2) + (scrollVel * 2.0);
                 const sinU = Math.sin(u * Math.PI);
 
-                sliceFrames.push({
-                    u,
-                    pos,
-                    Bx, By, Bz,
-                    Nx, Ny, Nz,
-                    width,
-                    halfW: width * 0.5,
-                    sinU
-                });
+                slicesAlpha.push({ u, pos, Bx, By, Bz, Nx, Ny, Nz, width, halfW: width * 0.5, sinU });
+            }
+
+            // Compute slices for Manifold Beta
+            for (let i = 0; i < NUM_STEPS; i++) {
+                const u = i / (NUM_STEPS - 1);
+                const pPrev = getSpineBeta(Math.max(0, u - eps), t, morph, scrollProg, scrollVel);
+                const pNext = getSpineBeta(Math.min(1, u + eps), t, morph, scrollProg, scrollVel);
+                const pos = getSpineBeta(u, t, morph, scrollProg, scrollVel);
+
+                const dx = pNext.x - pPrev.x, dy = pNext.y - pPrev.y, dz = pNext.z - pPrev.z;
+                const len = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1;
+                const Tx = dx / len, Ty = dy / len, Tz = dz / len;
+
+                let upX = 0, upY = 0, upZ = 1;
+                if (Math.abs(Tz) > 0.95) { upX = 0; upY = 1; upZ = 0; }
+
+                let b0X = Ty * upZ - Tz * upY, b0Y = Tz * upX - Tx * upZ, b0Z = Tx * upY - Ty * upX;
+                const b0Len = Math.sqrt(b0X * b0X + b0Y * b0Y + b0Z * b0Z) || 1;
+                b0X /= b0Len; b0Y /= b0Len; b0Z /= b0Len;
+
+                let n0X = b0Y * Tz - b0Z * Ty, n0Y = b0Z * Tx - b0X * Tz, n0Z = b0X * Ty - b0Y * Tx;
+                const n0Len = Math.sqrt(n0X * n0X + n0Y * n0Y + n0Z * n0Z) || 1;
+                n0X /= n0Len; n0Y /= n0Len; n0Z /= n0Len;
+
+                const twist = u * Math.PI * 2.2 - t * 0.7 - (scrollProg * Math.PI * 0.8);
+                const cosT = Math.cos(twist), sinT = Math.sin(twist);
+
+                const tbX = Ty * b0Z - Tz * b0Y, tbY = Tz * b0X - Tx * b0Z, tbZ = Tx * b0Y - Ty * b0X;
+                const Bx = b0X * cosT + tbX * sinT, By = b0Y * cosT + tbY * sinT, Bz = b0Z * cosT + tbZ * sinT;
+
+                const tnX = Ty * n0Z - Tz * n0Y, tnY = Tz * n0X - Tx * n0Z, tnZ = Tx * n0Y - Ty * n0X;
+                const Nx = n0X * cosT + tnX * sinT, Ny = n0Y * cosT + tnY * sinT, Nz = n0Z * cosT + tnZ * sinT;
+
+                const width = 3.5 + 14.0 * Math.pow(Math.sin(u * Math.PI), 1.2);
+                const sinU = Math.sin(u * Math.PI);
+
+                slicesBeta.push({ u, pos, Bx, By, Bz, Nx, Ny, Nz, width, halfW: width * 0.5, sinU });
             }
         }
 
-        // --- LAYER 1: PRIMARY COMPUTATIONAL MANIFOLD (44 PRECISION FILAMENTS) ---
-        const NUM_FILAMENTS = 44;
-        const filamentLines = [];
-        const filamentGeos = [];
+        // Helper to evaluate 3D point on either manifold from cached slices
+        function samplePoint(slices, u, v) {
+            const clampedU = Math.min(Math.max(u, 0), 1);
+            const stepFloat = clampedU * (NUM_STEPS - 1);
+            const idxA = Math.floor(stepFloat);
+            const idxB = Math.min(idxA + 1, NUM_STEPS - 1);
+            const f = stepFloat - idxA;
 
-        const filamentGroup = new THREE.Group();
-        sculptureGroup.add(filamentGroup);
+            const slA = slices[idxA];
+            const slB = slices[idxB];
+            if (!slA || !slB) return { x: 0, y: 0, z: 0 };
 
-        for (let k = 0; k < NUM_FILAMENTS; k++) {
-            const v = (k / (NUM_FILAMENTS - 1)) * 2 - 1; // [-1, 1]
+            const posX = slA.pos.x + (slB.pos.x - slA.pos.x) * f;
+            const posY = slA.pos.y + (slB.pos.y - slA.pos.y) * f;
+            const posZ = slA.pos.z + (slB.pos.z - slA.pos.z) * f;
+
+            const Bx = slA.Bx + (slB.Bx - slA.Bx) * f;
+            const By = slA.By + (slB.By - slA.By) * f;
+            const Bz = slA.Bz + (slB.Bz - slA.Bz) * f;
+
+            const Nx = slA.Nx + (slB.Nx - slA.Nx) * f;
+            const Ny = slA.Ny + (slB.Ny - slA.Ny) * f;
+            const Nz = slA.Nz + (slB.Nz - slA.Nz) * f;
+
+            const halfW = slA.halfW + (slB.halfW - slA.halfW) * f;
+            const sinU = slA.sinU + (slB.sinU - slA.sinU) * f;
+            const camber = (1.0 - v * v) * 1.6 * sinU;
+
+            return {
+                x: posX + (v * halfW * Bx) + (camber * Nx),
+                y: posY + (v * halfW * By) + (camber * Ny),
+                z: posZ + (v * halfW * Bz) + (camber * Nz)
+            };
+        }
+
+        // --- LAYER 1: MANIFOLD ALPHA (PRIMARY FULL-SCREEN FILAMENT BUNDLE - 38 STRANDS) ---
+        const NUM_ALPHA_FILAMENTS = 38;
+        const alphaLines = [];
+        const alphaGeos = [];
+        const alphaGroup = new THREE.Group();
+        sculptureGroup.add(alphaGroup);
+
+        for (let k = 0; k < NUM_ALPHA_FILAMENTS; k++) {
+            const v = (k / (NUM_ALPHA_FILAMENTS - 1)) * 2 - 1;
             const absV = Math.abs(v);
-
             const posArray = new Float32Array(NUM_STEPS * 3);
             const geo = new THREE.BufferGeometry();
             geo.setAttribute("position", new THREE.BufferAttribute(posArray, 3));
-            filamentGeos.push(geo);
+            alphaGeos.push(geo);
 
             let col = 0x22d3ee;
             let opacity = 0.88;
-
             if (absV <= 0.32) {
-                // Core luminous cyan strands
-                col = 0x38bdf8;
-                opacity = 0.98;
+                col = 0x38bdf8; opacity = 0.98;
             } else if (absV <= 0.70) {
-                // Intermediate cyan-indigo strands
-                col = 0x06b6d4;
-                opacity = 0.78;
+                col = 0x06b6d4; opacity = 0.78;
             } else {
-                // Perimeter muted violet / indigo contour threads
-                col = 0xa78bfa;
-                opacity = 0.58;
+                col = 0xa78bfa; opacity = 0.58;
             }
 
             const mat = new THREE.LineBasicMaterial({
@@ -398,15 +475,41 @@ document.addEventListener("DOMContentLoaded", () => {
                 blending: THREE.AdditiveBlending,
                 depthWrite: false
             });
-
             const line = new THREE.Line(geo, mat);
-            line.userData = { v, vSq: v * v, baseOpacity: opacity };
-            filamentLines.push(line);
-            filamentGroup.add(line);
+            line.userData = { v, vSq: v * v };
+            alphaLines.push(line);
+            alphaGroup.add(line);
         }
 
-        // --- LAYER 2: TRANSLUCENT GRAPHITE & GLASS-LIKE RIBBON MESH ---
-        const MESH_U_STEPS = 48;
+        // --- LAYER 2: MANIFOLD BETA (COUNTER-DIAGONAL FULL-SCREEN FILAMENT BUNDLE - 24 STRANDS) ---
+        const NUM_BETA_FILAMENTS = 24;
+        const betaLines = [];
+        const betaGeos = [];
+        const betaGroup = new THREE.Group();
+        sculptureGroup.add(betaGroup);
+
+        for (let b = 0; b < NUM_BETA_FILAMENTS; b++) {
+            const v = (b / (NUM_BETA_FILAMENTS - 1)) * 2 - 1;
+            const posArray = new Float32Array(NUM_STEPS * 3);
+            const geo = new THREE.BufferGeometry();
+            geo.setAttribute("position", new THREE.BufferAttribute(posArray, 3));
+            betaGeos.push(geo);
+
+            const mat = new THREE.LineBasicMaterial({
+                color: b % 2 === 0 ? 0x8b5cf6 : 0xa78bfa,
+                transparent: true,
+                opacity: 0.65,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+            const line = new THREE.Line(geo, mat);
+            line.userData = { v, vSq: v * v };
+            betaLines.push(line);
+            betaGroup.add(line);
+        }
+
+        // --- LAYER 3: TRANSLUCENT GRAPHITE & GLASS RIBBON MESH ---
+        const MESH_U_STEPS = 45;
         const MESH_V_STEPS = 12;
         const meshTotalVerts = MESH_U_STEPS * MESH_V_STEPS;
         const meshPosArray = new Float32Array(meshTotalVerts * 3);
@@ -437,311 +540,132 @@ document.addEventListener("DOMContentLoaded", () => {
             depthWrite: false,
             blending: THREE.NormalBlending
         });
-
         const ribbonMesh = new THREE.Mesh(ribbonMeshGeo, graphiteGlassMat);
         sculptureGroup.add(ribbonMesh);
 
-        // --- LAYER 3: SECONDARY INTERWOVEN LATENT RIBBON (20 FILAMENTS) ---
-        const NUM_LATENT = 20;
-        const latentGeos = [];
-        const latentLines = [];
-        const latentGroup = new THREE.Group();
-        sculptureGroup.add(latentGroup);
-
-        for (let l = 0; l < NUM_LATENT; l++) {
-            const lv = (l / (NUM_LATENT - 1)) * 2 - 1;
-            const posArray = new Float32Array(NUM_STEPS * 3);
-            const geo = new THREE.BufferGeometry();
-            geo.setAttribute("position", new THREE.BufferAttribute(posArray, 3));
-            latentGeos.push(geo);
-
-            const mat = new THREE.LineBasicMaterial({
-                color: l % 2 === 0 ? 0x8b5cf6 : 0xa78bfa,
-                transparent: true,
-                opacity: 0.48,
-                blending: THREE.AdditiveBlending,
-                depthWrite: false
-            });
-
-            const line = new THREE.Line(geo, mat);
-            line.userData = { lv };
-            latentLines.push(line);
-            latentGroup.add(line);
-        }
-
-        // --- LAYER 4: ORTHOGONAL MATHEMATICAL CONTOUR RIBS ---
-        const NUM_RIBS = 20;
-        const RIB_V_STEPS = 28;
-        const ribGeos = [];
-        const ribLines = [];
-        const ribGroup = new THREE.Group();
-        sculptureGroup.add(ribGroup);
-
-        for (let r = 0; r < NUM_RIBS; r++) {
-            const uFrac = 0.06 + (r / (NUM_RIBS - 1)) * 0.88;
-            const posArray = new Float32Array(RIB_V_STEPS * 3);
-            const geo = new THREE.BufferGeometry();
-            geo.setAttribute("position", new THREE.BufferAttribute(posArray, 3));
-            ribGeos.push(geo);
-
-            const mat = new THREE.LineBasicMaterial({
-                color: 0x38bdf8,
-                transparent: true,
-                opacity: 0.32,
-                blending: THREE.AdditiveBlending,
-                depthWrite: false
-            });
-
-            const line = new THREE.Line(geo, mat);
-            line.userData = { uFrac };
-            ribLines.push(line);
-            ribGroup.add(line);
-        }
-
-        // Helper to evaluate 3D point on manifold at arbitrary u, v from cached slices
-        function sampleManifoldPoint(u, v) {
-            const clampedU = Math.min(Math.max(u, 0), 1);
-            const stepFloat = clampedU * (NUM_STEPS - 1);
-            const idxA = Math.floor(stepFloat);
-            const idxB = Math.min(idxA + 1, NUM_STEPS - 1);
-            const f = stepFloat - idxA;
-
-            const slA = sliceFrames[idxA];
-            const slB = sliceFrames[idxB];
-            if (!slA || !slB) return { x: 0, y: 0, z: 0 };
-
-            const posX = slA.pos.x + (slB.pos.x - slA.pos.x) * f;
-            const posY = slA.pos.y + (slB.pos.y - slA.pos.y) * f;
-            const posZ = slA.pos.z + (slB.pos.z - slA.pos.z) * f;
-
-            const Bx = slA.Bx + (slB.Bx - slA.Bx) * f;
-            const By = slA.By + (slB.By - slA.By) * f;
-            const Bz = slA.Bz + (slB.Bz - slA.Bz) * f;
-
-            const Nx = slA.Nx + (slB.Nx - slA.Nx) * f;
-            const Ny = slA.Ny + (slB.Ny - slA.Ny) * f;
-            const Nz = slA.Nz + (slB.Nz - slA.Nz) * f;
-
-            const halfW = slA.halfW + (slB.halfW - slA.halfW) * f;
-            const sinU = slA.sinU + (slB.sinU - slA.sinU) * f;
-            const camber = (1.0 - v * v) * 1.5 * sinU;
-
-            return {
-                x: posX + (v * halfW * Bx) + (camber * Nx),
-                y: posY + (v * halfW * By) + (camber * Ny),
-                z: posZ + (v * halfW * Bz) + (camber * Nz)
-            };
-        }
-
-        // --- LAYER 5: THE QUANTUM TENSOR CORE (SIGNATURE 3D ENGINE) ---
-        // Anchored at harmonic inflection waist (u = 0.54)
+        // --- LAYER 4: THE QUANTUM TENSOR CORE ---
         const tensorCoreGroup = new THREE.Group();
         sculptureGroup.add(tensorCoreGroup);
 
-        // 1. Outer Gyroscopic Wireframe Icosahedron
-        const outerIcosaGeo = new THREE.IcosahedronGeometry(2.8, 1);
-        const outerIcosaMat = new THREE.MeshBasicMaterial({
-            color: 0x38bdf8,
-            wireframe: true,
-            transparent: true,
-            opacity: 0.60,
-            blending: THREE.AdditiveBlending
-        });
-        const outerIcosaMesh = new THREE.Mesh(outerIcosaGeo, outerIcosaMat);
+        const outerIcosaMesh = new THREE.Mesh(
+            new THREE.IcosahedronGeometry(3.2, 1),
+            new THREE.MeshBasicMaterial({ color: 0x38bdf8, wireframe: true, transparent: true, opacity: 0.65, blending: THREE.AdditiveBlending })
+        );
         tensorCoreGroup.add(outerIcosaMesh);
 
-        // 2. Inner Faceted Octahedron Core
-        const innerOctaGeo = new THREE.OctahedronGeometry(1.6, 0);
-        const innerOctaMat = new THREE.MeshStandardMaterial({
-            color: 0x050e20,
-            emissive: new THREE.Color(0xa78bfa),
-            emissiveIntensity: 1.35,
-            roughness: 0.15,
-            metalness: 0.95
-        });
-        const innerOctaMesh = new THREE.Mesh(innerOctaGeo, innerOctaMat);
+        const innerOctaMesh = new THREE.Mesh(
+            new THREE.OctahedronGeometry(1.8, 0),
+            new THREE.MeshStandardMaterial({ color: 0x050e20, emissive: new THREE.Color(0xa78bfa), emissiveIntensity: 1.4, roughness: 0.15, metalness: 0.95 })
+        );
         tensorCoreGroup.add(innerOctaMesh);
 
-        // 3. Two Gyroscopic Orbital Rings
         const gyroTorus1 = new THREE.Mesh(
-            new THREE.TorusGeometry(3.6, 0.05, 12, 64),
-            new THREE.MeshBasicMaterial({ color: 0x22d3ee, transparent: true, opacity: 0.70, blending: THREE.AdditiveBlending })
+            new THREE.TorusGeometry(4.2, 0.05, 12, 64),
+            new THREE.MeshBasicMaterial({ color: 0x22d3ee, transparent: true, opacity: 0.75, blending: THREE.AdditiveBlending })
         );
         gyroTorus1.rotation.x = Math.PI * 0.35;
         tensorCoreGroup.add(gyroTorus1);
 
         const gyroTorus2 = new THREE.Mesh(
-            new THREE.TorusGeometry(4.3, 0.04, 12, 64),
-            new THREE.MeshBasicMaterial({ color: 0x8b5cf6, transparent: true, opacity: 0.60, blending: THREE.AdditiveBlending })
+            new THREE.TorusGeometry(4.8, 0.04, 12, 64),
+            new THREE.MeshBasicMaterial({ color: 0x8b5cf6, transparent: true, opacity: 0.65, blending: THREE.AdditiveBlending })
         );
         gyroTorus2.rotation.y = Math.PI * 0.45;
         tensorCoreGroup.add(gyroTorus2);
 
-        // 4. Central Energy Core Halo Sprite
-        const coreHaloMat = new THREE.SpriteMaterial({
-            map: glowSpriteTexture,
-            color: 0x38bdf8,
-            transparent: true,
-            opacity: 0.85,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false
-        });
-        const coreHaloSprite = new THREE.Sprite(coreHaloMat);
-        coreHaloSprite.scale.set(7.5, 7.5, 1);
+        const coreHaloSprite = new THREE.Sprite(
+            new THREE.SpriteMaterial({ map: glowSpriteTexture, color: 0x38bdf8, transparent: true, opacity: 0.85, blending: THREE.AdditiveBlending, depthWrite: false })
+        );
+        coreHaloSprite.scale.set(8.5, 8.5, 1);
         tensorCoreGroup.add(coreHaloSprite);
 
-        // --- LAYER 6: 320 QUANTUM DATA STREAM PARTICLES ---
-        const PARTICLE_COUNT = 320;
-        const particleGeo = new THREE.BufferGeometry();
-        const particlePositions = new Float32Array(PARTICLE_COUNT * 3);
-        const particleColors = new Float32Array(PARTICLE_COUNT * 3);
-        const particleData = [];
+        // --- LAYER 5: 450 FULL-SCREEN QUANTUM STREAM & AMBIENT PARTICLES ---
+        const STREAM_COUNT = 250;
+        const AMBIENT_COUNT = 200;
+        const TOTAL_PARTICLES = STREAM_COUNT + AMBIENT_COUNT;
 
-        for (let p = 0; p < PARTICLE_COUNT; p++) {
+        const particleGeo = new THREE.BufferGeometry();
+        const pPosArray = new Float32Array(TOTAL_PARTICLES * 3);
+        const pColArray = new Float32Array(TOTAL_PARTICLES * 3);
+        const streamData = [];
+        const ambientData = [];
+
+        // Stream particles (follow manifolds)
+        for (let s = 0; s < STREAM_COUNT; s++) {
+            const isAlpha = s % 2 === 0;
             const u = Math.random();
             const v = (Math.random() - 0.5) * 1.6;
-            const speed = 0.0035 + Math.random() * 0.0075;
-            particleData.push({ u, v, speed });
-
-            particlePositions[p * 3 + 0] = 0;
-            particlePositions[p * 3 + 1] = 0;
-            particlePositions[p * 3 + 2] = 0;
+            const speed = 0.004 + Math.random() * 0.008;
+            streamData.push({ isAlpha, u, v, speed });
 
             const rnd = Math.random();
-            if (rnd < 0.45) {
-                // Electric Cyan
-                particleColors[p * 3 + 0] = 0.22; particleColors[p * 3 + 1] = 0.85; particleColors[p * 3 + 2] = 0.98;
-            } else if (rnd < 0.75) {
-                // Luminous Violet
-                particleColors[p * 3 + 0] = 0.65; particleColors[p * 3 + 1] = 0.55; particleColors[p * 3 + 2] = 0.98;
+            if (rnd < 0.5) {
+                pColArray[s * 3 + 0] = 0.22; pColArray[s * 3 + 1] = 0.85; pColArray[s * 3 + 2] = 0.98;
+            } else if (rnd < 0.8) {
+                pColArray[s * 3 + 0] = 0.65; pColArray[s * 3 + 1] = 0.55; pColArray[s * 3 + 2] = 0.98;
             } else {
-                // Diamond White
-                particleColors[p * 3 + 0] = 0.95; particleColors[p * 3 + 1] = 0.98; particleColors[p * 3 + 2] = 1.0;
+                pColArray[s * 3 + 0] = 0.95; pColArray[s * 3 + 1] = 0.98; pColArray[s * 3 + 2] = 1.0;
             }
         }
 
-        particleGeo.setAttribute("position", new THREE.BufferAttribute(particlePositions, 3));
-        particleGeo.setAttribute("color", new THREE.BufferAttribute(particleColors, 3));
+        // Ambient particles (distributed across full 3D viewport)
+        for (let a = 0; a < AMBIENT_COUNT; a++) {
+            const idx = STREAM_COUNT + a;
+            const ax = (Math.random() - 0.5) * 140;
+            const ay = (Math.random() - 0.5) * 100;
+            const az = -60 + Math.random() * 90;
+            ambientData.push({ x: ax, y: ay, z: az, origZ: az, driftSpeed: 0.15 + Math.random() * 0.35 });
 
-        const particleMat = new THREE.PointsMaterial({
-            size: 2.2,
-            map: glowSpriteTexture,
-            vertexColors: true,
-            transparent: true,
-            opacity: 0.90,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false
-        });
+            pPosArray[idx * 3 + 0] = ax;
+            pPosArray[idx * 3 + 1] = ay;
+            pPosArray[idx * 3 + 2] = az;
 
-        const particleSystem = new THREE.Points(particleGeo, particleMat);
+            const isCyan = a % 2 === 0;
+            pColArray[idx * 3 + 0] = isCyan ? 0.20 : 0.60;
+            pColArray[idx * 3 + 1] = isCyan ? 0.80 : 0.45;
+            pColArray[idx * 3 + 2] = 1.0;
+        }
+
+        particleGeo.setAttribute("position", new THREE.BufferAttribute(pPosArray, 3));
+        particleGeo.setAttribute("color", new THREE.BufferAttribute(pColArray, 3));
+
+        const particleSystem = new THREE.Points(
+            particleGeo,
+            new THREE.PointsMaterial({ size: 2.4, map: glowSpriteTexture, vertexColors: true, transparent: true, opacity: 0.92, blending: THREE.AdditiveBlending, depthWrite: false })
+        );
         sculptureGroup.add(particleSystem);
 
-        // --- LAYER 7: SPARSE CYAN & VIOLET COMPUTE NODES ---
+        // --- LAYER 6: SPARSE CYAN & VIOLET COMPUTE NODES ---
         const NODE_DEFS = [
             { u: 0.10, v: 0.00, color: 0x22d3ee },
-            { u: 0.18, v: -0.35, color: 0xa78bfa },
-            { u: 0.26, v: 0.28, color: 0x22d3ee },
-            { u: 0.34, v: -0.22, color: 0x38bdf8 },
-            { u: 0.42, v: 0.45, color: 0xa78bfa },
+            { u: 0.22, v: -0.35, color: 0xa78bfa },
+            { u: 0.35, v: 0.40, color: 0x38bdf8 },
             { u: 0.50, v: 0.00, color: 0x22d3ee },
-            { u: 0.58, v: -0.42, color: 0xa78bfa },
-            { u: 0.66, v: 0.25, color: 0x22d3ee },
-            { u: 0.74, v: -0.28, color: 0x38bdf8 },
-            { u: 0.82, v: 0.38, color: 0xa78bfa },
-            { u: 0.90, v: -0.12, color: 0x22d3ee },
-            { u: 0.96, v: 0.00, color: 0xa78bfa }
+            { u: 0.65, v: -0.40, color: 0xa78bfa },
+            { u: 0.78, v: 0.35, color: 0x38bdf8 },
+            { u: 0.90, v: -0.15, color: 0x22d3ee }
         ];
 
         const computeNodes = [];
         const nodeGroup = new THREE.Group();
         sculptureGroup.add(nodeGroup);
-
-        const nodeGeom = new THREE.OctahedronGeometry(0.42, 0);
+        const nodeGeom = new THREE.OctahedronGeometry(0.48, 0);
 
         NODE_DEFS.forEach((def) => {
-            const nodeMat = new THREE.MeshStandardMaterial({
-                color: 0x050e1f,
-                emissive: new THREE.Color(def.color),
-                emissiveIntensity: 1.0,
-                roughness: 0.18,
-                metalness: 0.92
-            });
-
-            const mesh = new THREE.Mesh(nodeGeom, nodeMat);
-
-            const spriteMat = new THREE.SpriteMaterial({
-                map: glowSpriteTexture,
-                color: def.color,
-                transparent: true,
-                opacity: 0.90,
-                blending: THREE.AdditiveBlending,
-                depthWrite: false
-            });
-            const sprite = new THREE.Sprite(spriteMat);
-            sprite.scale.set(2.4, 2.4, 1);
+            const mesh = new THREE.Mesh(
+                nodeGeom,
+                new THREE.MeshStandardMaterial({ color: 0x050e1f, emissive: new THREE.Color(def.color), emissiveIntensity: 1.1, roughness: 0.18, metalness: 0.92 })
+            );
+            const sprite = new THREE.Sprite(
+                new THREE.SpriteMaterial({ map: glowSpriteTexture, color: def.color, transparent: true, opacity: 0.90, blending: THREE.AdditiveBlending, depthWrite: false })
+            );
+            sprite.scale.set(2.8, 2.8, 1);
             mesh.add(sprite);
 
-            mesh.userData = {
-                u: def.u,
-                v: def.v,
-                color: def.color,
-                baseEmissive: 1.0,
-                sprite: sprite
-            };
-
+            mesh.userData = { u: def.u, v: def.v, baseEmissive: 1.1, sprite };
             computeNodes.push(mesh);
             nodeGroup.add(mesh);
         });
-
-        // --- LAYER 8: DUAL SCANLINE WAVEFRONTS ---
-        const scanlineWaveGeo = new THREE.BufferGeometry();
-        const scanlineWavePos = new Float32Array(RIB_V_STEPS * 3);
-        scanlineWaveGeo.setAttribute("position", new THREE.BufferAttribute(scanlineWavePos, 3));
-        const scanlineWaveMat = new THREE.LineBasicMaterial({
-            color: 0x38bdf8,
-            transparent: true,
-            opacity: 0.75,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false
-        });
-        const scanlineWave = new THREE.Line(scanlineWaveGeo, scanlineWaveMat);
-        sculptureGroup.add(scanlineWave);
-
-        // --- RESPONSIVE COMPOSITION & POSITIONING ---
-        let basePosY = 0.0;
-        let baseRotX = 0.04;
-        let baseRotY = -0.12;
-        let isMobileScreen = false;
-
-        function updateSculptureLayout() {
-            const width = window.innerWidth;
-            if (width < 768) {
-                // Mobile: centered in upper background
-                isMobileScreen = true;
-                basePosY = 4.2;
-                baseRotX = 0.08;
-                baseRotY = -0.08;
-                sculptureGroup.position.set(0, basePosY, -10);
-                sculptureGroup.scale.set(0.68, 0.68, 0.68);
-            } else if (width < 992) {
-                // Tablet: offset slightly right
-                isMobileScreen = false;
-                basePosY = 1.2;
-                baseRotX = 0.06;
-                baseRotY = -0.10;
-                sculptureGroup.position.set(4.5, basePosY, -5);
-                sculptureGroup.scale.set(0.85, 0.85, 0.85);
-            } else {
-                // Desktop: sweeps across background, framing hero avatar and title
-                isMobileScreen = false;
-                basePosY = 0.0;
-                baseRotX = 0.04;
-                baseRotY = -0.12;
-                sculptureGroup.position.set(4.5, basePosY, -2);
-                sculptureGroup.scale.set(1.0, 1.0, 1.0);
-            }
-        }
-        updateSculptureLayout();
 
         // --- INTERACTIONS: MOUSE PARALLAX & POINTER SPOTLIGHT ---
         const mouse = { x: 0, y: 0 };
@@ -757,42 +681,55 @@ document.addEventListener("DOMContentLoaded", () => {
         const clock = new THREE.Clock();
 
         function updateGeometryBuffers(time, morphFactor, computeProgress, isComputePhase) {
-            // 1. Decay click shockwave
+            // Decay click shockwave
             if (clickShockwaveIntensity > 0.001) {
                 clickShockwaveProgress += 0.025;
                 clickShockwaveIntensity *= 0.96;
-                if (clickShockwaveProgress > 1.2) {
-                    clickShockwaveIntensity = 0.0;
-                }
+                if (clickShockwaveProgress > 1.25) clickShockwaveIntensity = 0.0;
             }
 
-            // 2. Compute and cache slice frames for this time sample
-            computeSliceFrames(time, morphFactor);
+            // Compute frame slices with active scroll velocity
+            computeFrames(time, morphFactor, smoothScrollProg, scrollVelocity);
 
-            // 3. Update Primary Filaments
-            for (let k = 0; k < NUM_FILAMENTS; k++) {
-                const line = filamentLines[k];
-                const v = line.userData.v;
-                const vSq = line.userData.vSq;
-                const posArr = filamentGeos[k].attributes.position.array;
+            // 1. Update Manifold Alpha Filaments
+            for (let k = 0; k < NUM_ALPHA_FILAMENTS; k++) {
+                const line = alphaLines[k];
+                const v = line.userData.v, vSq = line.userData.vSq;
+                const posArr = alphaGeos[k].attributes.position.array;
 
                 for (let i = 0; i < NUM_STEPS; i++) {
-                    const sl = sliceFrames[i];
-                    const camber = (1.0 - vSq) * 1.5 * sl.sinU;
+                    const sl = slicesAlpha[i];
+                    const camber = (1.0 - vSq) * 1.6 * sl.sinU;
                     posArr[i * 3 + 0] = sl.pos.x + (v * sl.halfW * sl.Bx) + (camber * sl.Nx);
                     posArr[i * 3 + 1] = sl.pos.y + (v * sl.halfW * sl.By) + (camber * sl.Ny);
                     posArr[i * 3 + 2] = sl.pos.z + (v * sl.halfW * sl.Bz) + (camber * sl.Nz);
                 }
-                filamentGeos[k].attributes.position.needsUpdate = true;
+                alphaGeos[k].attributes.position.needsUpdate = true;
             }
 
-            // 4. Update Translucent Graphite & Glass Ribbon Mesh
+            // 2. Update Manifold Beta Filaments
+            for (let b = 0; b < NUM_BETA_FILAMENTS; b++) {
+                const line = betaLines[b];
+                const v = line.userData.v, vSq = line.userData.vSq;
+                const posArr = betaGeos[b].attributes.position.array;
+
+                for (let i = 0; i < NUM_STEPS; i++) {
+                    const sl = slicesBeta[i];
+                    const camber = (1.0 - vSq) * 1.4 * sl.sinU;
+                    posArr[i * 3 + 0] = sl.pos.x + (v * sl.halfW * sl.Bx) + (camber * sl.Nx);
+                    posArr[i * 3 + 1] = sl.pos.y + (v * sl.halfW * sl.By) + (camber * sl.Ny);
+                    posArr[i * 3 + 2] = sl.pos.z + (v * sl.halfW * sl.Bz) + (camber * sl.Nz);
+                }
+                betaGeos[b].attributes.position.needsUpdate = true;
+            }
+
+            // 3. Update Translucent Graphite & Glass Ribbon Mesh
             const meshPos = ribbonMeshGeo.attributes.position.array;
             for (let iu = 0; iu < MESH_U_STEPS; iu++) {
                 const u = 0.05 + (iu / (MESH_U_STEPS - 1)) * 0.90;
                 for (let iv = 0; iv < MESH_V_STEPS; iv++) {
                     const v = -0.45 + (iv / (MESH_V_STEPS - 1)) * 0.90;
-                    const pt = sampleManifoldPoint(u, v);
+                    const pt = samplePoint(slicesAlpha, u, v);
                     const idx = (iu * MESH_V_STEPS + iv) * 3;
                     meshPos[idx + 0] = pt.x;
                     meshPos[idx + 1] = pt.y;
@@ -802,85 +739,56 @@ document.addEventListener("DOMContentLoaded", () => {
             ribbonMeshGeo.attributes.position.needsUpdate = true;
             ribbonMeshGeo.computeVertexNormals();
 
-            // 5. Update Secondary Interwoven Latent Filaments
-            for (let l = 0; l < NUM_LATENT; l++) {
-                const lv = latentLines[l].userData.lv;
-                const posArr = latentGeos[l].attributes.position.array;
-                const phaseOffset = l * 0.25;
-
-                for (let i = 0; i < NUM_STEPS; i++) {
-                    const sl = sliceFrames[i];
-                    const harmonicWave = Math.sin(sl.u * Math.PI * 4.0 + time * 1.2 + phaseOffset) * 2.2;
-                    const crossV = (lv * 0.65) + (harmonicWave * 0.22);
-                    const camber = (1.0 - crossV * crossV) * 1.2 * sl.sinU;
-
-                    posArr[i * 3 + 0] = sl.pos.x + (crossV * sl.halfW * sl.Bx) + (camber * sl.Nx) + (sl.Nx * harmonicWave * 0.7);
-                    posArr[i * 3 + 1] = sl.pos.y + (crossV * sl.halfW * sl.By) + (camber * sl.Ny) + (sl.Ny * harmonicWave * 0.7);
-                    posArr[i * 3 + 2] = sl.pos.z + (crossV * sl.halfW * sl.Bz) + (camber * sl.Nz) + (sl.Bz * harmonicWave * 0.7);
-                }
-                latentGeos[l].attributes.position.needsUpdate = true;
-            }
-
-            // 6. Update Orthogonal Mathematical Contour Ribs
-            for (let r = 0; r < NUM_RIBS; r++) {
-                const u = ribLines[r].userData.uFrac;
-                const posArr = ribGeos[r].attributes.position.array;
-                for (let iv = 0; iv < RIB_V_STEPS; iv++) {
-                    const v = (iv / (RIB_V_STEPS - 1)) * 2 - 1;
-                    const pt = sampleManifoldPoint(u, v);
-                    posArr[iv * 3 + 0] = pt.x;
-                    posArr[iv * 3 + 1] = pt.y;
-                    posArr[iv * 3 + 2] = pt.z;
-                }
-                ribGeos[r].attributes.position.needsUpdate = true;
-            }
-
-            // 7. Update Quantum Tensor Core (Position & Gyroscopic Rotations)
-            const coreCenter = sampleManifoldPoint(0.54, 0.0);
+            // 4. Update Quantum Tensor Core
+            const coreCenter = samplePoint(slicesAlpha, 0.50, 0.0);
             tensorCoreGroup.position.set(coreCenter.x, coreCenter.y, coreCenter.z);
             coreLight.position.set(coreCenter.x, coreCenter.y, coreCenter.z);
 
-            const coreSpeedMultiplier = isComputePhase ? 2.5 : 1.0;
-            outerIcosaMesh.rotation.x += 0.012 * coreSpeedMultiplier;
-            outerIcosaMesh.rotation.y += 0.016 * coreSpeedMultiplier;
-            innerOctaMesh.rotation.y -= 0.020 * coreSpeedMultiplier;
-            innerOctaMesh.rotation.z += 0.015 * coreSpeedMultiplier;
-            gyroTorus1.rotation.z += 0.018 * coreSpeedMultiplier;
-            gyroTorus2.rotation.x -= 0.014 * coreSpeedMultiplier;
+            const coreSpeed = (isComputePhase ? 2.5 : 1.0) + (scrollVelocity * 2.0);
+            outerIcosaMesh.rotation.x += 0.014 * coreSpeed;
+            outerIcosaMesh.rotation.y += 0.018 * coreSpeed;
+            innerOctaMesh.rotation.y -= 0.022 * coreSpeed;
+            innerOctaMesh.rotation.z += 0.016 * coreSpeed;
+            gyroTorus1.rotation.z += 0.020 * coreSpeed;
+            gyroTorus2.rotation.x -= 0.016 * coreSpeed;
 
-            const corePulse = 1.0 + Math.sin(time * 3.5) * 0.18 + (isComputePhase ? morphFactor * 0.45 : 0);
+            const corePulse = 1.0 + Math.sin(time * 3.5) * 0.2 + (scrollVelocity * 0.15);
             tensorCoreGroup.scale.set(corePulse, corePulse, corePulse);
 
-            // 8. Update 320 Quantum Stream Particles
+            // 5. Update 450 Quantum Stream & Ambient Particles
             const pPositions = particleGeo.attributes.position.array;
-            for (let p = 0; p < PARTICLE_COUNT; p++) {
-                const pObj = particleData[p];
-                pObj.u += pObj.speed * (isComputePhase ? 1.8 : 1.0);
+            const effectiveParticleSpeed = (isComputePhase ? 1.8 : 1.0) + (scrollVelocity * 2.5);
+
+            for (let s = 0; s < STREAM_COUNT; s++) {
+                const pObj = streamData[s];
+                pObj.u += pObj.speed * effectiveParticleSpeed;
                 if (pObj.u > 1.0) pObj.u -= 1.0;
 
-                const pt = sampleManifoldPoint(pObj.u, pObj.v);
-                pPositions[p * 3 + 0] = pt.x;
-                pPositions[p * 3 + 1] = pt.y;
-                pPositions[p * 3 + 2] = pt.z;
+                const pt = samplePoint(pObj.isAlpha ? slicesAlpha : slicesBeta, pObj.u, pObj.v);
+                pPositions[s * 3 + 0] = pt.x;
+                pPositions[s * 3 + 1] = pt.y;
+                pPositions[s * 3 + 2] = pt.z;
+            }
+
+            // Ambient particles: cosmic forward drift augmented by scroll
+            for (let a = 0; a < AMBIENT_COUNT; a++) {
+                const idx = STREAM_COUNT + a;
+                const amb = ambientData[a];
+                amb.z += (amb.driftSpeed + scrollVelocity * 1.5);
+                if (amb.z > 45) {
+                    amb.z = -60;
+                    amb.x = (Math.random() - 0.5) * 140;
+                    amb.y = (Math.random() - 0.5) * 100;
+                }
+                pPositions[idx * 3 + 0] = amb.x;
+                pPositions[idx * 3 + 1] = amb.y;
+                pPositions[idx * 3 + 2] = amb.z;
             }
             particleGeo.attributes.position.needsUpdate = true;
 
-            // 9. Update Scanline Wavefront
-            const scanU = (time * 0.22) % 1.0;
-            const scanArr = scanlineWaveGeo.attributes.position.array;
-            for (let iv = 0; iv < RIB_V_STEPS; iv++) {
-                const v = (iv / (RIB_V_STEPS - 1)) * 2 - 1;
-                const pt = sampleManifoldPoint(scanU, v);
-                scanArr[iv * 3 + 0] = pt.x;
-                scanArr[iv * 3 + 1] = pt.y;
-                scanArr[iv * 3 + 2] = pt.z;
-            }
-            scanlineWaveGeo.attributes.position.needsUpdate = true;
-            scanlineWaveMat.opacity = Math.sin(scanU * Math.PI) * 0.85;
-
-            // 10. Update Compute Nodes
+            // 6. Update Compute Nodes
             computeNodes.forEach((node) => {
-                const pt = sampleManifoldPoint(node.userData.u, node.userData.v);
+                const pt = samplePoint(slicesAlpha, node.userData.u, node.userData.v);
                 node.position.set(pt.x, pt.y, pt.z);
 
                 let flare = 0;
@@ -890,9 +798,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         flare = Math.cos((distToCompute / 0.12) * Math.PI * 0.5);
                     }
                 }
-
-                node.material.emissiveIntensity = node.userData.baseEmissive + flare * 2.5;
-                const s = 2.4 + flare * 1.8;
+                node.material.emissiveIntensity = node.userData.baseEmissive + flare * 2.5 + (scrollVelocity * 0.3);
+                const s = 2.8 + flare * 2.0;
                 node.userData.sprite.scale.set(s, s, 1);
             });
         }
@@ -900,69 +807,66 @@ document.addEventListener("DOMContentLoaded", () => {
         function animateSculptureScene() {
             const time = clock.getElapsedTime();
 
+            // Smooth scroll damping
+            smoothScrollProg += (targetScrollProg - smoothScrollProg) * 0.075;
+            scrollVelocity *= 0.92;
+
             // --- 3-PHASE SIGNATURE ENGINE ---
-            // Period: 16 seconds
             const cycleTime = time % 16.0;
             let morphFactor = 0;
             let computeProgress = 0;
             let isComputePhase = false;
 
             if (cycleTime < 6.0) {
-                // PHASE A — OBSERVE (0s - 6.0s)
                 morphFactor = 0.0;
                 isComputePhase = false;
-                keyLight.intensity = 2.5;
-                pointerLight.intensity = 2.4;
+                keyLight.intensity = 2.6;
+                pointerLight.intensity = 2.5;
             } else if (cycleTime < 12.0) {
-                // PHASE B — COMPUTE (6.0s - 12.0s)
                 isComputePhase = true;
-                computeProgress = (cycleTime - 6.0) / 6.0; // [0, 1]
+                computeProgress = (cycleTime - 6.0) / 6.0;
                 morphFactor = Math.sin(computeProgress * Math.PI);
-                keyLight.intensity = 2.5 + morphFactor * 1.0;
-                pointerLight.intensity = 2.4 + morphFactor * 1.2;
+                keyLight.intensity = 2.6 + morphFactor * 1.0;
+                pointerLight.intensity = 2.5 + morphFactor * 1.2;
             } else {
-                // PHASE C — RESOLVE (12.0s - 16.0s)
                 isComputePhase = false;
-                const resolveProgress = (cycleTime - 12.0) / 4.0; // [0, 1]
+                const resolveProgress = (cycleTime - 12.0) / 4.0;
                 const easeOut = Math.pow(1 - resolveProgress, 2);
                 morphFactor = easeOut * 0.25;
-                keyLight.intensity = 2.5 + easeOut * 0.3;
-                pointerLight.intensity = 2.4 + easeOut * 0.3;
+                keyLight.intensity = 2.6 + easeOut * 0.3;
+                pointerLight.intensity = 2.5 + easeOut * 0.3;
             }
 
             if (!prefersReducedMotion) {
                 updateGeometryBuffers(time, morphFactor, computeProgress, isComputePhase);
             }
 
-            // Mouse parallax with smooth camera damping
-            const targetCamX = mouse.x * 4.2;
-            const targetCamY = mouse.y * 2.8;
-            camera.position.x += (targetCamX - camera.position.x) * 0.045;
-            camera.position.y += (targetCamY - camera.position.y) * 0.045;
+            // --- INTERACTIVE SCROLL-DRIVEN 3D CAMERA TRAJECTORY ---
+            // Camera flies through 3D cyber-space along a smooth trajectory as user scrolls!
+            const camFlyX = Math.sin(smoothScrollProg * Math.PI * 1.6) * 16.0 + mouse.x * 4.2;
+            const camFlyY = -(smoothScrollProg * 26.0) + mouse.y * 2.8;
+            const camFlyZ = 48.0 - Math.sin(smoothScrollProg * Math.PI) * 12.0;
+
+            camera.position.x += (camFlyX - camera.position.x) * 0.06;
+            camera.position.y += (camFlyY - camera.position.y) * 0.06;
+            camera.position.z += (camFlyZ - camera.position.z) * 0.06;
+
+            // Dynamic look-at descends smoothly with scroll
+            camera.lookAt(0, -(smoothScrollProg * 22.0), 0);
+
+            // Sculpture 3D Rotation driven by mouse scroll & cursor parallax!
+            sculptureGroup.rotation.y = (smoothScrollProg * Math.PI * 1.8) + (mouse.x * 0.12);
+            sculptureGroup.rotation.x = Math.sin(smoothScrollProg * Math.PI) * 0.35 + (mouse.y * 0.08);
+            sculptureGroup.rotation.z = Math.sin(time * 0.35) * 0.04;
+            sculptureGroup.position.y = -(smoothScrollProg * 12.0);
 
             // Pointer Spotlight smooth tracking in 3D
-            const targetLightX = (mouse.x * 26) + (isMobileScreen ? 0 : 4);
-            const targetLightY = (mouse.y * 18) + (isMobileScreen ? 4 : 0);
+            const targetLightX = (mouse.x * 32);
+            const targetLightY = -(smoothScrollProg * 22.0) + (mouse.y * 20);
             pointerLight.position.x += (targetLightX - pointerLight.position.x) * 0.08;
             pointerLight.position.y += (targetLightY - pointerLight.position.y) * 0.08;
+            pointerLight.intensity = 2.5 + scrollVelocity * 0.5;
 
-            // Pointer proximity tilt on sculpture
-            const targetTiltX = baseRotX + (mouse.y * 0.08);
-            const targetTiltY = baseRotY + (mouse.x * 0.12);
-            sculptureGroup.rotation.x += (targetTiltX - sculptureGroup.rotation.x) * 0.05;
-            sculptureGroup.rotation.y += (targetTiltY - sculptureGroup.rotation.y) * 0.05;
-
-            // Continuous subtle celestial drift
-            sculptureGroup.rotation.z = Math.sin(time * 0.35) * 0.03;
-
-            // Scroll Parallax: gradually rotates sculpture and reveals internal layers
-            const maxScroll = (document.documentElement.scrollHeight - window.innerHeight) || 1;
-            const scrollFraction = Math.min(Math.max(window.scrollY / maxScroll, 0), 1);
-            sculptureGroup.rotation.y += scrollFraction * 0.95;
-            sculptureGroup.rotation.x += scrollFraction * 0.22;
-            sculptureGroup.position.y = basePosY + (scrollFraction * 5.5);
-
-            camera.lookAt(0, 0, 0);
             renderer.render(scene, camera);
             animationFrameId = requestAnimationFrame(animateSculptureScene);
         }
@@ -975,7 +879,6 @@ document.addEventListener("DOMContentLoaded", () => {
             camera.updateProjectionMatrix();
             renderer.setSize(w, h);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-            updateSculptureLayout();
         });
 
         // Tab visibility pause to preserve battery and GPU
@@ -996,6 +899,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
     initThinkingMachineSculpture();
+
 
 
 
