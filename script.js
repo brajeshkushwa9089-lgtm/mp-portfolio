@@ -136,15 +136,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       3. THE THINKING MACHINE — V2
+       3. THE THINKING MACHINE — V2 (ULTRA 3D EXPERIENCE)
        A Signature 3D Computational Sculpture for a CSE (AI) Portfolio
-       - Flowing parametric curves & precision filaments
-       - Translucent graphite & glass-like faceted surfaces
-       - Interconnected geometric ribbons & mathematical contour lines
-       - Sparse cyan & violet compute nodes with glint flares
-       - 3-Phase Continuous Signature Animation Cycle:
-         Phase A (Observe) -> Phase B (Compute) -> Phase C (Resolve)
-       - Interactive pointer spotlight, mouse parallax, and scroll dynamics
+       - Continuous fluid traveling wave parametric manifold (44 precision filaments)
+       - The Quantum Tensor Core: Rotating wireframe icosahedron, inner glowing octahedron & gyroscopic rings
+       - 320 Quantum Stream Particles flowing along mathematical streamlines
+       - Dual laser scanline wavefronts sweeping along curves
+       - Interactive 3D click shockwaves and dynamic pointer spotlighting
+       - 3-Phase Continuous Signature Timeline: Observe -> Compute -> Resolve
        ===================================================== */
     function initThinkingMachineSculpture() {
         const canvas = document.getElementById("space-3d-canvas") || document.getElementById("neural-canvas");
@@ -180,37 +179,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const scene = new THREE.Scene();
         // Deep obsidian atmospheric depth
-        scene.fog = new THREE.FogExp2(0x02040a, 0.0018);
+        scene.fog = new THREE.FogExp2(0x02040a, 0.0015);
 
-        const camera = new THREE.PerspectiveCamera(46, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 0, 52);
+        const camera = new THREE.PerspectiveCamera(48, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 0, 50);
 
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = 1.25;
+        renderer.toneMappingExposure = 1.35;
 
-        // --- LIGHTING ---
-        // 1. Soft Midnight Navy Ambient Fill
-        const ambientLight = new THREE.AmbientLight(0x081126, 0.75);
+        // --- SCENE LIGHTING ---
+        // 1. Ambient Deep Midnight Navy
+        const ambientLight = new THREE.AmbientLight(0x0a1632, 0.85);
         scene.add(ambientLight);
 
-        // 2. Computational Key Light (Luminous Electric Cyan)
-        const keyLight = new THREE.DirectionalLight(0x38bdf8, 2.2);
-        keyLight.position.set(-28, 32, 38);
+        // 2. Primary Computational Key Light (Luminous Electric Cyan)
+        const keyLight = new THREE.DirectionalLight(0x38bdf8, 2.5);
+        keyLight.position.set(-28, 35, 42);
         scene.add(keyLight);
 
-        // 3. Mathematical Rim Light (Muted Violet)
-        const rimLight = new THREE.DirectionalLight(0x8b5cf6, 1.6);
-        rimLight.position.set(32, -24, -20);
+        // 3. Mathematical Rim Light (Muted Electric Violet)
+        const rimLight = new THREE.DirectionalLight(0x8b5cf6, 1.8);
+        rimLight.position.set(34, -26, -20);
         scene.add(rimLight);
 
         // 4. Dynamic Interactive Pointer Spotlight (Follows Cursor in 3D)
-        const pointerLight = new THREE.PointLight(0x22d3ee, 1.9, 52);
-        pointerLight.position.set(12, 2, 22);
+        const pointerLight = new THREE.PointLight(0x22d3ee, 2.4, 55);
+        pointerLight.position.set(10, 2, 22);
         scene.add(pointerLight);
 
-        // --- PROCEDURAL GLOW SPRITE TEXTURE ---
+        // 5. Tensor Core Inner Glow Light
+        const coreLight = new THREE.PointLight(0xa78bfa, 2.2, 35);
+        scene.add(coreLight);
+
+        // --- PROCEDURAL GLOW SPRITE TEXTURES ---
         function createGlowSpriteTexture() {
             const size = 64;
             const c = document.createElement("canvas");
@@ -220,9 +223,9 @@ document.addEventListener("DOMContentLoaded", () => {
             const center = size / 2;
             const grad = ctx.createRadialGradient(center, center, 0, center, center, center);
             grad.addColorStop(0.0, "rgba(255, 255, 255, 1.0)");
-            grad.addColorStop(0.2, "rgba(165, 243, 252, 0.95)");
-            grad.addColorStop(0.5, "rgba(34, 211, 238, 0.35)");
-            grad.addColorStop(0.75, "rgba(139, 92, 246, 0.12)");
+            grad.addColorStop(0.25, "rgba(165, 243, 252, 0.95)");
+            grad.addColorStop(0.55, "rgba(34, 211, 238, 0.40)");
+            grad.addColorStop(0.80, "rgba(139, 92, 246, 0.15)");
             grad.addColorStop(1.0, "rgba(0, 0, 0, 0)");
             ctx.fillStyle = grad;
             ctx.beginPath();
@@ -236,24 +239,49 @@ document.addEventListener("DOMContentLoaded", () => {
         const sculptureGroup = new THREE.Group();
         scene.add(sculptureGroup);
 
+        // --- CLICK SHOCKWAVE STATE ---
+        let clickShockwaveIntensity = 0.0;
+        let clickShockwaveProgress = 0.0;
+
+        window.addEventListener("pointerdown", () => {
+            clickShockwaveIntensity = 1.0;
+            clickShockwaveProgress = 0.0;
+        });
+
         // --- PARAMETRIC MATHEMATICS ENGINE ---
         // Spine curve evaluated continuously along longitudinal parameter u in [0, 1]
         function getSpinePosition(u, t, morph) {
-            let x = -20 + (32 * u) + (7.5 * Math.sin(u * Math.PI * 1.5)) - (4.5 * Math.sin(u * Math.PI * 3.0) * (u > 0.6 ? 1 : 0));
-            let y = -15 + (18 * u) + (19 * Math.pow(u, 2.2)) + (3.2 * Math.sin(u * Math.PI * 1.8));
-            let z = -5 + (12 * Math.sin(u * Math.PI * 1.4)) - (10 * Math.sin(u * Math.PI * 2.8) * Math.max(0, u - 0.45));
+            let x = -24 + (46 * u) + (6.0 * Math.sin(u * Math.PI * 1.4));
+            let y = -16 + (20 * u) + (18 * Math.pow(u, 2.0)) + (4.0 * Math.sin(u * Math.PI * 1.8));
+            let z = -6 + (14 * Math.sin(u * Math.PI * 1.3)) - (10 * Math.sin(u * Math.PI * 2.6) * Math.max(0, u - 0.4));
 
-            // Subtle harmonic breathing (Phase A)
-            const breath = Math.sin(t * 0.75 + u * 2.2) * 0.35;
-            x += breath * 0.55;
-            y += breath * 0.75;
+            // Continuous fluid traveling wave (silky, hypnotic wave flow)
+            const wave1 = Math.sin(u * Math.PI * 3.5 - t * 1.6) * 1.5;
+            const wave2 = Math.cos(u * Math.PI * 2.2 + t * 1.1) * 1.1;
+            const wave3 = Math.sin(u * Math.PI * 5.0 - t * 2.4) * 0.7;
+            const waveEnvelope = Math.sin(u * Math.PI);
 
-            // Computational morphing (Phase B)
-            if (morph > 0.0005) {
-                x += morph * 3.2 * Math.sin(u * Math.PI * 2.5);
-                y += morph * 2.2 * Math.cos(u * Math.PI * 2.0);
-                z += morph * 4.2 * Math.sin(u * Math.PI * 1.8);
+            x += (wave1 + wave3) * waveEnvelope * 0.85;
+            y += (wave2 + wave1) * waveEnvelope * 0.95;
+            z += (wave2 - wave3) * waveEnvelope * 1.3;
+
+            // Algorithmic morphing during Compute phase
+            if (morph > 0.001) {
+                x += morph * 4.2 * Math.sin(u * Math.PI * 2.5 + t);
+                y += morph * 3.2 * Math.cos(u * Math.PI * 2.0 - t);
+                z += morph * 5.2 * Math.sin(u * Math.PI * 1.8);
             }
+
+            // Click shockwave expansion
+            if (clickShockwaveIntensity > 0.001) {
+                const distToShock = Math.abs(u - clickShockwaveProgress);
+                if (distToShock < 0.22) {
+                    const pulse = Math.cos((distToShock / 0.22) * Math.PI * 0.5) * clickShockwaveIntensity * 4.0;
+                    y += pulse;
+                    z += pulse * 1.25;
+                }
+            }
+
             return { x, y, z };
         }
 
@@ -294,7 +322,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 n0X /= n0Len; n0Y /= n0Len; n0Z /= n0Len;
 
                 // Continuous signature twist
-                const twist = u * Math.PI * 2.2 + 0.35 * Math.sin(u * Math.PI) + morph * 0.60 * Math.sin(u * Math.PI);
+                const twist = u * Math.PI * 2.4 + 0.55 * Math.sin(u * Math.PI - t * 0.85) + morph * 0.85 * Math.sin(u * Math.PI);
                 const cosT = Math.cos(twist), sinT = Math.sin(twist);
 
                 // T x B0
@@ -314,7 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const Nz = n0Z * cosT + tnZ * sinT;
 
                 // Dynamic width with laminar expansion and inflection waist
-                const width = 2.8 + 12.5 * Math.pow(Math.sin(u * Math.PI), 1.25) + 3.0 * Math.sin(u * Math.PI * 2.0) + morph * 3.6 * Math.sin(u * Math.PI);
+                const width = 3.2 + 15.5 * Math.pow(Math.sin(u * Math.PI), 1.2) + 3.2 * Math.sin(u * Math.PI * 2.0 - t * 1.2) + morph * 4.2 * Math.sin(u * Math.PI);
                 const sinU = Math.sin(u * Math.PI);
 
                 sliceFrames.push({
@@ -329,8 +357,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        // --- LAYER 1: PRIMARY COMPUTATIONAL MANIFOLD (36 PRECISION FILAMENTS) ---
-        const NUM_FILAMENTS = 36;
+        // --- LAYER 1: PRIMARY COMPUTATIONAL MANIFOLD (44 PRECISION FILAMENTS) ---
+        const NUM_FILAMENTS = 44;
         const filamentLines = [];
         const filamentGeos = [];
 
@@ -341,28 +369,26 @@ document.addEventListener("DOMContentLoaded", () => {
             const v = (k / (NUM_FILAMENTS - 1)) * 2 - 1; // [-1, 1]
             const absV = Math.abs(v);
 
-            // Pre-allocate buffer geometry
             const posArray = new Float32Array(NUM_STEPS * 3);
             const geo = new THREE.BufferGeometry();
             geo.setAttribute("position", new THREE.BufferAttribute(posArray, 3));
             filamentGeos.push(geo);
 
-            // Color tuning matching reference visual language
             let col = 0x22d3ee;
-            let opacity = 0.85;
+            let opacity = 0.88;
 
-            if (absV <= 0.35) {
+            if (absV <= 0.32) {
                 // Core luminous cyan strands
                 col = 0x38bdf8;
-                opacity = 0.95;
-            } else if (absV <= 0.72) {
+                opacity = 0.98;
+            } else if (absV <= 0.70) {
                 // Intermediate cyan-indigo strands
                 col = 0x06b6d4;
-                opacity = 0.75;
+                opacity = 0.78;
             } else {
                 // Perimeter muted violet / indigo contour threads
                 col = 0xa78bfa;
-                opacity = 0.55;
+                opacity = 0.58;
             }
 
             const mat = new THREE.LineBasicMaterial({
@@ -380,9 +406,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // --- LAYER 2: TRANSLUCENT GRAPHITE & GLASS-LIKE RIBBON MESH ---
-        // Connects core filaments across middle parameter space
-        const MESH_U_STEPS = 45;
-        const MESH_V_STEPS = 10;
+        const MESH_U_STEPS = 48;
+        const MESH_V_STEPS = 12;
         const meshTotalVerts = MESH_U_STEPS * MESH_V_STEPS;
         const meshPosArray = new Float32Array(meshTotalVerts * 3);
         const meshIndices = [];
@@ -404,10 +429,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const graphiteGlassMat = new THREE.MeshStandardMaterial({
             color: 0x0a1628,
-            roughness: 0.16,
-            metalness: 0.88,
+            roughness: 0.14,
+            metalness: 0.90,
             transparent: true,
-            opacity: 0.32,
+            opacity: 0.35,
             side: THREE.DoubleSide,
             depthWrite: false,
             blending: THREE.NormalBlending
@@ -416,8 +441,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const ribbonMesh = new THREE.Mesh(ribbonMeshGeo, graphiteGlassMat);
         sculptureGroup.add(ribbonMesh);
 
-        // --- LAYER 3: SECONDARY INTERWOVEN LATENT RIBBON (18 FILAMENTS) ---
-        const NUM_LATENT = 18;
+        // --- LAYER 3: SECONDARY INTERWOVEN LATENT RIBBON (20 FILAMENTS) ---
+        const NUM_LATENT = 20;
         const latentGeos = [];
         const latentLines = [];
         const latentGroup = new THREE.Group();
@@ -433,7 +458,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const mat = new THREE.LineBasicMaterial({
                 color: l % 2 === 0 ? 0x8b5cf6 : 0xa78bfa,
                 transparent: true,
-                opacity: 0.45,
+                opacity: 0.48,
                 blending: THREE.AdditiveBlending,
                 depthWrite: false
             });
@@ -445,15 +470,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // --- LAYER 4: ORTHOGONAL MATHEMATICAL CONTOUR RIBS ---
-        const NUM_RIBS = 18;
-        const RIB_V_STEPS = 25;
+        const NUM_RIBS = 20;
+        const RIB_V_STEPS = 28;
         const ribGeos = [];
         const ribLines = [];
         const ribGroup = new THREE.Group();
         sculptureGroup.add(ribGroup);
 
         for (let r = 0; r < NUM_RIBS; r++) {
-            const uFrac = 0.08 + (r / (NUM_RIBS - 1)) * 0.84;
+            const uFrac = 0.06 + (r / (NUM_RIBS - 1)) * 0.88;
             const posArray = new Float32Array(RIB_V_STEPS * 3);
             const geo = new THREE.BufferGeometry();
             geo.setAttribute("position", new THREE.BufferAttribute(posArray, 3));
@@ -462,7 +487,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const mat = new THREE.LineBasicMaterial({
                 color: 0x38bdf8,
                 transparent: true,
-                opacity: 0.30,
+                opacity: 0.32,
                 blending: THREE.AdditiveBlending,
                 depthWrite: false
             });
@@ -471,91 +496,6 @@ document.addEventListener("DOMContentLoaded", () => {
             line.userData = { uFrac };
             ribLines.push(line);
             ribGroup.add(line);
-        }
-
-        // --- LAYER 5: SPARSE CYAN & VIOLET COMPUTE NODES ---
-        const NODE_DEFS = [
-            { u: 0.10, v: 0.00, color: 0x22d3ee },
-            { u: 0.18, v: -0.35, color: 0xa78bfa },
-            { u: 0.26, v: 0.28, color: 0x22d3ee },
-            { u: 0.34, v: -0.22, color: 0x38bdf8 },
-            { u: 0.42, v: 0.45, color: 0xa78bfa }, // Crest swell
-            { u: 0.50, v: 0.00, color: 0x22d3ee },
-            { u: 0.58, v: -0.42, color: 0xa78bfa }, // Twist waist
-            { u: 0.66, v: 0.25, color: 0x22d3ee },
-            { u: 0.74, v: -0.28, color: 0x38bdf8 },
-            { u: 0.82, v: 0.38, color: 0xa78bfa }, // Ascending loop
-            { u: 0.90, v: -0.12, color: 0x22d3ee },
-            { u: 0.96, v: 0.00, color: 0xa78bfa }
-        ];
-
-        const computeNodes = [];
-        const nodeGroup = new THREE.Group();
-        sculptureGroup.add(nodeGroup);
-
-        const nodeGeom = new THREE.OctahedronGeometry(0.38, 0);
-
-        NODE_DEFS.forEach((def) => {
-            const nodeMat = new THREE.MeshStandardMaterial({
-                color: 0x050e1f,
-                emissive: new THREE.Color(def.color),
-                emissiveIntensity: 0.9,
-                roughness: 0.18,
-                metalness: 0.92
-            });
-
-            const mesh = new THREE.Mesh(nodeGeom, nodeMat);
-
-            // Attached luminous glint sprite (matches reference image flare)
-            const spriteMat = new THREE.SpriteMaterial({
-                map: glowSpriteTexture,
-                color: def.color,
-                transparent: true,
-                opacity: 0.85,
-                blending: THREE.AdditiveBlending,
-                depthWrite: false
-            });
-            const sprite = new THREE.Sprite(spriteMat);
-            sprite.scale.set(1.9, 1.9, 1);
-            mesh.add(sprite);
-
-            mesh.userData = {
-                u: def.u,
-                v: def.v,
-                color: def.color,
-                baseEmissive: 0.9,
-                sprite: sprite
-            };
-
-            computeNodes.push(mesh);
-            nodeGroup.add(mesh);
-        });
-
-        // --- LAYER 6: LUMINOUS SIGNAL PACKETS (COMPUTE TRAVELERS) ---
-        const NUM_SIGNALS = 8;
-        const signalSprites = [];
-        const signalGroup = new THREE.Group();
-        sculptureGroup.add(signalGroup);
-
-        for (let s = 0; s < NUM_SIGNALS; s++) {
-            const isCyan = s % 2 === 0;
-            const sigMat = new THREE.SpriteMaterial({
-                map: glowSpriteTexture,
-                color: isCyan ? 0x22d3ee : 0xa78bfa,
-                transparent: true,
-                opacity: 0.0,
-                blending: THREE.AdditiveBlending,
-                depthWrite: false
-            });
-            const sprite = new THREE.Sprite(sigMat);
-            sprite.scale.set(2.4, 2.4, 1);
-            sprite.userData = {
-                filamentIdx: Math.floor(6 + (s / NUM_SIGNALS) * 24),
-                delay: s * 0.10,
-                speed: 1.1 + (s % 3) * 0.12
-            };
-            signalSprites.push(sprite);
-            signalGroup.add(sprite);
         }
 
         // Helper to evaluate 3D point on manifold at arbitrary u, v from cached slices
@@ -570,7 +510,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const slB = sliceFrames[idxB];
             if (!slA || !slB) return { x: 0, y: 0, z: 0 };
 
-            // Lerp slice values
             const posX = slA.pos.x + (slB.pos.x - slA.pos.x) * f;
             const posY = slA.pos.y + (slB.pos.y - slA.pos.y) * f;
             const posZ = slA.pos.z + (slB.pos.z - slA.pos.z) * f;
@@ -585,7 +524,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const halfW = slA.halfW + (slB.halfW - slA.halfW) * f;
             const sinU = slA.sinU + (slB.sinU - slA.sinU) * f;
-            const camber = (1.0 - v * v) * 1.35 * sinU;
+            const camber = (1.0 - v * v) * 1.5 * sinU;
 
             return {
                 x: posX + (v * halfW * Bx) + (camber * Nx),
@@ -594,37 +533,211 @@ document.addEventListener("DOMContentLoaded", () => {
             };
         }
 
+        // --- LAYER 5: THE QUANTUM TENSOR CORE (SIGNATURE 3D ENGINE) ---
+        // Anchored at harmonic inflection waist (u = 0.54)
+        const tensorCoreGroup = new THREE.Group();
+        sculptureGroup.add(tensorCoreGroup);
+
+        // 1. Outer Gyroscopic Wireframe Icosahedron
+        const outerIcosaGeo = new THREE.IcosahedronGeometry(2.8, 1);
+        const outerIcosaMat = new THREE.MeshBasicMaterial({
+            color: 0x38bdf8,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.60,
+            blending: THREE.AdditiveBlending
+        });
+        const outerIcosaMesh = new THREE.Mesh(outerIcosaGeo, outerIcosaMat);
+        tensorCoreGroup.add(outerIcosaMesh);
+
+        // 2. Inner Faceted Octahedron Core
+        const innerOctaGeo = new THREE.OctahedronGeometry(1.6, 0);
+        const innerOctaMat = new THREE.MeshStandardMaterial({
+            color: 0x050e20,
+            emissive: new THREE.Color(0xa78bfa),
+            emissiveIntensity: 1.35,
+            roughness: 0.15,
+            metalness: 0.95
+        });
+        const innerOctaMesh = new THREE.Mesh(innerOctaGeo, innerOctaMat);
+        tensorCoreGroup.add(innerOctaMesh);
+
+        // 3. Two Gyroscopic Orbital Rings
+        const gyroTorus1 = new THREE.Mesh(
+            new THREE.TorusGeometry(3.6, 0.05, 12, 64),
+            new THREE.MeshBasicMaterial({ color: 0x22d3ee, transparent: true, opacity: 0.70, blending: THREE.AdditiveBlending })
+        );
+        gyroTorus1.rotation.x = Math.PI * 0.35;
+        tensorCoreGroup.add(gyroTorus1);
+
+        const gyroTorus2 = new THREE.Mesh(
+            new THREE.TorusGeometry(4.3, 0.04, 12, 64),
+            new THREE.MeshBasicMaterial({ color: 0x8b5cf6, transparent: true, opacity: 0.60, blending: THREE.AdditiveBlending })
+        );
+        gyroTorus2.rotation.y = Math.PI * 0.45;
+        tensorCoreGroup.add(gyroTorus2);
+
+        // 4. Central Energy Core Halo Sprite
+        const coreHaloMat = new THREE.SpriteMaterial({
+            map: glowSpriteTexture,
+            color: 0x38bdf8,
+            transparent: true,
+            opacity: 0.85,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
+        });
+        const coreHaloSprite = new THREE.Sprite(coreHaloMat);
+        coreHaloSprite.scale.set(7.5, 7.5, 1);
+        tensorCoreGroup.add(coreHaloSprite);
+
+        // --- LAYER 6: 320 QUANTUM DATA STREAM PARTICLES ---
+        const PARTICLE_COUNT = 320;
+        const particleGeo = new THREE.BufferGeometry();
+        const particlePositions = new Float32Array(PARTICLE_COUNT * 3);
+        const particleColors = new Float32Array(PARTICLE_COUNT * 3);
+        const particleData = [];
+
+        for (let p = 0; p < PARTICLE_COUNT; p++) {
+            const u = Math.random();
+            const v = (Math.random() - 0.5) * 1.6;
+            const speed = 0.0035 + Math.random() * 0.0075;
+            particleData.push({ u, v, speed });
+
+            particlePositions[p * 3 + 0] = 0;
+            particlePositions[p * 3 + 1] = 0;
+            particlePositions[p * 3 + 2] = 0;
+
+            const rnd = Math.random();
+            if (rnd < 0.45) {
+                // Electric Cyan
+                particleColors[p * 3 + 0] = 0.22; particleColors[p * 3 + 1] = 0.85; particleColors[p * 3 + 2] = 0.98;
+            } else if (rnd < 0.75) {
+                // Luminous Violet
+                particleColors[p * 3 + 0] = 0.65; particleColors[p * 3 + 1] = 0.55; particleColors[p * 3 + 2] = 0.98;
+            } else {
+                // Diamond White
+                particleColors[p * 3 + 0] = 0.95; particleColors[p * 3 + 1] = 0.98; particleColors[p * 3 + 2] = 1.0;
+            }
+        }
+
+        particleGeo.setAttribute("position", new THREE.BufferAttribute(particlePositions, 3));
+        particleGeo.setAttribute("color", new THREE.BufferAttribute(particleColors, 3));
+
+        const particleMat = new THREE.PointsMaterial({
+            size: 2.2,
+            map: glowSpriteTexture,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.90,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
+        });
+
+        const particleSystem = new THREE.Points(particleGeo, particleMat);
+        sculptureGroup.add(particleSystem);
+
+        // --- LAYER 7: SPARSE CYAN & VIOLET COMPUTE NODES ---
+        const NODE_DEFS = [
+            { u: 0.10, v: 0.00, color: 0x22d3ee },
+            { u: 0.18, v: -0.35, color: 0xa78bfa },
+            { u: 0.26, v: 0.28, color: 0x22d3ee },
+            { u: 0.34, v: -0.22, color: 0x38bdf8 },
+            { u: 0.42, v: 0.45, color: 0xa78bfa },
+            { u: 0.50, v: 0.00, color: 0x22d3ee },
+            { u: 0.58, v: -0.42, color: 0xa78bfa },
+            { u: 0.66, v: 0.25, color: 0x22d3ee },
+            { u: 0.74, v: -0.28, color: 0x38bdf8 },
+            { u: 0.82, v: 0.38, color: 0xa78bfa },
+            { u: 0.90, v: -0.12, color: 0x22d3ee },
+            { u: 0.96, v: 0.00, color: 0xa78bfa }
+        ];
+
+        const computeNodes = [];
+        const nodeGroup = new THREE.Group();
+        sculptureGroup.add(nodeGroup);
+
+        const nodeGeom = new THREE.OctahedronGeometry(0.42, 0);
+
+        NODE_DEFS.forEach((def) => {
+            const nodeMat = new THREE.MeshStandardMaterial({
+                color: 0x050e1f,
+                emissive: new THREE.Color(def.color),
+                emissiveIntensity: 1.0,
+                roughness: 0.18,
+                metalness: 0.92
+            });
+
+            const mesh = new THREE.Mesh(nodeGeom, nodeMat);
+
+            const spriteMat = new THREE.SpriteMaterial({
+                map: glowSpriteTexture,
+                color: def.color,
+                transparent: true,
+                opacity: 0.90,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+            const sprite = new THREE.Sprite(spriteMat);
+            sprite.scale.set(2.4, 2.4, 1);
+            mesh.add(sprite);
+
+            mesh.userData = {
+                u: def.u,
+                v: def.v,
+                color: def.color,
+                baseEmissive: 1.0,
+                sprite: sprite
+            };
+
+            computeNodes.push(mesh);
+            nodeGroup.add(mesh);
+        });
+
+        // --- LAYER 8: DUAL SCANLINE WAVEFRONTS ---
+        const scanlineWaveGeo = new THREE.BufferGeometry();
+        const scanlineWavePos = new Float32Array(RIB_V_STEPS * 3);
+        scanlineWaveGeo.setAttribute("position", new THREE.BufferAttribute(scanlineWavePos, 3));
+        const scanlineWaveMat = new THREE.LineBasicMaterial({
+            color: 0x38bdf8,
+            transparent: true,
+            opacity: 0.75,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
+        });
+        const scanlineWave = new THREE.Line(scanlineWaveGeo, scanlineWaveMat);
+        sculptureGroup.add(scanlineWave);
+
         // --- RESPONSIVE COMPOSITION & POSITIONING ---
-        let basePosY = 0.5;
-        let baseRotX = 0.05;
-        let baseRotY = -0.15;
+        let basePosY = 0.0;
+        let baseRotX = 0.04;
+        let baseRotY = -0.12;
         let isMobileScreen = false;
 
         function updateSculptureLayout() {
             const width = window.innerWidth;
             if (width < 768) {
-                // Mobile: centered in upper hero background, text remains 100% legible
+                // Mobile: centered in upper background
                 isMobileScreen = true;
-                basePosY = 4.8;
-                baseRotX = 0.10;
-                baseRotY = -0.10;
-                sculptureGroup.position.set(0, basePosY, -10);
-                sculptureGroup.scale.set(0.65, 0.65, 0.65);
-            } else if (width < 992) {
-                // Tablet: offset right
-                isMobileScreen = false;
-                basePosY = 1.8;
+                basePosY = 4.2;
                 baseRotX = 0.08;
-                baseRotY = -0.12;
-                sculptureGroup.position.set(7.5, basePosY, -4);
-                sculptureGroup.scale.set(0.82, 0.82, 0.82);
-            } else {
-                // Desktop: frames hero typography on right half
+                baseRotY = -0.08;
+                sculptureGroup.position.set(0, basePosY, -10);
+                sculptureGroup.scale.set(0.68, 0.68, 0.68);
+            } else if (width < 992) {
+                // Tablet: offset slightly right
                 isMobileScreen = false;
-                basePosY = 0.5;
-                baseRotX = 0.05;
-                baseRotY = -0.15;
-                sculptureGroup.position.set(12.5, basePosY, 0);
+                basePosY = 1.2;
+                baseRotX = 0.06;
+                baseRotY = -0.10;
+                sculptureGroup.position.set(4.5, basePosY, -5);
+                sculptureGroup.scale.set(0.85, 0.85, 0.85);
+            } else {
+                // Desktop: sweeps across background, framing hero avatar and title
+                isMobileScreen = false;
+                basePosY = 0.0;
+                baseRotX = 0.04;
+                baseRotY = -0.12;
+                sculptureGroup.position.set(4.5, basePosY, -2);
                 sculptureGroup.scale.set(1.0, 1.0, 1.0);
             }
         }
@@ -644,10 +757,19 @@ document.addEventListener("DOMContentLoaded", () => {
         const clock = new THREE.Clock();
 
         function updateGeometryBuffers(time, morphFactor, computeProgress, isComputePhase) {
-            // 1. Compute and cache slice frames for this time sample
+            // 1. Decay click shockwave
+            if (clickShockwaveIntensity > 0.001) {
+                clickShockwaveProgress += 0.025;
+                clickShockwaveIntensity *= 0.96;
+                if (clickShockwaveProgress > 1.2) {
+                    clickShockwaveIntensity = 0.0;
+                }
+            }
+
+            // 2. Compute and cache slice frames for this time sample
             computeSliceFrames(time, morphFactor);
 
-            // 2. Update Primary Filaments
+            // 3. Update Primary Filaments
             for (let k = 0; k < NUM_FILAMENTS; k++) {
                 const line = filamentLines[k];
                 const v = line.userData.v;
@@ -656,7 +778,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 for (let i = 0; i < NUM_STEPS; i++) {
                     const sl = sliceFrames[i];
-                    const camber = (1.0 - vSq) * 1.35 * sl.sinU;
+                    const camber = (1.0 - vSq) * 1.5 * sl.sinU;
                     posArr[i * 3 + 0] = sl.pos.x + (v * sl.halfW * sl.Bx) + (camber * sl.Nx);
                     posArr[i * 3 + 1] = sl.pos.y + (v * sl.halfW * sl.By) + (camber * sl.Ny);
                     posArr[i * 3 + 2] = sl.pos.z + (v * sl.halfW * sl.Bz) + (camber * sl.Nz);
@@ -664,12 +786,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 filamentGeos[k].attributes.position.needsUpdate = true;
             }
 
-            // 3. Update Translucent Graphite & Glass Ribbon Mesh
+            // 4. Update Translucent Graphite & Glass Ribbon Mesh
             const meshPos = ribbonMeshGeo.attributes.position.array;
             for (let iu = 0; iu < MESH_U_STEPS; iu++) {
-                const u = 0.06 + (iu / (MESH_U_STEPS - 1)) * 0.88;
+                const u = 0.05 + (iu / (MESH_U_STEPS - 1)) * 0.90;
                 for (let iv = 0; iv < MESH_V_STEPS; iv++) {
-                    const v = -0.42 + (iv / (MESH_V_STEPS - 1)) * 0.84;
+                    const v = -0.45 + (iv / (MESH_V_STEPS - 1)) * 0.90;
                     const pt = sampleManifoldPoint(u, v);
                     const idx = (iu * MESH_V_STEPS + iv) * 3;
                     meshPos[idx + 0] = pt.x;
@@ -680,26 +802,26 @@ document.addEventListener("DOMContentLoaded", () => {
             ribbonMeshGeo.attributes.position.needsUpdate = true;
             ribbonMeshGeo.computeVertexNormals();
 
-            // 4. Update Secondary Interwoven Latent Filaments
+            // 5. Update Secondary Interwoven Latent Filaments
             for (let l = 0; l < NUM_LATENT; l++) {
                 const lv = latentLines[l].userData.lv;
                 const posArr = latentGeos[l].attributes.position.array;
-                const phaseOffset = l * 0.28;
+                const phaseOffset = l * 0.25;
 
                 for (let i = 0; i < NUM_STEPS; i++) {
                     const sl = sliceFrames[i];
-                    const harmonicWave = Math.sin(sl.u * Math.PI * 3.5 + time * 0.8 + phaseOffset) * 1.8;
-                    const crossV = (lv * 0.6) + (harmonicWave * 0.25);
-                    const camber = (1.0 - crossV * crossV) * 1.1 * sl.sinU;
+                    const harmonicWave = Math.sin(sl.u * Math.PI * 4.0 + time * 1.2 + phaseOffset) * 2.2;
+                    const crossV = (lv * 0.65) + (harmonicWave * 0.22);
+                    const camber = (1.0 - crossV * crossV) * 1.2 * sl.sinU;
 
-                    posArr[i * 3 + 0] = sl.pos.x + (crossV * sl.halfW * sl.Bx) + (camber * sl.Nx) + (sl.Nx * harmonicWave * 0.6);
-                    posArr[i * 3 + 1] = sl.pos.y + (crossV * sl.halfW * sl.By) + (camber * sl.Ny) + (sl.Ny * harmonicWave * 0.6);
-                    posArr[i * 3 + 2] = sl.pos.z + (crossV * sl.halfW * sl.Bz) + (camber * sl.Nz) + (sl.Bz * harmonicWave * 0.6);
+                    posArr[i * 3 + 0] = sl.pos.x + (crossV * sl.halfW * sl.Bx) + (camber * sl.Nx) + (sl.Nx * harmonicWave * 0.7);
+                    posArr[i * 3 + 1] = sl.pos.y + (crossV * sl.halfW * sl.By) + (camber * sl.Ny) + (sl.Ny * harmonicWave * 0.7);
+                    posArr[i * 3 + 2] = sl.pos.z + (crossV * sl.halfW * sl.Bz) + (camber * sl.Nz) + (sl.Bz * harmonicWave * 0.7);
                 }
                 latentGeos[l].attributes.position.needsUpdate = true;
             }
 
-            // 5. Update Orthogonal Mathematical Contour Ribs
+            // 6. Update Orthogonal Mathematical Contour Ribs
             for (let r = 0; r < NUM_RIBS; r++) {
                 const u = ribLines[r].userData.uFrac;
                 const posArr = ribGeos[r].attributes.position.array;
@@ -713,12 +835,54 @@ document.addEventListener("DOMContentLoaded", () => {
                 ribGeos[r].attributes.position.needsUpdate = true;
             }
 
-            // 6. Update Compute Nodes
+            // 7. Update Quantum Tensor Core (Position & Gyroscopic Rotations)
+            const coreCenter = sampleManifoldPoint(0.54, 0.0);
+            tensorCoreGroup.position.set(coreCenter.x, coreCenter.y, coreCenter.z);
+            coreLight.position.set(coreCenter.x, coreCenter.y, coreCenter.z);
+
+            const coreSpeedMultiplier = isComputePhase ? 2.5 : 1.0;
+            outerIcosaMesh.rotation.x += 0.012 * coreSpeedMultiplier;
+            outerIcosaMesh.rotation.y += 0.016 * coreSpeedMultiplier;
+            innerOctaMesh.rotation.y -= 0.020 * coreSpeedMultiplier;
+            innerOctaMesh.rotation.z += 0.015 * coreSpeedMultiplier;
+            gyroTorus1.rotation.z += 0.018 * coreSpeedMultiplier;
+            gyroTorus2.rotation.x -= 0.014 * coreSpeedMultiplier;
+
+            const corePulse = 1.0 + Math.sin(time * 3.5) * 0.18 + (isComputePhase ? morphFactor * 0.45 : 0);
+            tensorCoreGroup.scale.set(corePulse, corePulse, corePulse);
+
+            // 8. Update 320 Quantum Stream Particles
+            const pPositions = particleGeo.attributes.position.array;
+            for (let p = 0; p < PARTICLE_COUNT; p++) {
+                const pObj = particleData[p];
+                pObj.u += pObj.speed * (isComputePhase ? 1.8 : 1.0);
+                if (pObj.u > 1.0) pObj.u -= 1.0;
+
+                const pt = sampleManifoldPoint(pObj.u, pObj.v);
+                pPositions[p * 3 + 0] = pt.x;
+                pPositions[p * 3 + 1] = pt.y;
+                pPositions[p * 3 + 2] = pt.z;
+            }
+            particleGeo.attributes.position.needsUpdate = true;
+
+            // 9. Update Scanline Wavefront
+            const scanU = (time * 0.22) % 1.0;
+            const scanArr = scanlineWaveGeo.attributes.position.array;
+            for (let iv = 0; iv < RIB_V_STEPS; iv++) {
+                const v = (iv / (RIB_V_STEPS - 1)) * 2 - 1;
+                const pt = sampleManifoldPoint(scanU, v);
+                scanArr[iv * 3 + 0] = pt.x;
+                scanArr[iv * 3 + 1] = pt.y;
+                scanArr[iv * 3 + 2] = pt.z;
+            }
+            scanlineWaveGeo.attributes.position.needsUpdate = true;
+            scanlineWaveMat.opacity = Math.sin(scanU * Math.PI) * 0.85;
+
+            // 10. Update Compute Nodes
             computeNodes.forEach((node) => {
                 const pt = sampleManifoldPoint(node.userData.u, node.userData.v);
                 node.position.set(pt.x, pt.y, pt.z);
 
-                // Flaring during Compute Phase when signals pass
                 let flare = 0;
                 if (isComputePhase) {
                     const distToCompute = Math.abs(computeProgress * 1.15 - node.userData.u);
@@ -727,27 +891,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 }
 
-                node.material.emissiveIntensity = node.userData.baseEmissive + flare * 2.2;
-                const s = 1.9 + flare * 1.5;
+                node.material.emissiveIntensity = node.userData.baseEmissive + flare * 2.5;
+                const s = 2.4 + flare * 1.8;
                 node.userData.sprite.scale.set(s, s, 1);
-            });
-
-            // 7. Update Luminous Signal Packets
-            signalSprites.forEach((sprite) => {
-                if (isComputePhase) {
-                    const uProg = (computeProgress * sprite.userData.speed) - sprite.userData.delay;
-                    if (uProg >= 0.05 && uProg <= 0.95) {
-                        const v = (sprite.userData.filamentIdx / (NUM_FILAMENTS - 1)) * 2 - 1;
-                        const pt = sampleManifoldPoint(uProg, v);
-                        sprite.position.set(pt.x, pt.y, pt.z);
-                        const edgeFade = Math.sin(Math.min(Math.max((uProg - 0.05) / 0.90, 0), 1) * Math.PI);
-                        sprite.material.opacity = 0.95 * edgeFade;
-                    } else {
-                        sprite.material.opacity = 0.0;
-                    }
-                } else {
-                    sprite.material.opacity = 0.0;
-                }
             });
         }
 
@@ -755,39 +901,33 @@ document.addEventListener("DOMContentLoaded", () => {
             const time = clock.getElapsedTime();
 
             // --- 3-PHASE SIGNATURE ENGINE ---
-            // Period: 18 seconds
-            const cycleTime = time % 18.0;
+            // Period: 16 seconds
+            const cycleTime = time % 16.0;
             let morphFactor = 0;
             let computeProgress = 0;
             let isComputePhase = false;
 
-            if (cycleTime < 6.5) {
-                // PHASE A — OBSERVE (0s - 6.5s)
-                // Structure breathes subtly, minimal movement, soft ambient lighting
+            if (cycleTime < 6.0) {
+                // PHASE A — OBSERVE (0s - 6.0s)
                 morphFactor = 0.0;
                 isComputePhase = false;
-                keyLight.intensity = 2.2;
-                pointerLight.intensity = 1.9;
-            } else if (cycleTime < 13.5) {
-                // PHASE B — COMPUTE (6.5s - 13.5s)
-                // Luminous signals travel along selected curves.
-                // Connected regions illuminate in sequence.
-                // Geometric layers shift into a new configuration.
+                keyLight.intensity = 2.5;
+                pointerLight.intensity = 2.4;
+            } else if (cycleTime < 12.0) {
+                // PHASE B — COMPUTE (6.0s - 12.0s)
                 isComputePhase = true;
-                computeProgress = (cycleTime - 6.5) / 7.0; // [0, 1]
+                computeProgress = (cycleTime - 6.0) / 6.0; // [0, 1]
                 morphFactor = Math.sin(computeProgress * Math.PI);
-                keyLight.intensity = 2.2 + morphFactor * 0.8;
-                pointerLight.intensity = 1.9 + morphFactor * 0.9;
+                keyLight.intensity = 2.5 + morphFactor * 1.0;
+                pointerLight.intensity = 2.4 + morphFactor * 1.2;
             } else {
-                // PHASE C — RESOLVE (13.5s - 18.0s)
-                // Structure briefly settles into a balanced geometric arrangement,
-                // then smoothly returns to its initial state.
+                // PHASE C — RESOLVE (12.0s - 16.0s)
                 isComputePhase = false;
-                const resolveProgress = (cycleTime - 13.5) / 4.5; // [0, 1]
+                const resolveProgress = (cycleTime - 12.0) / 4.0; // [0, 1]
                 const easeOut = Math.pow(1 - resolveProgress, 2);
-                morphFactor = easeOut * 0.22;
-                keyLight.intensity = 2.2 + easeOut * 0.2;
-                pointerLight.intensity = 1.9 + easeOut * 0.2;
+                morphFactor = easeOut * 0.25;
+                keyLight.intensity = 2.5 + easeOut * 0.3;
+                pointerLight.intensity = 2.4 + easeOut * 0.3;
             }
 
             if (!prefersReducedMotion) {
@@ -795,22 +935,25 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             // Mouse parallax with smooth camera damping
-            const targetCamX = mouse.x * 3.6;
-            const targetCamY = mouse.y * 2.4;
+            const targetCamX = mouse.x * 4.2;
+            const targetCamY = mouse.y * 2.8;
             camera.position.x += (targetCamX - camera.position.x) * 0.045;
             camera.position.y += (targetCamY - camera.position.y) * 0.045;
 
             // Pointer Spotlight smooth tracking in 3D
-            const targetLightX = (mouse.x * 24) + (isMobileScreen ? 0 : 8);
-            const targetLightY = (mouse.y * 18) + (isMobileScreen ? 4 : 1);
+            const targetLightX = (mouse.x * 26) + (isMobileScreen ? 0 : 4);
+            const targetLightY = (mouse.y * 18) + (isMobileScreen ? 4 : 0);
             pointerLight.position.x += (targetLightX - pointerLight.position.x) * 0.08;
             pointerLight.position.y += (targetLightY - pointerLight.position.y) * 0.08;
 
             // Pointer proximity tilt on sculpture
-            const targetTiltX = baseRotX + (mouse.y * 0.06);
-            const targetTiltY = baseRotY + (mouse.x * 0.08);
+            const targetTiltX = baseRotX + (mouse.y * 0.08);
+            const targetTiltY = baseRotY + (mouse.x * 0.12);
             sculptureGroup.rotation.x += (targetTiltX - sculptureGroup.rotation.x) * 0.05;
             sculptureGroup.rotation.y += (targetTiltY - sculptureGroup.rotation.y) * 0.05;
+
+            // Continuous subtle celestial drift
+            sculptureGroup.rotation.z = Math.sin(time * 0.35) * 0.03;
 
             // Scroll Parallax: gradually rotates sculpture and reveals internal layers
             const maxScroll = (document.documentElement.scrollHeight - window.innerHeight) || 1;
@@ -853,6 +996,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
     initThinkingMachineSculpture();
+
 
 
 
