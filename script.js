@@ -279,12 +279,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // --- 2. FULL-SCREEN DUAL PARAMETRIC SUPER-RIBBONS ---
         // Manifold Alpha: Sweeps from far-left (-75, -45) to far-right (+75, +45)
-        function getSpineAlpha(u, t, morph, scrollProg, scrollVel) {
+        function getSpineAlpha(u, t, morph) {
             let x = -75 + (150 * u) + (14.0 * Math.sin(u * Math.PI * 1.4));
             let y = -45 + (55 * u) + (40 * Math.pow(u, 2.0)) + (8.0 * Math.sin(u * Math.PI * 1.8));
             let z = -14 + (28 * Math.sin(u * Math.PI * 1.3)) - (20 * Math.sin(u * Math.PI * 2.6) * Math.max(0, u - 0.4));
 
-            const waveSpeed = 1.3 + scrollVel * 0.35;
+            const waveSpeed = 1.3;
             const wave1 = Math.sin(u * Math.PI * 3.5 - t * waveSpeed) * 1.8;
             const wave2 = Math.cos(u * Math.PI * 2.2 + t * (waveSpeed * 0.75)) * 1.3;
             const waveEnv = Math.sin(u * Math.PI);
@@ -292,10 +292,6 @@ document.addEventListener("DOMContentLoaded", () => {
             x += wave1 * waveEnv * 0.95;
             y += (wave2 + wave1) * waveEnv * 1.15;
             z += (wave2 - wave1) * waveEnv * 1.35;
-
-            // Gentle scroll adjustment (calm and subtle)
-            x += Math.sin(scrollProg * Math.PI * 1.2 + u * Math.PI) * 1.8;
-            z += Math.cos(scrollProg * Math.PI * 1.2 + u * Math.PI) * 2.2;
 
             if (morph > 0.001) {
                 x += morph * 4.5 * Math.sin(u * Math.PI * 2.5 + t);
@@ -307,21 +303,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // Manifold Beta: Counter-flowing diagonal from (+70, -48) to (-70, +42)
-        function getSpineBeta(u, t, morph, scrollProg, scrollVel) {
+        function getSpineBeta(u, t, morph) {
             let x = 70 - (140 * u) - (12.0 * Math.sin(u * Math.PI * 1.5));
             let y = -48 + (52 * u) + (42 * Math.pow(u, 1.9)) + (7.0 * Math.sin(u * Math.PI * 2.0));
             let z = 10 - (24 * Math.sin(u * Math.PI * 1.4)) + (18 * Math.sin(u * Math.PI * 2.4) * Math.max(0, u - 0.35));
 
-            const waveSpeed = 1.2 + scrollVel * 0.30;
+            const waveSpeed = 1.2;
             const wave = Math.sin(u * Math.PI * 4.0 + t * waveSpeed) * 1.5;
             const waveEnv = Math.sin(u * Math.PI);
 
             x += wave * waveEnv * 0.95;
             y += wave * waveEnv * 0.85;
             z += wave * waveEnv * 1.15;
-
-            x -= Math.sin(scrollProg * Math.PI * 1.2 + u * Math.PI) * 1.6;
-            z -= Math.cos(scrollProg * Math.PI * 1.2 + u * Math.PI) * 2.0;
 
             return { x, y, z };
         }
@@ -330,7 +323,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let slicesAlpha = [];
         let slicesBeta = [];
 
-        function computeFrames(t, morph, scrollProg, scrollVel) {
+        function computeFrames(t, morph) {
             const eps = 0.005;
             slicesAlpha = [];
             slicesBeta = [];
@@ -338,9 +331,9 @@ document.addEventListener("DOMContentLoaded", () => {
             // Compute slices for Manifold Alpha
             for (let i = 0; i < NUM_STEPS; i++) {
                 const u = i / (NUM_STEPS - 1);
-                const pPrev = getSpineAlpha(Math.max(0, u - eps), t, morph, scrollProg, scrollVel);
-                const pNext = getSpineAlpha(Math.min(1, u + eps), t, morph, scrollProg, scrollVel);
-                const pos = getSpineAlpha(u, t, morph, scrollProg, scrollVel);
+                const pPrev = getSpineAlpha(Math.max(0, u - eps), t, morph);
+                const pNext = getSpineAlpha(Math.min(1, u + eps), t, morph);
+                const pos = getSpineAlpha(u, t, morph);
 
                 const dx = pNext.x - pPrev.x, dy = pNext.y - pPrev.y, dz = pNext.z - pPrev.z;
                 const len = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1;
@@ -358,7 +351,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 n0X /= n0Len; n0Y /= n0Len; n0Z /= n0Len;
 
                 // Subtle, gentle twist (controlled and graceful)
-                const twist = u * Math.PI * 2.4 + 0.45 * Math.sin(u * Math.PI - t * 0.75) + (scrollProg * 0.28) + (scrollVel * 0.10);
+                const twist = u * Math.PI * 2.4 + 0.45 * Math.sin(u * Math.PI - t * 0.75);
                 const cosT = Math.cos(twist), sinT = Math.sin(twist);
 
                 const tbX = Ty * b0Z - Tz * b0Y, tbY = Tz * b0X - Tx * b0Z, tbZ = Tx * b0Y - Ty * b0X;
@@ -367,7 +360,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const tnX = Ty * n0Z - Tz * n0Y, tnY = Tz * n0X - Tx * n0Z, tnZ = Tx * n0Y - Ty * n0X;
                 const Nx = n0X * cosT + tnX * sinT, Ny = n0Y * cosT + tnY * sinT, Nz = n0Z * cosT + tnZ * sinT;
 
-                const width = 5.0 + 22.0 * Math.pow(Math.sin(u * Math.PI), 1.2) + 3.5 * Math.sin(u * Math.PI * 2.0 - t * 1.0) + (scrollVel * 0.6);
+                const width = 5.0 + 22.0 * Math.pow(Math.sin(u * Math.PI), 1.2) + 3.5 * Math.sin(u * Math.PI * 2.0 - t * 1.0);
                 const sinU = Math.sin(u * Math.PI);
 
                 slicesAlpha.push({ u, pos, Bx, By, Bz, Nx, Ny, Nz, width, halfW: width * 0.5, sinU });
@@ -376,9 +369,9 @@ document.addEventListener("DOMContentLoaded", () => {
             // Compute slices for Manifold Beta
             for (let i = 0; i < NUM_STEPS; i++) {
                 const u = i / (NUM_STEPS - 1);
-                const pPrev = getSpineBeta(Math.max(0, u - eps), t, morph, scrollProg, scrollVel);
-                const pNext = getSpineBeta(Math.min(1, u + eps), t, morph, scrollProg, scrollVel);
-                const pos = getSpineBeta(u, t, morph, scrollProg, scrollVel);
+                const pPrev = getSpineBeta(Math.max(0, u - eps), t, morph);
+                const pNext = getSpineBeta(Math.min(1, u + eps), t, morph);
+                const pos = getSpineBeta(u, t, morph);
 
                 const dx = pNext.x - pPrev.x, dy = pNext.y - pPrev.y, dz = pNext.z - pPrev.z;
                 const len = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1;
@@ -395,7 +388,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const n0Len = Math.sqrt(n0X * n0X + n0Y * n0Y + n0Z * n0Z) || 1;
                 n0X /= n0Len; n0Y /= n0Len; n0Z /= n0Len;
 
-                const twist = u * Math.PI * 2.2 - t * 0.6 - (scrollProg * 0.22);
+                const twist = u * Math.PI * 2.2 - t * 0.6;
                 const cosT = Math.cos(twist), sinT = Math.sin(twist);
 
                 const tbX = Ty * b0Z - Tz * b0Y, tbY = Tz * b0X - Tx * b0Z, tbZ = Tx * b0Y - Ty * b0X;
@@ -637,25 +630,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
         universeGroup.add(particleSystem);
 
-        // --- INTERACTIVE SCROLL & MOUSE TRACKING ---
-        let targetScrollProg = 0;
-        let smoothScrollProg = 0;
-        let scrollVelocity = 0;
-        let lastScrollY = window.scrollY;
-
-        function updateScrollMetrics() {
-            const maxScroll = (document.documentElement.scrollHeight - window.innerHeight) || 1;
-            targetScrollProg = Math.min(Math.max(window.scrollY / maxScroll, 0), 1);
-            const deltaY = window.scrollY - lastScrollY;
-            lastScrollY = window.scrollY;
-            scrollVelocity = Math.min(scrollVelocity + Math.abs(deltaY) * 0.004, 0.4);
-        }
-
-        window.addEventListener("scroll", updateScrollMetrics, { passive: true });
-        window.addEventListener("wheel", (e) => {
-            scrollVelocity = Math.min(scrollVelocity + Math.abs(e.deltaY) * 0.0005, 0.4);
-        }, { passive: true });
-
+        // --- INTERACTIVE MOUSE TRACKING (STATIONARY 3D SCENE) ---
         const mouse = { x: 0, y: 0 };
         window.addEventListener("mousemove", (e) => {
             mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
@@ -669,14 +644,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const clock = new THREE.Clock();
 
         function updateGeometryBuffers(time, morphFactor, computeProgress, isComputePhase) {
-            // Compute frame slices with active scroll velocity
-            computeFrames(time, morphFactor, smoothScrollProg, scrollVelocity);
+            // Compute frame slices (stationary, scroll-independent)
+            computeFrames(time, morphFactor);
 
             // 1. Update Full-Screen Cyber Wavefield Mesh (180 x 130 units across screen)
             const wPos = waveGeo.attributes.position.array;
             const mouseWorldX = mouse.x * 60;
             const mouseWorldY = mouse.y * 45;
-            const waveAmp = 3.6 + scrollVelocity * 0.5;
+            const waveAmp = 3.6;
 
             let wIdx = 0;
             for (let ix = 0; ix < GRID_X; ix++) {
@@ -756,7 +731,7 @@ document.addEventListener("DOMContentLoaded", () => {
             tensorCoreGroup.position.set(coreCenter.x, coreCenter.y, coreCenter.z);
             coreLight.position.set(coreCenter.x, coreCenter.y, coreCenter.z);
 
-            const coreSpeed = (isComputePhase ? 1.6 : 1.0) + (scrollVelocity * 0.25);
+            const coreSpeed = isComputePhase ? 1.6 : 1.0;
             outerIcosaMesh.rotation.x += 0.012 * coreSpeed;
             outerIcosaMesh.rotation.y += 0.015 * coreSpeed;
             innerOctaMesh.rotation.y -= 0.018 * coreSpeed;
@@ -764,12 +739,12 @@ document.addEventListener("DOMContentLoaded", () => {
             gyroTorus1.rotation.z += 0.016 * coreSpeed;
             gyroTorus2.rotation.x -= 0.012 * coreSpeed;
 
-            const corePulse = 1.0 + Math.sin(time * 3.0) * 0.15 + (scrollVelocity * 0.08);
+            const corePulse = 1.0 + Math.sin(time * 3.0) * 0.15;
             tensorCoreGroup.scale.set(corePulse, corePulse, corePulse);
 
             // 6. Update 600 Quantum Stream & Full-Screen Particles
             const pPositions = particleGeo.attributes.position.array;
-            const effectiveParticleSpeed = (isComputePhase ? 1.4 : 1.0) + (scrollVelocity * 0.35);
+            const effectiveParticleSpeed = isComputePhase ? 1.4 : 1.0;
 
             for (let s = 0; s < STREAM_COUNT; s++) {
                 const pObj = streamData[s];
@@ -785,7 +760,7 @@ document.addEventListener("DOMContentLoaded", () => {
             for (let a = 0; a < AMBIENT_COUNT; a++) {
                 const idx = STREAM_COUNT + a;
                 const amb = ambientData[a];
-                amb.z += (amb.driftSpeed + scrollVelocity * 0.25);
+                amb.z += amb.driftSpeed;
                 if (amb.z > 42) {
                     amb.z = -80;
                     amb.x = (Math.random() - 0.5) * 180;
@@ -800,10 +775,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         function animateSculptureScene() {
             const time = clock.getElapsedTime();
-
-            // Smooth scroll damping
-            smoothScrollProg += (targetScrollProg - smoothScrollProg) * 0.065;
-            scrollVelocity *= 0.88;
 
             // Signature Timeline
             const cycleTime = time % 16.0;
@@ -835,31 +806,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 updateGeometryBuffers(time, morphFactor, computeProgress, isComputePhase);
             }
 
-            // --- GENTLE, SMOOTH SCROLL CAMERA GLIDE ---
-            // Subtle, calm parallax that enhances the portfolio without dizziness
-            const camFlyX = Math.sin(smoothScrollProg * Math.PI * 0.8) * 3.8 + mouse.x * 2.2;
-            const camFlyY = -(smoothScrollProg * 8.5) + mouse.y * 1.8;
-            const camFlyZ = 42.0 - Math.sin(smoothScrollProg * Math.PI) * 3.0;
+            // --- STATIONARY 3D CAMERA (MOUSE PARALLAX ONLY, NO SCROLL MOVEMENT) ---
+            const targetCamX = mouse.x * 2.5;
+            const targetCamY = mouse.y * 1.8;
+            camera.position.x += (targetCamX - camera.position.x) * 0.045;
+            camera.position.y += (targetCamY - camera.position.y) * 0.045;
+            camera.position.z += (42.0 - camera.position.z) * 0.045;
+            camera.lookAt(0, 0, 0);
 
-            camera.position.x += (camFlyX - camera.position.x) * 0.045;
-            camera.position.y += (camFlyY - camera.position.y) * 0.045;
-            camera.position.z += (camFlyZ - camera.position.z) * 0.045;
-
-            // Camera lookAt point glides gently
-            camera.lookAt(0, -(smoothScrollProg * 6.5), 0);
-
-            // Very subtle universe rotation (only ~18 degrees across entire page scroll)
-            universeGroup.rotation.y = (smoothScrollProg * 0.32) + (mouse.x * 0.05);
-            universeGroup.rotation.x = Math.sin(smoothScrollProg * Math.PI) * 0.10 + (mouse.y * 0.03);
+            // Stationary universe group orientation with subtle cursor responsiveness
+            universeGroup.position.set(0, 0, 0);
+            universeGroup.rotation.x = mouse.y * 0.04;
+            universeGroup.rotation.y = mouse.x * 0.06;
             universeGroup.rotation.z = Math.sin(time * 0.20) * 0.02;
-            universeGroup.position.y = -(smoothScrollProg * 4.5);
 
             // Pointer Spotlight smooth tracking in 3D across entire display
-            const targetLightX = (mouse.x * 35);
-            const targetLightY = -(smoothScrollProg * 8.5) + (mouse.y * 22);
+            const targetLightX = mouse.x * 35;
+            const targetLightY = mouse.y * 22;
             pointerLight.position.x += (targetLightX - pointerLight.position.x) * 0.08;
             pointerLight.position.y += (targetLightY - pointerLight.position.y) * 0.08;
-            pointerLight.intensity = 2.8 + scrollVelocity * 0.3;
 
             renderer.render(scene, camera);
             animationFrameId = requestAnimationFrame(animateSculptureScene);
