@@ -154,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 attempts++;
                 if (typeof THREE !== "undefined") {
                     clearInterval(checkInterval);
-                    initThinkingMachineSculpture();
+                    requestAnimationFrame(initThinkingMachineSculpture);
                 } else if (attempts > 30) {
                     clearInterval(checkInterval);
                 }
@@ -177,8 +177,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const scene = new THREE.Scene();
-        // Deep obsidian atmospheric depth with generous far horizon
-        scene.fog = new THREE.FogExp2(0x02040a, 0.0010);
+        // Deep obsidian atmospheric depth with generous far horizon matching #070B18
+        scene.fog = new THREE.FogExp2(0x070b18, 0.0012);
 
         // Wide panoramic camera FOV to fully envelop widescreen displays
         const camera = new THREE.PerspectiveCamera(62, window.innerWidth / window.innerHeight, 0.1, 1800);
@@ -187,30 +187,30 @@ document.addEventListener("DOMContentLoaded", () => {
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = 1.35;
+        renderer.toneMappingExposure = 1.25;
 
         // --- SCENE LIGHTING ---
         // 1. Ambient Deep Midnight Navy
-        const ambientLight = new THREE.AmbientLight(0x0a1632, 0.95);
+        const ambientLight = new THREE.AmbientLight(0x0b1428, 0.90);
         scene.add(ambientLight);
 
-        // 2. Primary Computational Key Light (Luminous Electric Cyan)
-        const keyLight = new THREE.DirectionalLight(0x38bdf8, 2.8);
+        // 2. Primary Computational Key Light (Electric Cyan #22D3EE)
+        const keyLight = new THREE.DirectionalLight(0x22d3ee, 2.4);
         keyLight.position.set(-45, 50, 50);
         scene.add(keyLight);
 
-        // 3. Mathematical Rim Light (Muted Electric Violet)
-        const rimLight = new THREE.DirectionalLight(0x8b5cf6, 2.2);
+        // 3. Mathematical Rim Light (Rich Violet #8B5CF6)
+        const rimLight = new THREE.DirectionalLight(0x8b5cf6, 2.0);
         rimLight.position.set(45, -35, -30);
         scene.add(rimLight);
 
         // 4. Dynamic Interactive Pointer Spotlight (Follows Cursor in 3D across full screen)
-        const pointerLight = new THREE.PointLight(0x22d3ee, 2.8, 80);
+        const pointerLight = new THREE.PointLight(0x22d3ee, 2.2, 75);
         pointerLight.position.set(0, 0, 25);
         scene.add(pointerLight);
 
-        // 5. Tensor Core Inner Glow Light
-        const coreLight = new THREE.PointLight(0xa78bfa, 2.6, 50);
+        // 5. Tensor Core Inner Glow Light (Soft Lavender #C4B5FD)
+        const coreLight = new THREE.PointLight(0xc4b5fd, 2.2, 50);
         scene.add(coreLight);
 
         // --- PROCEDURAL GLOW SPRITE TEXTURE ---
@@ -320,13 +320,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const NUM_STEPS = 85;
-        let slicesAlpha = [];
-        let slicesBeta = [];
+        const slicesAlpha = Array.from({ length: NUM_STEPS }, () => ({
+            u: 0, pos: { x: 0, y: 0, z: 0 }, Bx: 0, By: 0, Bz: 0, Nx: 0, Ny: 0, Nz: 0, width: 0, halfW: 0, sinU: 0
+        }));
+        const slicesBeta = Array.from({ length: NUM_STEPS }, () => ({
+            u: 0, pos: { x: 0, y: 0, z: 0 }, Bx: 0, By: 0, Bz: 0, Nx: 0, Ny: 0, Nz: 0, width: 0, halfW: 0, sinU: 0
+        }));
 
         function computeFrames(t, morph) {
             const eps = 0.005;
-            slicesAlpha = [];
-            slicesBeta = [];
 
             // Compute slices for Manifold Alpha
             for (let i = 0; i < NUM_STEPS; i++) {
@@ -363,7 +365,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 const width = 5.0 + 22.0 * Math.pow(Math.sin(u * Math.PI), 1.2) + 3.5 * Math.sin(u * Math.PI * 2.0 - t * 1.0);
                 const sinU = Math.sin(u * Math.PI);
 
-                slicesAlpha.push({ u, pos, Bx, By, Bz, Nx, Ny, Nz, width, halfW: width * 0.5, sinU });
+                const sl = slicesAlpha[i];
+                sl.u = u;
+                sl.pos.x = pos.x; sl.pos.y = pos.y; sl.pos.z = pos.z;
+                sl.Bx = Bx; sl.By = By; sl.Bz = Bz;
+                sl.Nx = Nx; sl.Ny = Ny; sl.Nz = Nz;
+                sl.width = width; sl.halfW = width * 0.5; sl.sinU = sinU;
             }
 
             // Compute slices for Manifold Beta
@@ -400,7 +407,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 const width = 4.5 + 16.0 * Math.pow(Math.sin(u * Math.PI), 1.2);
                 const sinU = Math.sin(u * Math.PI);
 
-                slicesBeta.push({ u, pos, Bx, By, Bz, Nx, Ny, Nz, width, halfW: width * 0.5, sinU });
+                const sl = slicesBeta[i];
+                sl.u = u;
+                sl.pos.x = pos.x; sl.pos.y = pos.y; sl.pos.z = pos.z;
+                sl.Bx = Bx; sl.By = By; sl.Bz = Bz;
+                sl.Nx = Nx; sl.Ny = Ny; sl.Nz = Nz;
+                sl.width = width; sl.halfW = width * 0.5; sl.sinU = sinU;
             }
         }
 
@@ -940,19 +952,22 @@ document.addEventListener("DOMContentLoaded", () => {
             charIndex++;
             if (charIndex === currentWord.length) {
                 deleting = true;
-                setTimeout(typeEffect, 1600);
+                setTimeout(typeEffect, 2000); // Display complete phrase for 2 seconds
                 return;
             }
         } else {
             typingElement.textContent = currentWord.substring(0, charIndex - 1);
             charIndex--;
-            if (charIndex === 0) {
+            if (charIndex <= 0) {
+                charIndex = 0;
                 deleting = false;
                 wordIndex = (wordIndex + 1) % typingWords.length;
+                setTimeout(typeEffect, 400); // Natural pause before typing next word
+                return;
             }
         }
 
-        setTimeout(typeEffect, deleting ? 50 : 95);
+        setTimeout(typeEffect, deleting ? 35 : 75);
     }
     typeEffect();
 

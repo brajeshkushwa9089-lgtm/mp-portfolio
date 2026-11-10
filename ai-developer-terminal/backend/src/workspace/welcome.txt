@@ -1,0 +1,11 @@
+Welcome to Brajesh Kushwaha AI Studio Console!
+
+This is your isolated, secure workspace directory.
+You can:
+- Run commands in the Terminal (e.g. 'help', 'ls', 'projects', 'ai hello')
+- Open and edit code files in the Monaco Editor
+- Create new projects using the Project Builder (React, Node, Fullstack, HTML)
+- Preview live applications in the Live Preview tab
+- Get AI assistance, code explanations, and bug audits in the AI Assistant tab
+
+Happy Coding! 🚀
